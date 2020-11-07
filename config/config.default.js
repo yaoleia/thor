@@ -5,6 +5,8 @@
 /**
  * @param {Egg.EggAppInfo} appInfo app info
  */
+const path = require('path');
+
 module.exports = appInfo => {
   /**
    * built-in config
@@ -17,6 +19,17 @@ module.exports = appInfo => {
 
   // add your middleware config here
   config.middleware = [];
+
+  config.view = {
+    root: [
+      path.join(appInfo.baseDir, 'app/view'),
+      path.join(appInfo.baseDir, 'web/dist'),
+    ].join(','),
+    defaultViewEngine: 'nunjucks',
+    mapping: {
+      '.html': 'nunjucks',
+    }
+  }
 
   // add your user config here
   const userConfig = {
