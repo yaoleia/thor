@@ -31,6 +31,20 @@ module.exports = appInfo => {
     }
   }
 
+  config.static = {
+    prefix: '/public/',
+    dir: [path.join(appInfo.baseDir, 'web/dist')]
+  }
+
+  config.security = {
+    csrf: {
+      enable: false
+    },
+    xframe: {
+      enable: false
+    }
+  }
+
   // add your user config here
   const userConfig = {
     // myAppName: 'egg',
