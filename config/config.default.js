@@ -36,6 +36,10 @@ module.exports = appInfo => {
     dir: [path.join(appInfo.baseDir, 'web/dist')]
   }
 
+  config.session = {
+    renew: true
+  }
+
   config.security = {
     csrf: {
       enable: false
@@ -44,6 +48,8 @@ module.exports = appInfo => {
       enable: false
     }
   }
+
+  config.middleware = ['auth'];
 
   // add your user config here
   const userConfig = {
