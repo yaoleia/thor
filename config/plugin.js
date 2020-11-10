@@ -10,5 +10,9 @@ module.exports = {
     enable: true,
     package: 'egg-view-nunjucks',
   },
-  session: true
+  session: true,
+  assets: {
+    enable: true,
+    package: 'egg-view-assets',
+  }
 };

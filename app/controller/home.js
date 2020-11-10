@@ -5,9 +5,7 @@ const Controller = require('egg').Controller;
 class HomeController extends Controller {
   async index() {
     const { ctx } = this;
-    await ctx.render('index.html', {
-      username: ctx.session.username
-    })
+    await ctx.render('index.html')
   }
 
   async user() {
