@@ -4,7 +4,7 @@ const Controller = require('egg').Controller;
 
 class AccountController extends Controller {
   async user() {
-    this.ctx.body = 'aaa'
+    this.ctx.body = this.ctx.helper.relativeTime(1604998254421)
   }
 
   async postLogin(ctx) {
