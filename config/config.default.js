@@ -33,7 +33,7 @@ module.exports = appInfo => {
 
   config.static = {
     prefix: '/public/',
-    dir: [path.join(appInfo.baseDir, 'web/dist')]
+    dir: [path.join(appInfo.baseDir, 'web/dist'), path.join(appInfo.baseDir, 'public')]
   }
 
   config.session = {
@@ -49,7 +49,11 @@ module.exports = appInfo => {
     }
   }
 
-  config.middleware = ['auth'];
+  config.middleware = ['auth', 'proxy']
+
+  config.proxy = {
+    match: '/api/proxyurl'
+  }
 
   config.assets = {
     devServer: {

@@ -1,12 +1,7 @@
 'use strict';
 const Controller = require('egg').Controller;
 
-class HomeController extends Controller {
-  async index() {
-    const { ctx } = this;
-    await ctx.render('index.html')
-  }
-
+class MockController extends Controller {
   async proxy() {
     const ctx = this.ctx;
     console.log(ctx.session)
@@ -22,4 +17,4 @@ class HomeController extends Controller {
   }
 }
 
-module.exports = HomeController;
+module.exports = MockController;
