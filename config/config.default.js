@@ -49,10 +49,14 @@ module.exports = appInfo => {
     }
   }
 
-  config.middleware = ['auth', 'proxy']
+  config.middleware = ['auth', 'proxy', 'gzip']
 
   config.proxy = {
     match: '/api/proxyurl'
+  }
+
+  config.gzip = {
+    threshold: 1024 // 小于 1k 的响应体不压缩
   }
 
   config.assets = {
