@@ -46,6 +46,7 @@ class HomeController extends Controller {
     console.log(url)
     const res = await this.ctx.curl(url, {
       method: this.ctx.method,
+      timeout: 10000
     });
     ctx.body = res.data;
     ctx.status = res.status;
