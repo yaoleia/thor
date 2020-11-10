@@ -17,6 +17,8 @@ module.exports = appInfo => {
   // use for cookie sign key, should change to your own and keep security
   config.keys = appInfo.name + '_1604639726575_3480';
 
+  config.mockServer = 'https://proapi.azurewebsites.net'
+
   // add your middleware config here
   config.middleware = [];
 
