@@ -12,7 +12,15 @@ module.exports = {
   },
   session: true,
   assets: {
-    enable: true,
+    enable: false,
     package: 'egg-view-assets',
+  },
+  io: {
+    enable: true,
+    package: 'egg-socket.io',
+  },
+  redis: {
+    enable: true,
+    package: 'egg-redis'
   }
 };

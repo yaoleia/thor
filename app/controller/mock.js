@@ -4,10 +4,9 @@ const Controller = require('egg').Controller;
 class MockController extends Controller {
   async proxy() {
     const ctx = this.ctx;
-    console.log(ctx.session)
     // use roadhog mock api first
     const url = this.app.config.mockServer + ctx.path + '?' + ctx.querystring;
-    console.log(url)
+    ctx.logger.debug(url)
     const res = await this.ctx.curl(url, {
       method: this.ctx.method,
       timeout: 10000

@@ -1,5 +1,4 @@
 'use strict';
-const ms = require('ms');
 const Controller = require('egg').Controller;
 
 class AccountController extends Controller {
@@ -12,7 +11,6 @@ class AccountController extends Controller {
     const { password, userName, type } = body;
     if (password === 'admin') {
       ctx.session.username = userName;
-      ctx.session.maxAge = ms('7d');
       ctx.body = {
         status: 'ok',
         type,

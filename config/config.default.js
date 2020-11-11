@@ -14,13 +14,43 @@ module.exports = appInfo => {
    **/
   const config = exports = {};
 
+  config.io = {
+    namespace: {
+      '/': {
+        connectionMiddleware: ['auth'],
+        packetMiddleware: ['filter'],
+      }
+    },
+    redis: {
+      port: 6379,
+      host: '127.0.0.1',
+      password: '',
+      db: 0,
+    }
+  }
+
+  config.redis = {
+    client: {
+      port: 6379,
+      host: '127.0.0.1',
+      password: '',
+      db: 0,
+    }
+  }
+
   // use for cookie sign key, should change to your own and keep security
   config.keys = appInfo.name + '_1604639726575_3480';
 
-  config.mockServer = 'https://proapi.azurewebsites.net'
-
   // add your middleware config here
-  config.middleware = [];
+  config.middleware = ['proxy', 'gzip', 'auth']
+
+  config.proxy = {
+    match: '/api/proxyurl'
+  }
+
+  config.gzip = {
+    threshold: 1024 // 小于 1k 的响应体不压缩
+  }
 
   config.view = {
     root: [
@@ -39,6 +69,8 @@ module.exports = appInfo => {
   }
 
   config.session = {
+    key: 'EGG_SESS',
+    maxAge: 7 * 24 * 3600 * 1000,
     renew: true
   }
 
@@ -49,16 +81,6 @@ module.exports = appInfo => {
     xframe: {
       enable: false
     }
-  }
-
-  config.middleware = ['auth', 'proxy', 'gzip']
-
-  config.proxy = {
-    match: '/api/proxyurl'
-  }
-
-  config.gzip = {
-    threshold: 1024 // 小于 1k 的响应体不压缩
   }
 
   config.assets = {
@@ -77,9 +99,14 @@ module.exports = appInfo => {
     },
   };
 
+  config.logger = {
+    level: 'DEBUG',
+    consoleLevel: 'DEBUG'
+  }
+
   // add your user config here
   const userConfig = {
-    // myAppName: 'egg',
+    mockServer: 'https://proapi.azurewebsites.net'
   };
 
   return {
