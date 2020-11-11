@@ -31,3 +31,8 @@ $ npm stop
 
 
 [egg]: https://eggjs.org
+
+## 技术栈
+后端：egg.js(koa) socket.io-server redis mongo
+前端：react redux antd-pro socket.io fabric umi (web子仓库可切换其他框架vue-cli、roadhog等)
+部署：docker bash-shell (windows系统)
