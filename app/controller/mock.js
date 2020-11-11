@@ -5,7 +5,7 @@ class MockController extends Controller {
   async proxy() {
     const ctx = this.ctx;
     // use roadhog mock api first
-    const url = this.app.config.mockServer + ctx.path + '?' + ctx.querystring;
+    const url = this.app.config.MOCK_SERVER + ctx.path + '?' + ctx.querystring;
     ctx.logger.debug(url)
     const res = await this.ctx.curl(url, {
       method: this.ctx.method,

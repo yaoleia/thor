@@ -5,7 +5,7 @@ module.exports = () => {
     if (ctx.session.username) {
       await next();
     } else {
-      if (ctx.url.startsWith('/api/account') || ctx.url === '/') {
+      if (ctx.url.startsWith('/api/account') || ctx.url.startsWith('/api/push') || ctx.url === '/') {
         await next()
       } else {
         ctx.status = 401;
