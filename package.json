@@ -32,11 +32,11 @@
     "node": ">=10.0.0"
   },
   "scripts": {
-    "start:prod": "egg-scripts start --sticky --workers=1",
-    "start": "egg-scripts start --daemon --title=thor --sticky --workers=1",
+    "start:prod": "egg-scripts start --sticky",
+    "start": "egg-scripts start --daemon --title=thor --sticky",
     "stop": "egg-scripts stop --title=thor",
     "dev": "egg-bin dev --sticky",
-    "debug": "egg-bin debug",
+    "debug": "egg-bin debug --sticky",
     "test": "npm run lint -- --fix && npm run test-local",
     "test-local": "egg-bin test",
     "cov": "egg-bin cov",

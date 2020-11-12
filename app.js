@@ -50,7 +50,7 @@ class AppBootHook {
     // this.app.server.on('timeout', socket => {
     // handle socket timeout
     // });
-    this.app.logger.info('==================== serverDidReady ====================')
+    this.app.logger.info(`==================== serverDidReady ${process.pid} ====================`)
   }
 }
 
