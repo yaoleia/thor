@@ -12,7 +12,7 @@ module.exports = () => {
       logger.debug('#tick', id, msg);
 
       // 踢出用户前发送消息
-      await socket.emit('res', msg)
+      // await socket.emit('res', msg)
 
       // 调用 adapter 方法踢出用户，客户端触发 disconnect 事件
       await socket.disconnect(true)
