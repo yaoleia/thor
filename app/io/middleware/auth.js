@@ -17,8 +17,8 @@ module.exports = () => {
       // 调用 adapter 方法踢出用户，客户端触发 disconnect 事件
       await socket.disconnect(true)
     }
-    const username = ctx.session.username;
-    console.log(`==========${username}==========`)
+    console.log(`====================`, ctx.session)
+    // const username = ctx.session.username;
     // if (!username) {
     //   // 调用 adapter 方法踢出用户，客户端触发 disconnect 事件
     //   tick(id, 'auth error')
