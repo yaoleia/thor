@@ -39,7 +39,7 @@ class AppBootHook {
 
     // const ctx = await this.app.createAnonymousContext();
     // await ctx.service.Biz.request();
-    
+
     // TODO: 订阅后端交互，redis/kafka...
   }
 

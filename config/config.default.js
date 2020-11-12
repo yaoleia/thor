@@ -35,7 +35,8 @@ module.exports = appInfo => {
       host: '127.0.0.1',
       password: '',
       db: 0,
-    }
+    },
+    agent: true
   }
 
   // use for cookie sign key, should change to your own and keep security

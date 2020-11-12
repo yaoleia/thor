@@ -6,9 +6,9 @@ module.exports = app => {
       const message = args[0] || room;
       await socket.join(message)
       await app.io.of('/').to(message).emit('res', `${socket.id} join ${message}`)
-        .emit('res', JSON.stringify({
-          rooms: Object.keys(socket.rooms)
-        }))
+      await socket.emit('res', JSON.stringify({
+        rooms: Object.keys(socket.rooms)
+      }))
     }
 
     async leave() {

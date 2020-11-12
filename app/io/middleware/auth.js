@@ -17,13 +17,12 @@ module.exports = () => {
       // 调用 adapter 方法踢出用户，客户端触发 disconnect 事件
       await socket.disconnect(true)
     }
-    // const username = ctx.session.username;
-
-    // if (!username) {
-    //   // 调用 adapter 方法踢出用户，客户端触发 disconnect 事件
-    //   tick(id, 'auth error')
-    //   return
-    // }
+    const username = ctx.session.username;
+    if (!username) {
+      // 调用 adapter 方法踢出用户，客户端触发 disconnect 事件
+      tick(id, 'auth error')
+      return
+    }
     logger.debug('#user_info', id, room);
 
     await next();
