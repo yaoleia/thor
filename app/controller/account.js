@@ -2,14 +2,10 @@
 const Controller = require('egg').Controller;
 
 class AccountController extends Controller {
-  async user() {
-    this.ctx.body = this.ctx.helper.relativeTime(1604998254421)
-  }
-
   async postLogin(ctx) {
     const body = ctx.request.body;
     const { password, userName, type } = body;
-    if (password === 'admin') {
+    if (password === 'admin' && userName === 'admin') {
       ctx.session.username = userName;
       ctx.body = {
         status: 'ok',

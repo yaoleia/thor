@@ -8,7 +8,7 @@ module.exports = app => {
   router.post('/api/push', controller.pusher.index)
   router.post('/api/account/login', controller.account.postLogin)
   router.get('/api/account/logout', controller.account.logout)
-  router.get('/api/account/currentUser', controller.account.user)
+  router.get('/api/currentUser', controller.user.currentUser)
   router.get('/api/download', controller.download.download);
   router.get('/api/download-image', controller.download.downloadImage);
   router.all('/api/*', controller.mock.proxy);
