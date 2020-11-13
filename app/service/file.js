@@ -5,6 +5,7 @@ const mkdirp = require('mkdirp')
 const fs = require('fs')
 const request = require('request')
 const pump = require('mz-modules/pump')
+const sharp = require('sharp');
 
 class FileService extends Service {
   getUploadDir(type) {
@@ -18,21 +19,32 @@ class FileService extends Service {
   }
 
   async uploadUrl(ctx) {
-    const { image_url, type } = ctx.request.body
+    const { image_url, type, quality } = ctx.request.body
     const images = []
     const { uploadDir, baseUrl } = this.getUploadDir(type)
     if (image_url) {
       const suffix = path.basename(image_url).toLowerCase()
       const now = moment().format('YYYYMMDDHHmmss')
-      const fileName = now + Math.floor(Math.random() * 1000) + suffix
+      let fileName = now + Math.floor(Math.random() * 1000) + suffix
+      if (typeof quality === "number") {
+        fileName = fileName.replace(path.extname(fileName), '.jpg')
+      }
       if (!fs.existsSync(uploadDir)) mkdirp.sync(uploadDir)
       if (image_url.startsWith('http')) {
-        await pump(request(image_url), fs.createWriteStream(path.join(uploadDir, fileName)))
+        const params = [request(image_url), fs.createWriteStream(path.join(uploadDir, fileName))]
+        if (typeof quality === "number") {
+          params.splice(1, 0, sharp().jpeg({ quality }))
+        }
+        await pump(...params)
         images.push({ name: 'image_url', url: new URL(path.join(baseUrl, fileName), ctx.request.origin).href })
       } else {
         const exists = fs.existsSync(image_url)
         if (exists) {
-          fs.copyFileSync(image_url, path.join(uploadDir, fileName))
+          const params = [fs.createReadStream(image_url), fs.createWriteStream(path.join(uploadDir, fileName))]
+          if (typeof quality === "number") {
+            params.splice(1, 0, sharp().jpeg({ quality }))
+          }
+          await pump(...params)
           images.push({ fieldname: 'image_url', url: new URL(path.join(baseUrl, fileName), ctx.request.origin).href })
         }
       }
@@ -41,19 +53,27 @@ class FileService extends Service {
   }
 
   async uploadFiles(ctx) {
+    const { type, quality } = ctx.request.body
     const images = []
-    const { uploadDir, baseUrl } = this.getUploadDir(ctx.request.body.type)
+    const { uploadDir, baseUrl } = this.getUploadDir(type)
     const files = ctx.request.files;
     try {
       if (!fs.existsSync(uploadDir)) mkdirp.sync(uploadDir)
       for (const file of files) {
-        const fileName = file.filename.toLowerCase();
+        let fileName = file.filename.toLowerCase();
+        if (typeof quality === "number") {
+          fileName = fileName.replace(path.extname(fileName), '.jpg')
+        }
         const targetPath = path.join(uploadDir, fileName);
-        const source = fs.createReadStream(file.filepath);
-        const target = fs.createWriteStream(targetPath);
-        await pump(source, target);
+        const params = [fs.createReadStream(file.filepath), fs.createWriteStream(targetPath)]
+        if (typeof quality === "number") {
+          params.splice(1, 0, sharp().jpeg({ quality }))
+        }
+        await pump(...params)
         images.push({ fieldname: file.fieldname, url: new URL(path.join(baseUrl, fileName), ctx.request.origin).href })
       }
+    } catch (err) {
+      ctx.logger.error(err)
     } finally {
       // delete those request tmp files
       await ctx.cleanupRequestFiles();
@@ -62,6 +82,11 @@ class FileService extends Service {
   }
 
   async upload(ctx) {
+    const body = ctx.request.body
+    if (Number.isNaN(Number(body.quality))) {
+      delete body.quality
+    }
+    body.quality = body.quality - 0
     return [...await this.uploadUrl(ctx), ...await this.uploadFiles(ctx)]
   }
 }
