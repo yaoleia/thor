@@ -1,5 +1,4 @@
 const Service = require('egg').Service;
-const crypto = require('crypto')
 const path = require('path')
 const moment = require('moment')
 const mkdirp = require('mkdirp')
@@ -23,10 +22,9 @@ class FileService extends Service {
     const images = []
     const { uploadDir, baseUrl } = this.getUploadDir(type)
     if (image_url) {
-      const suffix = path.basename(image_url)
-      const hash = crypto.createHash('md5')
-      const now = (new Date()).getTime()
-      const fileName = hash.update(now + Math.random().toString()).digest('hex') + suffix
+      const suffix = path.basename(image_url).toLowerCase()
+      const now = moment().format('YYYYMMDDHHmmss')
+      const fileName = now + Math.floor(Math.random() * 1000) + suffix
       if (!fs.existsSync(uploadDir)) mkdirp.sync(uploadDir)
       if (image_url.startsWith('http')) {
         await pump(request(image_url), fs.createWriteStream(path.join(uploadDir, fileName)))
