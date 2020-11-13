@@ -12,7 +12,7 @@ module.exports = {
   },
   session: true,
   assets: {
-    enable: true,
+    enable: false,
     package: 'egg-view-assets',
   },
   io: {

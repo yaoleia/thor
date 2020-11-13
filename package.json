@@ -16,7 +16,10 @@
     "egg-view-assets": "^1.6.1",
     "egg-view-nunjucks": "^2.2.0",
     "http-proxy": "^1.18.1",
+    "mkdirp": "^1.0.4",
     "moment": "^2.29.1",
+    "mz-modules": "^2.1.0",
+    "request": "^2.88.2",
     "url-parse": "^1.4.7"
   },
   "devDependencies": {

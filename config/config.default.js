@@ -108,7 +108,8 @@ module.exports = appInfo => {
   // add your user config here
   const userConfig = {
     MOCK_SERVER: 'https://proapi.azurewebsites.net',
-    BACKEND_SERVER: 'http://10.18.144.239:7777/mock/5fab56600a3d6400244cb595/thor/api'
+    BACKEND_SERVER: 'http://10.18.144.239:7777/mock/5fab56600a3d6400244cb595/thor/api',
+    UPLOAD_DIR: path.join(appInfo.baseDir, '/public/upload')
   };
 
   return {
