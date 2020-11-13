@@ -6,6 +6,7 @@ const fs = require('fs')
 const request = require('request')
 const pump = require('mz-modules/pump')
 const sharp = require('sharp');
+const imageTypes = [".jpg", ".jpeg", ".png", ".gif", ".bmp"]
 
 class FileService extends Service {
   getUploadDir(type) {
@@ -24,6 +25,9 @@ class FileService extends Service {
     const { uploadDir, baseUrl } = this.getUploadDir(type)
     if (image_url) {
       const suffix = path.basename(image_url).toLowerCase()
+      if (imageTypes.indexOf(path.extname(suffix)) === -1) {
+        return images
+      }
       const now = moment().format('YYYYMMDDHHmmss')
       let fileName = now + Math.floor(Math.random() * 1000) + suffix
       if (typeof quality === "number") {
@@ -61,6 +65,7 @@ class FileService extends Service {
       if (!fs.existsSync(uploadDir)) mkdirp.sync(uploadDir)
       for (const file of files) {
         let fileName = file.filename.toLowerCase();
+        if (imageTypes.indexOf(path.extname(fileName)) === -1) continue
         if (typeof quality === "number") {
           fileName = fileName.replace(path.extname(fileName), '.jpg')
         }
@@ -85,8 +90,9 @@ class FileService extends Service {
     const body = ctx.request.body
     if (Number.isNaN(Number(body.quality))) {
       delete body.quality
+    } else {
+      body.quality = body.quality - 0
     }
-    body.quality = body.quality - 0
     return [...await this.uploadUrl(ctx), ...await this.uploadFiles(ctx)]
   }
 }

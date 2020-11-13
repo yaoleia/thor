@@ -43,7 +43,13 @@ module.exports = appInfo => {
   config.keys = appInfo.name + '_1604639726575_3480';
 
   config.multipart = {
-    mode: 'file'
+    mode: 'file',
+    fileSize: '1024mb',
+    fileExtensions: [
+      '.pdf',
+      '.ckpt',
+      '.mov'
+    ]
   }
 
   // add your middleware config here
