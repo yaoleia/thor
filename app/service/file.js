@@ -11,8 +11,8 @@ const imageTypes = [".jpg", ".jpeg", ".png", ".gif", ".bmp"]
 class FileService extends Service {
   getUploadDir(type) {
     const date = type || moment().format('YYYY/MM/DD')
-    const uploadDir = path.resolve(this.app.config.UPLOAD_DIR, date)
     const baseUrl = path.join('public/upload', date)
+    const uploadDir = path.resolve(this.app.baseDir, baseUrl)
     return {
       uploadDir,
       baseUrl
