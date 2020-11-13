@@ -3,6 +3,7 @@
  *
  * 最终生效的配置为 prod + default（前者覆盖后者）
  */
+const path = require('path')
 
 module.exports = appInfo => {
   const config = {};
