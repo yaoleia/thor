@@ -15,3 +15,5 @@ exports.parseMsg = (action, payload = {}, metadata = {}) => {
     },
   }
 }
+
+exports.getDate = (time = new Date().getTime()) => moment(new Date(time)).utcOffset(8).format('YYYY-MM-DD HH:mm:ss')
