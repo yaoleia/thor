@@ -24,32 +24,33 @@ class FileService extends Service {
     const images = []
     const { uploadDir, baseUrl } = this.getUploadDir(type)
     if (image_url) {
-      const suffix = path.basename(image_url).toLowerCase()
-      if (imageTypes.indexOf(path.extname(suffix)) === -1) {
+      const extname = path.extname(image_url)
+      if (imageTypes.indexOf(extname) === -1) {
         return images
       }
       const now = moment().format('YYYYMMDDHHmmss')
-      let fileName = now + Math.floor(Math.random() * 1000) + suffix
+      let fileName = now + Math.floor(Math.random() * 1000) + extname
       if (typeof quality === "number") {
-        fileName = fileName.replace(path.extname(fileName), '.jpg')
+        fileName = fileName.replace(extname, '.jpg')
       }
       if (!fs.existsSync(uploadDir)) mkdirp.sync(uploadDir)
+      const local_path = path.join(uploadDir, fileName)
       if (image_url.startsWith('http')) {
-        const params = [request(image_url), fs.createWriteStream(path.join(uploadDir, fileName))]
+        const params = [request(image_url), fs.createWriteStream(local_path)]
         if (typeof quality === "number") {
           params.splice(1, 0, sharp().jpeg({ quality }))
         }
         await pump(...params)
-        images.push({ name: 'image_url', url: new URL(path.join(baseUrl, fileName), ctx.request.origin).href })
+        images.push({ name: 'image_url', url: new URL(path.join(baseUrl, fileName), ctx.request.origin).href, local_path })
       } else {
         const exists = fs.existsSync(image_url)
         if (exists) {
-          const params = [fs.createReadStream(image_url), fs.createWriteStream(path.join(uploadDir, fileName))]
+          const params = [fs.createReadStream(image_url), fs.createWriteStream(local_path)]
           if (typeof quality === "number") {
             params.splice(1, 0, sharp().jpeg({ quality }))
           }
           await pump(...params)
-          images.push({ fieldname: 'image_url', url: new URL(path.join(baseUrl, fileName), ctx.request.origin).href })
+          images.push({ fieldname: 'image_url', url: new URL(path.join(baseUrl, fileName), ctx.request.origin).href, local_path })
         }
       }
     }
@@ -65,17 +66,18 @@ class FileService extends Service {
       if (!fs.existsSync(uploadDir)) mkdirp.sync(uploadDir)
       for (const file of files) {
         let fileName = file.filename.toLowerCase();
-        if (imageTypes.indexOf(path.extname(fileName)) === -1) continue
+        const extname = path.extname(fileName)
+        if (imageTypes.indexOf(extname) === -1) continue
         if (typeof quality === "number") {
-          fileName = fileName.replace(path.extname(fileName), '.jpg')
+          fileName = fileName.replace(extname, '.jpg')
         }
-        const targetPath = path.join(uploadDir, fileName);
-        const params = [fs.createReadStream(file.filepath), fs.createWriteStream(targetPath)]
+        const local_path = path.join(uploadDir, fileName);
+        const params = [fs.createReadStream(file.filepath), fs.createWriteStream(local_path)]
         if (typeof quality === "number") {
           params.splice(1, 0, sharp().jpeg({ quality }))
         }
         await pump(...params)
-        images.push({ fieldname: file.fieldname, url: new URL(path.join(baseUrl, fileName), ctx.request.origin).href })
+        images.push({ fieldname: file.fieldname, url: new URL(path.join(baseUrl, fileName), ctx.request.origin).href, local_path })
       }
     } catch (err) {
       ctx.logger.error(err)
