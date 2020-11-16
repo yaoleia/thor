@@ -10,7 +10,6 @@ module.exports = {
     enable: true,
     package: 'egg-view-nunjucks',
   },
-  session: true,
   assets: {
     enable: false,
     package: 'egg-view-assets',
@@ -23,6 +22,7 @@ module.exports = {
     enable: true,
     package: 'egg-redis'
   },
+  session: true,
   sessionRedis: {
     enable: true,
     package: 'egg-session-redis',

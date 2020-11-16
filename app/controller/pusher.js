@@ -7,7 +7,7 @@ class PusherController extends Controller {
     const { ctx } = this;
     const { device, image_url } = ctx.request.body
     const date = ctx.helper.getDate()
-    const [{ data: { defect } }, [image]] = await Promise.all([
+    const [{ defect }, [image]] = await Promise.all([
       ctx.service.backend.defect(image_url),
       ctx.service.file.upload(ctx)
     ])
@@ -20,9 +20,7 @@ class PusherController extends Controller {
     const nsp = this.app.io.of('/')
     const room = device ? nsp.to(device) : nsp
     room.emit('res', defectData)
-    ctx.body = {
-      data: defectData
-    }
+    ctx.body = defectData
   }
 }
 
