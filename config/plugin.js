@@ -10,6 +10,10 @@ module.exports = {
     enable: true,
     package: 'egg-view-nunjucks',
   },
+  validate: {
+    enable: true,
+    package: 'egg-validate'
+  },
   assets: {
     enable: false,
     package: 'egg-view-assets',
