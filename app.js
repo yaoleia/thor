@@ -32,15 +32,17 @@ class AppBootHook {
 
     // 例如：从数据库加载数据到内存缓存
     // this.app.cacheData = await this.app.model.query(QUERY_CACHE_SQL);
+
+
   }
 
   async didReady() {
     // 应用已经启动完毕
-
-    // const ctx = await this.app.createAnonymousContext();
-    // await ctx.service.Biz.request();
-
-    // TODO: 订阅后端交互，redis/kafka...
+    this.app.messenger.on('agent_msg', async data => {
+      // const ctx = await this.app.createAnonymousContext();
+      // await ctx.service.file.upload({ image_url: '/users/admin/Desktop/111.jpg' });
+      console.log(data)
+    })
   }
 
   async serverDidReady() {

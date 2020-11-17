@@ -9,7 +9,7 @@ class PusherController extends Controller {
     const date = ctx.helper.getDate()
     const [{ defect_items }, [image]] = await Promise.all([
       ctx.service.backend.defect(image_url),
-      ctx.service.file.upload(ctx)
+      ctx.service.file.upload()
     ])
     const defectData = {
       is_defect: !!_.get(defect_items, 'length'),

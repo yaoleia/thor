@@ -19,8 +19,7 @@ class FileService extends Service {
     }
   }
 
-  async uploadUrl(ctx) {
-    const { image_url, type, quality } = ctx.request.body
+  async uploadUrl({ image_url, type, quality } = this.ctx.request.body) {
     const images = []
     const { uploadDir, baseUrl } = this.getUploadDir(type)
     if (image_url) {
@@ -41,7 +40,7 @@ class FileService extends Service {
           params.splice(1, 0, sharp().jpeg({ quality }))
         }
         await pump(...params)
-        images.push({ name: 'image_url', url: new URL(path.join(baseUrl, fileName), ctx.request.origin).href, local_path })
+        images.push({ name: 'image_url', url: new URL(path.join(baseUrl, fileName), this.ctx.request.origin).href, local_path })
       } else {
         const exists = fs.existsSync(image_url)
         if (exists) {
@@ -50,18 +49,17 @@ class FileService extends Service {
             params.splice(1, 0, sharp().jpeg({ quality }))
           }
           await pump(...params)
-          images.push({ fieldname: 'image_url', url: new URL(path.join(baseUrl, fileName), ctx.request.origin).href, local_path })
+          images.push({ fieldname: 'image_url', url: new URL(path.join(baseUrl, fileName), this.ctx.request.origin).href, local_path })
         }
       }
     }
     return images
   }
 
-  async uploadFiles(ctx) {
-    const { type, quality } = ctx.request.body
+  async uploadFiles({ type, quality } = this.ctx.request.body) {
     const images = []
     const { uploadDir, baseUrl } = this.getUploadDir(type)
-    const files = ctx.request.files;
+    const { files = [] } = this.ctx.request;
     try {
       if (!fs.existsSync(uploadDir)) mkdirp.sync(uploadDir)
       for (const file of files) {
@@ -77,25 +75,24 @@ class FileService extends Service {
           params.splice(1, 0, sharp().jpeg({ quality }))
         }
         await pump(...params)
-        images.push({ fieldname: file.fieldname, url: new URL(path.join(baseUrl, fileName), ctx.request.origin).href, local_path })
+        images.push({ fieldname: file.fieldname, url: new URL(path.join(baseUrl, fileName), this.ctx.request.origin).href, local_path })
       }
     } catch (err) {
-      ctx.logger.error(err)
+      this.ctx.logger.error(err)
     } finally {
       // delete those request tmp files
-      await ctx.cleanupRequestFiles();
+      await this.ctx.cleanupRequestFiles();
     }
     return images
   }
 
-  async upload(ctx) {
-    const body = ctx.request.body
-    if (Number.isNaN(Number(body.quality))) {
-      delete body.quality
+  async upload(json = this.ctx.request.body) {
+    if (Number.isNaN(Number(json.quality))) {
+      delete json.quality
     } else {
-      body.quality = body.quality - 0
+      json.quality = json.quality - 0
     }
-    return [...await this.uploadUrl(ctx), ...await this.uploadFiles(ctx)]
+    return [...await this.uploadUrl(json), ...await this.uploadFiles(json)]
   }
 }
 
