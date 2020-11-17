@@ -29,6 +29,11 @@ module.exports = appInfo => {
     }
   }
 
+  config.mongoose = {
+    url: 'mongodb://localhost/27017',
+    options: {}
+  }
+
   config.redis = {
     client: {
       port: 6379,

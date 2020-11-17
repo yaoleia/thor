@@ -26,5 +26,9 @@ module.exports = {
   sessionRedis: {
     enable: true,
     package: 'egg-session-redis',
+  },
+  mongoose: {
+    enable: true,
+    package: 'egg-mongoose',
   }
-};
+}

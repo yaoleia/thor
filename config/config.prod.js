@@ -29,5 +29,10 @@ module.exports = appInfo => {
     }
   }
 
+  config.mongoose = {
+    url: 'mongodb://mongo/27017',
+    options: {}
+  }
+
   return config;
 };
