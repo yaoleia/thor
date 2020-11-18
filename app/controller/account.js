@@ -4,9 +4,9 @@ const Controller = require('egg').Controller;
 class AccountController extends Controller {
   async postLogin(ctx) {
     const body = ctx.request.body;
-    const { password, userName, type } = body;
-    if (password === 'admin' && userName === 'admin') {
-      ctx.session.username = userName;
+    const { password, username, type } = body;
+    if (password === 'admin' && username === 'admin') {
+      ctx.session.username = username;
       ctx.body = {
         status: 'ok',
         type,
