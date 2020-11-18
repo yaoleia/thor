@@ -3,8 +3,6 @@
  *
  * 最终生效的配置为 prod + default（前者覆盖后者）
  */
-const path = require('path')
-
 module.exports = appInfo => {
   const config = {};
 
@@ -30,7 +28,7 @@ module.exports = appInfo => {
   }
 
   config.mongoose = {
-    url: 'mongodb://mongo/27017',
+    url: 'mongodb://mongo/thor',
     options: {}
   }
 

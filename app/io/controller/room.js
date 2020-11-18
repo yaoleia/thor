@@ -1,4 +1,4 @@
-const room = 'default_room';
+const room = 'default';
 module.exports = app => {
   class Controller extends app.Controller {
     async join() {
