@@ -4,6 +4,12 @@ const _ = require('lodash')
 class Defect2wsService extends Service {
   async index({ device_id = 'default', image_url, uid }) {
     const { service, helper, logger } = this.ctx
+
+    // 默认压缩图片质量60
+    if (!_.get(this.ctx, 'request.body.quality')) {
+      this.ctx.request.body.quality = 60
+    }
+
     const time = helper.getDate()
     const [{ defect_items, size_items, model }, [image]] = await Promise.all([
       service.modelApi.defect(image_url),
