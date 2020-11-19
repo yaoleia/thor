@@ -35,6 +35,11 @@ module.exports = app => {
       await Promise.all(ps)
       return result
     }
+
+    async getFromRedis(uid) {
+      const resp = await this.app.redis.hget("devices", uid)
+      return resp && JSON.parse(resp)
+    }
   }
   return DeviceService
 }

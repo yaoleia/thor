@@ -3,18 +3,18 @@ const _ = require('lodash')
 
 class Defect2wsService extends Service {
   async index({ device_id, image_url, uid }) {
-    let device = device_id && await this.app.redis.hget("devices", device_id)
+    const { service, helper, logger } = this.ctx
+
+    const device = device_id && await service.device.getFromRedis(device_id)
     if (!device) {
       this.ctx.status = 400
       return {
         msg: "设备不存在! (请检查 device_id)"
       }
     }
-    device = JSON.parse(device)
-    
+
     // TODO 查{device_id}当前使用的款式配置Style
 
-    const { service, helper, logger } = this.ctx
     // 默认压缩图片质量60
     if (!_.get(this.ctx, 'request.body.quality')) {
       this.ctx.request.body.quality = 60
