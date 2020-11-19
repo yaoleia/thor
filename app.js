@@ -44,7 +44,7 @@ class AppBootHook {
       const devices = resp.data || []
       await this.app.redis.del('devices')
       const ps = devices.map(async device => {
-        await this.app.redis.hset('devices', device.uid, device)
+        await this.app.redis.hset('devices', device.uid, JSON.stringify(device))
       })
       await Promise.all(ps)
       this.app.logger.info(`==================== init Devices ====================`)

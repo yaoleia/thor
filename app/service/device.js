@@ -15,7 +15,7 @@ module.exports = app => {
     async update({ id }, { uid, ...body }) {
       const result = await this.ctx.model.Device.findOneAndUpdate({ uid: id }, { $set: body }, { new: true })
       delete result._id
-      await this.app.redis.hset("devices", id, result)
+      await this.app.redis.hset("devices", id, JSON.stringify(result))
       return result
     }
     async create(request) {
@@ -23,7 +23,7 @@ module.exports = app => {
       const uid = this.ctx.helper.getRandomId()
       const result = await this.ctx.model.Device.create(Object.assign(request, { uid }))
       delete result._id
-      await this.app.redis.hset("devices", uid, result)
+      await this.app.redis.hset("devices", uid, JSON.stringify(result))
       return result
     }
     async destroy(params) {

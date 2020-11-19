@@ -2,17 +2,25 @@ const Service = require('egg').Service;
 const _ = require('lodash')
 
 class Defect2wsService extends Service {
-  async index({ device_id = 'default', image_url, uid }) {
-    const { service, helper, logger } = this.ctx
+  async index({ device_id, image_url, uid }) {
+    let device = device_id && await this.app.redis.hget("devices", device_id)
+    if (!device) {
+      this.ctx.status = 400
+      return {
+        msg: "设备不存在! (请检查 device_id)"
+      }
+    }
+    device = JSON.parse(device)
+    
+    // TODO 查{device_id}当前使用的款式配置Style
 
+    const { service, helper, logger } = this.ctx
     // 默认压缩图片质量60
     if (!_.get(this.ctx, 'request.body.quality')) {
       this.ctx.request.body.quality = 60
     }
 
     const time = helper.getDate()
-    // TODO 查{device_id(找到设备device.uid)}的设备配置信息（服务地址等）
-    // TODO 查{device_id}当前使用的款式配置Style
     const [{ defect_items, size_items }, [image]] = await Promise.all([
       service.modelApi.defect(image_url),
       service.file.upload()
@@ -21,7 +29,7 @@ class Defect2wsService extends Service {
     const defectData = {
       uid,
       time,
-      // device,
+      device,
       // style,
       image_url,
       thumbnail_url: _.get(image, 'url'),
@@ -30,9 +38,7 @@ class Defect2wsService extends Service {
       is_defect: !!_.get(defect_items, 'length')
     }
     logger.debug(defectData)
-    const nsp = this.app.io.of('/')
-    const room = device_id ? nsp.to(device_id) : nsp
-    room.emit('res', defectData)
+    this.app.io.of('/').to(device.uid).emit('res', defectData)
     await service.record.create(defectData)
     return defectData
   }
