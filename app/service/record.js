@@ -22,7 +22,7 @@ module.exports = app => {
       return result;
     }
     async destroy(params) {
-      const result = this.ctx.model.Record.remove({ "uid": { $in: params.id.split(',') } });
+      const result = await this.ctx.model.Record.remove({ "uid": { $in: params.id.split(',') } });
       return result;
     }
   }
