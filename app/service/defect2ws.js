@@ -11,7 +11,8 @@ class Defect2wsService extends Service {
     }
 
     const time = helper.getDate()
-    // TODO 查{device_id}的款式配置Style
+    // TODO 查{device_id(找到设备device.uid)}的设备配置信息（服务地址等）
+    // TODO 查{device_id}当前使用的款式配置Style
     const [{ defect_items, size_items }, [image]] = await Promise.all([
       service.modelApi.defect(image_url),
       service.file.upload()
@@ -20,7 +21,7 @@ class Defect2wsService extends Service {
     const defectData = {
       uid,
       time,
-      device_id,
+      // device,
       // style,
       image_url,
       thumbnail_url: _.get(image, 'url'),
