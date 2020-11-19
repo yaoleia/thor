@@ -13,12 +13,12 @@ module.exports = app => {
       return records[0];
     }
     async update({ id }, { uid, ...body }) {
-      const result = await this.ctx.model.Record.findOneAndUpdate({ uid: id }, { $set: body });
-      return result;
+      const result = await this.ctx.model.Record.findOneAndUpdate({ uid: id }, { $set: body }, { new: true });
+      return result
     }
     async create(request) {
       if (!request) { return };
-      const result = await this.ctx.model.Record.create(request);
+      const result = await this.ctx.model.Record.create(Object.assign({ uid: this.ctx.helper.getRandomId() }, request));
       return result;
     }
     async destroy(params) {

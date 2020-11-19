@@ -11,20 +11,22 @@ class Defect2wsService extends Service {
     }
 
     const time = helper.getDate()
-    const [{ defect_items, size_items, model }, [image]] = await Promise.all([
+    // TODO 查{device_id}的款式配置Style
+    const [{ defect_items, size_items }, [image]] = await Promise.all([
       service.modelApi.defect(image_url),
       service.file.upload()
     ])
+    // TODO 后处理，尺寸比较判断OK/NG
     const defectData = {
       uid,
-      is_defect: !!_.get(defect_items, 'length'),
-      defect_items,
-      size_items,
-      model,
+      time,
       device_id,
+      // style,
       image_url,
       thumbnail_url: _.get(image, 'url'),
-      time
+      defect_items,
+      size_items,
+      is_defect: !!_.get(defect_items, 'length')
     }
     logger.debug(defectData)
     const nsp = this.app.io.of('/')
