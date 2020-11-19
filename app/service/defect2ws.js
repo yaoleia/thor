@@ -35,7 +35,8 @@ class Defect2wsService extends Service {
       thumbnail_url: _.get(image, 'url'),
       defect_items,
       size_items,
-      is_defect: !!_.get(defect_items, 'length')
+      defect_alarm: !!_.get(defect_items, 'length'),
+      size_alarm: false
     }
     logger.debug(defectData)
     this.app.io.of('/').to(device.uid).emit('res', defectData)
