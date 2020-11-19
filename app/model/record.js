@@ -8,6 +8,8 @@ module.exports = ({ mongoose }) => {
     defect_items: { type: Array },
     size_items: { type: Array },
     is_defect: { type: Boolean }
+  }, {
+    versionKey: false
   })
 
   return mongoose.model('Record', RecordSchema);

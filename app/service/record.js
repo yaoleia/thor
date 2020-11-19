@@ -1,7 +1,7 @@
 module.exports = app => {
   class RecordService extends app.Service {
     async index(params) {
-      const records = await this.ctx.model.Record.find(params);
+      const records = await this.ctx.model.Record.find(params, { _id: 0 });
       const result = {};
       result.meta = { total: records.length };
       result.data = records;
@@ -9,7 +9,7 @@ module.exports = app => {
     }
     async show({ id }) {
       if (!id) { return };
-      const records = await this.ctx.model.Record.find({ uid: id });
+      const records = await this.ctx.model.Record.find({ uid: id }, { _id: 0 });
       return records[0];
     }
     async update({ id }, { uid, ...body }) {

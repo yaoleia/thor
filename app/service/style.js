@@ -1,7 +1,7 @@
 module.exports = app => {
   class StyleService extends app.Service {
     async index(params) {
-      const styles = await this.ctx.model.Style.find(params)
+      const styles = await this.ctx.model.Style.find(params, { _id: 0 })
       const result = {}
       result.meta = { total: styles.length }
       result.data = styles
@@ -9,7 +9,7 @@ module.exports = app => {
     }
     async show({ id }) {
       if (!id) { return }
-      const styles = await this.ctx.model.Style.find({ uid: id })
+      const styles = await this.ctx.model.Style.find({ uid: id }, { _id: 0 })
       return styles[0]
     }
     async update({ id }, { uid, ...body }) {

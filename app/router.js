@@ -5,6 +5,7 @@
  */
 module.exports = app => {
   const { router, controller, io } = app;
+  router.resources('device', '/api/device', controller.device)
   router.resources('style', '/api/style', controller.style)
   router.resources('record', '/api/record', controller.record)
   router.post('/api/push', controller.pusher.index)

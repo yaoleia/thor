@@ -8,6 +8,8 @@ module.exports = ({ mongoose }) => {
     defect_md5: { type: String },
     defect_items: { type: String },
     size_standard: { type: Array }
+  }, {
+    versionKey: false
   })
 
   return mongoose.model('Style', StyleSchema);
