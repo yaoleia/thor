@@ -14,15 +14,27 @@ module.exports = app => {
     }
     async update({ id }, { uid, ...body }) {
       const result = await this.ctx.model.Style.findOneAndUpdate({ uid: id }, { $set: body }, { new: true })
+      if (result) {
+        delete result._id
+        await this.app.redis.hset("styles", id, JSON.stringify(result))
+      }
       return result
     }
     async create(request) {
       if (!request) { return }
-      const result = await this.ctx.model.Style.create(Object.assign({}, request, { uid: this.ctx.helper.getRandomId() }))
+      const uid = this.ctx.helper.getRandomId()
+      const result = await this.ctx.model.Style.create(Object.assign(request, { uid }))
+      delete result._id
+      await this.app.redis.hset("styles", uid, JSON.stringify(result))
       return result
     }
     async destroy(params) {
-      const result = await this.ctx.model.Style.remove({ "uid": { $in: params.id.split(',') } })
+      const uids = params.id.split(',')
+      const result = await this.ctx.model.Style.remove({ "uid": { $in: uids } })
+      const ps = uids.map(async uid => {
+        await this.app.redis.hdel("styles", uid)
+      })
+      await Promise.all(ps)
       return result
     }
   }

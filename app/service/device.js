@@ -14,8 +14,10 @@ module.exports = app => {
     }
     async update({ id }, { uid, ...body }) {
       const result = await this.ctx.model.Device.findOneAndUpdate({ uid: id }, { $set: body }, { new: true })
-      delete result._id
-      await this.app.redis.hset("devices", id, JSON.stringify(result))
+      if (result) {
+        delete result._id
+        await this.app.redis.hset("devices", id, JSON.stringify(result))
+      }
       return result
     }
     async create(request) {

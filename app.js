@@ -1,3 +1,4 @@
+const init = require('./lib/init');
 class AppBootHook {
   constructor(app) {
     this.app = app;
@@ -39,15 +40,7 @@ class AppBootHook {
   async didReady() {
     // 应用已经启动完毕
     this.app.messenger.on('init-event', async () => {
-      const ctx = await this.app.createAnonymousContext();
-      const resp = await ctx.service.device.index();
-      const devices = resp.data || []
-      await this.app.redis.del('devices')
-      const ps = devices.map(async device => {
-        await this.app.redis.hset('devices', device.uid, JSON.stringify(device))
-      })
-      await Promise.all(ps)
-      this.app.logger.info(`==================== init Devices ====================`)
+      await init(this.app)
     })
 
     // 测试ipc，进程间通讯

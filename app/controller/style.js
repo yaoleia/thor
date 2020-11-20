@@ -2,7 +2,6 @@
 const Controller = require('egg').Controller;
 
 class StyleController extends Controller {
-  // 查询所有，可分页
   async index() {
     const result = await this.ctx.service.style.index(this.ctx.params);
     this.ctx.body = result;
