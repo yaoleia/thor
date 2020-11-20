@@ -1,9 +1,24 @@
 module.exports = ({ mongoose }) => {
   const RecordSchema = new mongoose.Schema({
     uid: { type: String, unique: true },
-    time: { type: String },
-    device: { type: Object },
-    style: { type: Object },
+    time: { type: Date },
+    device: {
+      uid: { type: Number },
+      name: { type: String },
+      camera_server: { type: String },
+      model_server: { type: String },
+      ip: { type: String }
+    },
+    style: {
+      uid: { type: Number },
+      name: { type: String },
+      size_model: { type: String },
+      size_md5: { type: String },
+      defect_model: { type: String },
+      defect_md5: { type: String },
+      defect_items: { type: String },
+      size_standard: { type: Array }
+    },
     image_url: { type: String },
     thumbnail_url: { type: String },
     defect_items: { type: Array },
