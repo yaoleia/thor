@@ -21,7 +21,10 @@ module.exports = app => {
     }
     async create(request) {
       if (!request) { return };
-      const result = await this.ctx.model.Record.create(Object.assign({ uid: this.ctx.helper.getRandomId() }, request));
+      if (!request.uid) {
+        request.uid = this.ctx.helper.uuidv4()
+      }
+      const result = await this.ctx.model.Record.create(request)
       const record = result.toObject()
       delete record._id
       return record
@@ -32,4 +35,4 @@ module.exports = app => {
     }
   }
   return RecordService;
-};
+}

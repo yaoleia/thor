@@ -1,4 +1,5 @@
-const moment = require('moment');
+const moment = require('moment')
+const { v4: uuidv4 } = require('uuid')
 
 exports.relativeTime = time => moment(new Date(time)).fromNow();
 
@@ -18,4 +19,6 @@ exports.parseMsg = (action, payload = {}, metadata = {}) => {
 
 exports.getDate = (time = new Date().getTime()) => moment(new Date(time)).utcOffset(8).format('YYYY-MM-DD HH:mm:ss')
 
-exports.getRandomId = (len = 9) => parseInt((Math.random() * 9 + 1) * Math.pow(10, len - 1), 10)
+exports.getRandomId = (len = 10) => parseInt((Math.random() * 9 + 1) * Math.pow(10, len - 1), 10)
+
+exports.uuidv4 = uuidv4

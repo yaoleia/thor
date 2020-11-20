@@ -1,6 +1,6 @@
 module.exports = ({ mongoose }) => {
   const RecordSchema = new mongoose.Schema({
-    uid: { type: Number, unique: true },
+    uid: { type: String, unique: true },
     time: { type: String },
     device: { type: Object },
     style: { type: Object },

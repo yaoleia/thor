@@ -8,6 +8,7 @@ module.exports = app => {
   router.resources('device', '/api/device', controller.device)
   router.resources('style', '/api/style', controller.style)
   router.resources('record', '/api/record', controller.record)
+  router.post('/api/device/style', controller.device.setDeviceStyle)
   router.post('/api/push', controller.pusher.index)
   router.post('/api/account/login', controller.account.postLogin)
   router.get('/api/account/logout', controller.account.logout)

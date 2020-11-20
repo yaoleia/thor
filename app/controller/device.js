@@ -27,6 +27,11 @@ class DeviceController extends Controller {
     const result = await this.ctx.service.device.destroy(this.ctx.params)
     this.ctx.body = result
   }
+
+  async setDeviceStyle() {
+    const result = await this.ctx.service.device.setDeviceStyle(this.ctx.request.body)
+    this.ctx.body = result
+  }
 }
 
 module.exports = DeviceController;

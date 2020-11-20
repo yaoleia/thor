@@ -71,6 +71,21 @@ module.exports = app => {
         }
       }
     }
+
+    async setDeviceStyle({ device_id, style_id }) {
+      if (!device_id || !style_id) return
+      const [deviceStr, styleStr] = await Promise.all([
+        this.app.redis.hget("devices", device_id),
+        this.app.redis.hget("styles", style_id)
+      ])
+      if (!deviceStr || !styleStr) return
+      await this.app.redis.set(`style#${device_id}`, style_id)
+      return {
+        device: JSON.parse(deviceStr),
+        style: JSON.parse(styleStr)
+      }
+    }
+
   }
   return DeviceService
 }
