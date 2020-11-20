@@ -6,9 +6,8 @@ module.exports = app => {
       if (!message) return
       await socket.join(message)
       await app.io.of('/').to(message).emit('res', `${socket.id} join ${message}`)
-      await socket.emit('res', JSON.stringify({
-        rooms: Object.keys(socket.rooms)
-      }))
+      const rooms = Object.keys(socket.rooms).filter(room => room !== socket.id)
+      await socket.emit('res', JSON.stringify({ rooms }))
     }
 
     async leave() {
@@ -17,9 +16,8 @@ module.exports = app => {
       if (!message) return
       await app.io.of('/').to(message).emit('res', `${socket.id} leave ${message}`)
       await socket.leave(message, () => {
-        socket.emit('res', JSON.stringify({
-          rooms: Object.keys(socket.rooms)
-        }))
+        const rooms = Object.keys(socket.rooms).filter(room => room !== socket.id)
+        socket.emit('res', JSON.stringify({ rooms }))
       })
     }
   }
