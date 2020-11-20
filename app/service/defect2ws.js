@@ -6,20 +6,28 @@ class Defect2wsService extends Service {
     const { service, helper, logger } = this.ctx
 
     const device = device_id && await service.device.getFromRedis(device_id)
-    if (!device) {
+    if (!device || !device.style) {
       this.ctx.status = 400
+      if (device && !device.style) {
+        const errDate = {
+          msg: "请在系统中选择该设备要检测的产品类型!",
+          device
+        }
+        this.app.io.of('/').to(device.uid).emit('res', errDate)
+        logger.debug(errDate)
+        return errDate
+      }
       return {
         msg: "设备不存在! (请检查 device_id)"
       }
     }
-
-    // TODO 查{device_id}当前使用的款式配置Style
 
     // 默认压缩图片质量60
     if (!_.get(this.ctx, 'request.body.quality')) {
       this.ctx.request.body.quality = 60
     }
 
+    const { style, ...baseDevice } = device
     const time = helper.getDate()
     const [{ defect_items, size_items }, [image]] = await Promise.all([
       service.modelApi.defect(image_url),
@@ -29,8 +37,8 @@ class Defect2wsService extends Service {
     const defectData = {
       uid,
       time,
-      device,
-      // style,
+      device: baseDevice,
+      style,
       image_url,
       thumbnail_url: _.get(image, 'url'),
       defect_items,
