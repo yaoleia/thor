@@ -30,7 +30,7 @@ class Defect2wsService extends Service {
     const { style, ...baseDevice } = device
     const time = helper.getDate()
     const [{ defect_items, size_items }, [image]] = await Promise.all([
-      service.modelApi.defect(image_url),
+      service.modelApi.defect(image_url, device),
       service.file.upload()
     ])
     // TODO 后处理，尺寸比较判断OK/NG

@@ -8,7 +8,7 @@ module.exports = appInfo => {
 
   const env = process.env
 
-  config.BACKEND_SERVER = env.BACKEND_SERVER || 'http://10.18.144.239:7777/mock/5fab56600a3d6400244cb595/thor/api'
+  config.MODEL_SERVER = env.MODEL_SERVER || 'http://10.18.144.239:7777/mock/5fab56600a3d6400244cb595/thor'
 
   config.logger = {
     level: 'NONE',

@@ -1,10 +1,12 @@
 const Service = require('egg').Service;
 
 class BackendService extends Service {
-  async defect(url) {
-    const resp = await this.ctx.curl(this.app.config.BACKEND_SERVER + '/defect', {
+  async defect(image_url, device) {
+    const model_server = device.model_server || this.app.config.MODEL_SERVER
+    const resp = await this.ctx.curl(model_server + '/api/defect', {
       data: {
-        url
+        image_url,
+        style: device.style
       },
       dataType: 'json',
       method: "POST",
