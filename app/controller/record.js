@@ -4,7 +4,7 @@ const Controller = require('egg').Controller;
 class RecordController extends Controller {
   // 查询所有，可分页
   async index() {
-    const result = await this.ctx.service.record.index(this.ctx.params);
+    const result = await this.ctx.service.record.index(this.ctx.query);
     this.ctx.body = result;
   }
 

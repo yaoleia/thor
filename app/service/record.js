@@ -1,11 +1,15 @@
 module.exports = app => {
   class RecordService extends app.Service {
-    async index(params) {
-      const records = await this.ctx.model.Record.find(params, { _id: 0 }, { lean: true });
-      const result = {};
-      result.meta = { total: records.length };
-      result.data = records;
-      return result;
+    async index(query) {
+      let { limit = 0, offset = 0, ...params } = query
+      offset = Number(offset)
+      limit = Number(limit)
+      const count = await this.ctx.model.Record.count(params)
+      const records = await this.ctx.model.Record.find(params, { _id: 0 }, { lean: true }).skip(offset).limit(limit)
+      const result = {}
+      result.meta = { total: count, limit, offset }
+      result.data = records
+      return result
     }
     async show({ id }) {
       if (!id) { return };
@@ -29,8 +33,8 @@ module.exports = app => {
       delete record._id
       return record
     }
-    async destroy(params) {
-      const result = await this.ctx.model.Record.remove({ "uid": { $in: params.id.split(',') } });
+    async destroy({ id }) {
+      const result = await this.ctx.model.Record.remove({ "uid": { $in: id.split(',') } });
       return result
     }
   }
