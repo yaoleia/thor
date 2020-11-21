@@ -46,7 +46,7 @@ class AppBootHook {
     // 测试ipc，进程间通讯
     // this.app.messenger.on('agent_msg', async data => {
     // const ctx = await this.app.createAnonymousContext();
-    // await ctx.service.file.upload({ image_url: '/users/admin/Desktop/111.jpg' });
+    // await ctx.service.file.upload({ file_url: '/users/admin/Desktop/111.jpg' });
     // console.log(data)
     // })
   }

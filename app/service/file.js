@@ -19,63 +19,59 @@ class FileService extends Service {
     }
   }
 
-  async uploadUrl({ image_url, type, quality } = this.ctx.request.body) {
-    const images = []
+  async uploadUrl({ file_url, image_url, type, quality } = this.ctx.request.body) {
+    file_url = file_url || image_url
+    const uploaded = []
     const { uploadDir, baseUrl } = this.getUploadDir(type)
-    if (image_url) {
-      const extname = path.extname(image_url)
-      if (imageTypes.indexOf(extname) === -1) {
-        return images
-      }
+    if (file_url) {
+      const extname = path.extname(file_url)
       const now = moment().format('YYYYMMDDHHmmss')
       let fileName = now + Math.floor(Math.random() * 1000) + extname
-      if (typeof quality === "number") {
+      let sharpFilter = null
+      if (typeof quality === "number" && imageTypes.indexOf(extname) !== -1) {
         fileName = fileName.replace(extname, '.jpg')
+        sharpFilter = sharp().jpeg({ quality })
       }
       if (!fs.existsSync(uploadDir)) mkdirp.sync(uploadDir)
       const local_path = path.join(uploadDir, fileName)
-      if (image_url.startsWith('http')) {
-        const params = [request(image_url), fs.createWriteStream(local_path)]
-        if (typeof quality === "number") {
-          params.splice(1, 0, sharp().jpeg({ quality }))
-        }
+      if (file_url.startsWith('http')) {
+        const params = [request(file_url), fs.createWriteStream(local_path)]
+        sharpFilter && params.splice(1, 0, sharpFilter)
         await pump(...params)
-        images.push({ name: 'image_url', url: new URL(path.join(baseUrl, fileName), this.ctx.request.origin).href, local_path })
+        uploaded.push({ name: 'file_url', url: new URL(path.join(baseUrl, fileName), this.ctx.request.origin).href, local_path })
       } else {
-        const exists = fs.existsSync(image_url)
+        const exists = fs.existsSync(file_url)
         if (exists) {
-          const params = [fs.createReadStream(image_url), fs.createWriteStream(local_path)]
-          if (typeof quality === "number") {
-            params.splice(1, 0, sharp().jpeg({ quality }))
-          }
+          const params = [fs.createReadStream(file_url), fs.createWriteStream(local_path)]
+          sharpFilter && params.splice(1, 0, sharpFilter)
           await pump(...params)
-          images.push({ fieldname: 'image_url', url: new URL(path.join(baseUrl, fileName), this.ctx.request.origin).href, local_path })
+          uploaded.push({ fieldname: 'file_url', url: new URL(path.join(baseUrl, fileName), this.ctx.request.origin).href, local_path })
         }
       }
     }
-    return images
+    return uploaded
   }
 
   async uploadFiles({ type, quality } = this.ctx.request.body) {
-    const images = []
+    const uploaded = []
     const { uploadDir, baseUrl } = this.getUploadDir(type)
     const { files = [] } = this.ctx.request;
     try {
       if (!fs.existsSync(uploadDir)) mkdirp.sync(uploadDir)
       for (const file of files) {
         let fileName = file.filename.toLowerCase();
+        let sharpFilter = null
         const extname = path.extname(fileName)
-        if (imageTypes.indexOf(extname) === -1) continue
-        if (typeof quality === "number") {
+        if (typeof quality === "number" && imageTypes.indexOf(extname) !== -1) {
           fileName = fileName.replace(extname, '.jpg')
+          sharpFilter = sharp().jpeg({ quality })
         }
         const local_path = path.join(uploadDir, fileName);
         const params = [fs.createReadStream(file.filepath), fs.createWriteStream(local_path)]
-        if (typeof quality === "number") {
-          params.splice(1, 0, sharp().jpeg({ quality }))
-        }
+        sharpFilter && params.splice(1, 0, sharpFilter)
+
         await pump(...params)
-        images.push({ fieldname: file.fieldname, url: new URL(path.join(baseUrl, fileName), this.ctx.request.origin).href, local_path })
+        uploaded.push({ fieldname: file.fieldname, url: new URL(path.join(baseUrl, fileName), this.ctx.request.origin).href, local_path })
       }
     } catch (err) {
       this.ctx.logger.error(err)
@@ -83,7 +79,7 @@ class FileService extends Service {
       // delete those request tmp files
       await this.ctx.cleanupRequestFiles();
     }
-    return images
+    return uploaded
   }
 
   async upload(json = this.ctx.request.body) {

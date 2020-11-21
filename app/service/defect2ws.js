@@ -3,8 +3,7 @@ const _ = require('lodash')
 
 class Defect2wsService extends Service {
   async index({ device_id, image_url, uid }) {
-    const { service, helper, logger } = this.ctx
-
+    const { service, helper, logger, request: { body } } = this.ctx
     const device = device_id && await service.device.getFromRedis(device_id)
     if (!device || !device.style) {
       this.ctx.status = 400
@@ -23,8 +22,8 @@ class Defect2wsService extends Service {
     }
 
     // 默认压缩图片质量60
-    if (!_.get(this.ctx, 'request.body.quality')) {
-      this.ctx.request.body.quality = 60
+    if (!body.quality) {
+      body.quality = 60
     }
 
     const { style, ...baseDevice } = device
