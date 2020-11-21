@@ -1,11 +1,12 @@
-const Service = require('egg').Service;
+const Service = require('egg').Service
 const path = require('path')
 const moment = require('moment')
 const mkdirp = require('mkdirp')
 const fs = require('fs')
 const request = require('request')
 const pump = require('mz-modules/pump')
-const sharp = require('sharp');
+const sharp = require('sharp')
+const crypto = require('crypto')
 const imageTypes = [".jpg", ".jpeg", ".png", ".gif", ".bmp"]
 
 class FileService extends Service {
@@ -19,7 +20,7 @@ class FileService extends Service {
     }
   }
 
-  async uploadUrl({ file_url, image_url, type, quality } = this.ctx.request.body) {
+  async uploadUrl({ file_url, image_url, type, quality, md5 } = this.ctx.request.body) {
     file_url = file_url || image_url
     const uploaded = []
     const { uploadDir, baseUrl } = this.getUploadDir(type)
@@ -27,7 +28,7 @@ class FileService extends Service {
       const extname = path.extname(file_url)
       const now = moment().format('YYYYMMDDHHmmss')
       let fileName = now + Math.floor(Math.random() * 1000) + extname
-      let sharpFilter = null
+      let sharpFilter, hash
       if (typeof quality === "number" && imageTypes.indexOf(extname) !== -1) {
         fileName = fileName.replace(extname, '.jpg')
         sharpFilter = sharp().jpeg({ quality })
@@ -36,31 +37,43 @@ class FileService extends Service {
       const local_path = path.join(uploadDir, fileName)
       if (file_url.startsWith('http')) {
         const params = [request(file_url), fs.createWriteStream(local_path)]
+        md5 && params.splice(1, 0, hash = crypto.createHash('md5'))
         sharpFilter && params.splice(1, 0, sharpFilter)
         await pump(...params)
-        uploaded.push({ name: 'file_url', url: new URL(path.join(baseUrl, fileName), this.ctx.request.origin).href, local_path })
+        uploaded.push({
+          name: 'file_url',
+          url: new URL(path.join(baseUrl, fileName), this.ctx.request.origin).href,
+          local_path,
+          md5: hash && hash.digest('hex')
+        })
       } else {
         const exists = fs.existsSync(file_url)
         if (exists) {
           const params = [fs.createReadStream(file_url), fs.createWriteStream(local_path)]
+          md5 && params.splice(1, 0, hash = crypto.createHash('md5'))
           sharpFilter && params.splice(1, 0, sharpFilter)
           await pump(...params)
-          uploaded.push({ fieldname: 'file_url', url: new URL(path.join(baseUrl, fileName), this.ctx.request.origin).href, local_path })
+          uploaded.push({
+            fieldname: 'file_url',
+            url: new URL(path.join(baseUrl, fileName), this.ctx.request.origin).href,
+            local_path,
+            md5: hash && hash.digest('hex')
+          })
         }
       }
     }
     return uploaded
   }
 
-  async uploadFiles({ type, quality } = this.ctx.request.body) {
+  async uploadFiles({ type, quality, md5 } = this.ctx.request.body) {
     const uploaded = []
     const { uploadDir, baseUrl } = this.getUploadDir(type)
     const { files = [] } = this.ctx.request;
     try {
       if (!fs.existsSync(uploadDir)) mkdirp.sync(uploadDir)
       for (const file of files) {
-        let fileName = file.filename.toLowerCase();
-        let sharpFilter = null
+        let fileName = file.filename.toLowerCase()
+        let sharpFilter, hash
         const extname = path.extname(fileName)
         if (typeof quality === "number" && imageTypes.indexOf(extname) !== -1) {
           fileName = fileName.replace(extname, '.jpg')
@@ -68,10 +81,16 @@ class FileService extends Service {
         }
         const local_path = path.join(uploadDir, fileName);
         const params = [fs.createReadStream(file.filepath), fs.createWriteStream(local_path)]
+        md5 && params.splice(1, 0, hash = crypto.createHash('md5'))
         sharpFilter && params.splice(1, 0, sharpFilter)
 
         await pump(...params)
-        uploaded.push({ fieldname: file.fieldname, url: new URL(path.join(baseUrl, fileName), this.ctx.request.origin).href, local_path })
+        uploaded.push({
+          fieldname: file.fieldname,
+          url: new URL(path.join(baseUrl, fileName), this.ctx.request.origin).href,
+          local_path,
+          md5: hash && hash.digest('hex')
+        })
       }
     } catch (err) {
       this.ctx.logger.error(err)
@@ -83,10 +102,11 @@ class FileService extends Service {
   }
 
   async upload(json = this.ctx.request.body) {
-    if (Number.isNaN(Number(json.quality))) {
+    const num = Number(json.quality)
+    if (Number.isNaN(num)) {
       delete json.quality
     } else {
-      json.quality = json.quality - 0
+      json.quality = num
     }
     return [...await this.uploadUrl(json), ...await this.uploadFiles(json)]
   }
