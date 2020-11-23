@@ -13,7 +13,7 @@ class Defect2wsService extends Service {
           device
         }
         this.app.io.of('/').to(device.uid).emit('res', errDate)
-        logger.debug(errDate)
+        logger.error(errDate)
         return errDate
       }
       return {
@@ -39,7 +39,7 @@ class Defect2wsService extends Service {
         ...modelData
       }
       this.app.io.of('/').to(device.uid).emit('res', errDate)
-      logger.debug(errDate)
+      logger.error(errDate)
       return errDate
     }
     const { defect_items, size_items } = modelData
@@ -56,7 +56,6 @@ class Defect2wsService extends Service {
       defect_alarm: !!_.get(defect_items, 'length'),
       size_alarm: false
     }
-    logger.debug(defectData)
     this.app.io.of('/').to(device.uid).emit('res', defectData)
     await service.record.create(defectData)
     return defectData
