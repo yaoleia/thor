@@ -37,9 +37,9 @@ class FileService extends Service {
       const local_path = path.join(uploadDir, fileName)
       if (file_url.startsWith('http')) {
         const params = [request(file_url), fs.createWriteStream(local_path)]
-        md5 && params.splice(1, 0, hash = crypto.createHash('md5'))
         sharpFilter && params.splice(1, 0, sharpFilter)
         await pump(...params)
+        md5 && await pump(fs.createReadStream(local_path), hash = crypto.createHash('md5'))
         uploaded.push({
           name: 'file_url',
           url: new URL(path.join(baseUrl, fileName), this.ctx.request.origin).href,
@@ -50,9 +50,9 @@ class FileService extends Service {
         const exists = fs.existsSync(file_url)
         if (exists) {
           const params = [fs.createReadStream(file_url), fs.createWriteStream(local_path)]
-          md5 && params.splice(1, 0, hash = crypto.createHash('md5'))
           sharpFilter && params.splice(1, 0, sharpFilter)
           await pump(...params)
+          md5 && await pump(fs.createReadStream(local_path), hash = crypto.createHash('md5'))
           uploaded.push({
             fieldname: 'file_url',
             url: new URL(path.join(baseUrl, fileName), this.ctx.request.origin).href,
@@ -81,10 +81,9 @@ class FileService extends Service {
         }
         const local_path = path.join(uploadDir, fileName);
         const params = [fs.createReadStream(file.filepath), fs.createWriteStream(local_path)]
-        md5 && params.splice(1, 0, hash = crypto.createHash('md5'))
         sharpFilter && params.splice(1, 0, sharpFilter)
-
         await pump(...params)
+        md5 && await pump(fs.createReadStream(local_path), hash = crypto.createHash('md5'))
         uploaded.push({
           fieldname: file.fieldname,
           url: new URL(path.join(baseUrl, fileName), this.ctx.request.origin).href,
