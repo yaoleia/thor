@@ -22,6 +22,7 @@ class FileService extends Service {
 
   async uploadUrl({ file_url, image_url, type, quality, md5 } = this.ctx.request.body) {
     file_url = file_url || image_url
+    file_url && (file_url = file_url.toLowerCase())
     const uploaded = []
     const { uploadDir, baseUrl } = this.getUploadDir(type)
     if (file_url) {
