@@ -22,10 +22,10 @@ class FileService extends Service {
 
   async uploadUrl({ file_url, image_url, type, quality, md5 } = this.ctx.request.body) {
     file_url = file_url || image_url
-    file_url && (file_url = file_url.toLowerCase())
     const uploaded = []
-    const { uploadDir, baseUrl } = this.getUploadDir(type)
     if (file_url) {
+      file_url = file_url.toLowerCase()
+      const { uploadDir, baseUrl } = this.getUploadDir(type)
       const extname = path.extname(file_url)
       const now = moment().format('YYYYMMDDHHmmss')
       let fileName = now + Math.floor(Math.random() * 1000) + extname
