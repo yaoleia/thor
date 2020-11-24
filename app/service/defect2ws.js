@@ -50,7 +50,7 @@ class Defect2wsService extends Service {
       device: baseDevice,
       style,
       image_url,
-      thumbnail_url: _.get(image, 'url'),
+      thumbnail_url: _.get(image, 'url') || null,
       defect_items,
       size_items,
       defect_alarm: !!_.get(defect_items, 'length'),
