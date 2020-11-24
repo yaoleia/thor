@@ -37,7 +37,7 @@ if [ ! -d ./data ]; then
     mkdir ./data
 fi
 
-dataDir=$(cd ./data; pwd)
+dataDir=/$(cd ./data; pwd)
 
 mongoDir=$dataDir/mongo_data
 redisDir=$dataDir/redis_data
