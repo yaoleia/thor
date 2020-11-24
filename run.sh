@@ -1,6 +1,71 @@
 #!/bin/bash
-docker container stop my-redis my-mongo my-thor
-docker container rm my-redis my-mongo my-thor
-docker run -it -d -v /d/thor/dbdata:/data/db --name my-mongo mongo
-docker run -it -d -v /d/thor/redisdata:/data --name my-redis redis
-docker run -it -d --link my-redis:redis --link my-mongo:mongo -p 7500:7001 -v /d/thor/public:/thor/public --name thor thor:v0.0.3
+# 将该脚本放在一个工程目录(thor)的文件夹(首先确保docker已安装)，然后运行sudo或管理员运行:
+# bash ./run.sh (thor-$version.tar)
+
+start=`date +%s`
+
+thor_path=$1
+if [ "$1" == "" ]; then
+    echo "thor container file not found, use (thor.tar) by default!"
+    thor_path="./thor.tar"
+fi
+
+echo "docker load thor..."
+docker load < $thor_path
+if [ "$?" != "0" ]; then
+    echo "docker load thor failed!"
+fi
+
+echo "docker pull redis..."
+docker pull redis
+if [ "$?" != "0" ]; then
+    echo "docker pull redis failed!"
+    exit -1
+fi
+
+echo "docker pull mongo..."
+docker pull mongo
+if [ "$?" != "0" ]; then
+    echo "docker pull mongo failed!"
+    exit -1
+fi
+
+docker container stop thor-redis thor-mongo my-thor
+docker container rm thor-redis thor-mongo my-thor
+
+if [ ! -d ./data ]; then
+    mkdir ./data
+fi
+
+dataDir=$(cd ./build; pwd)
+
+echo "docker start to run..."
+echo "run mongo..."
+docker run -it -d -v $dataDir/mongo_data:/data/db --name thor-mongo mongo
+if [ "$?" != "0" ]; then
+    docker container rm thor-mongo
+    echo "docker run mongo failed!"
+    exit -1
+fi
+
+echo "run redis..."
+docker run -it -v $dataDir/redis_data:/data --name thor-redis -d redis redis-server --appendonly yes
+if [ "$?" != "0" ]; then
+    docker container rm thor-redis
+    echo "docker run redis failed!"
+    exit -1
+fi
+
+echo "run thor..."
+docker run -it -d --link thor-redis:redis --link thor-mongo:mongo -p 7500:7001 -v $dataDir/public:/thor/public --name my-thor thor
+if [ "$?" != "0" ]; then
+    docker container rm my-thor
+    echo "docker run thor failed!"
+    exit -1
+fi
+
+echo "port: 7500, thor run success!"
+
+end=`date +%s` 
+dif=$[ end - start ]
+echo "this shell script execution duration: $dif s"

@@ -36,5 +36,7 @@ $ npm stop
 后端：egg.js(koa) socket.io-server redis mongo
 前端：react redux antd-pro socket.io fabric umi (web子仓库可切换其他框架vue-cli、roadhog等)
 部署：docker bash-shell (windows系统)
-docker build -t thor:v0.0.x .
-docker run -it -d --link easy-mock-redis:redis --link easy-mock-mongo:mongo -p 7500:7001 -v /Users/admin/Documents/public:/thor/public --name thor thor:v0.0.x
+docker build -t thor:latest .
+docker save thor:latest > ./thor.tar
+docker load < ./thor.tar
+docker run -it -d --link easy-mock-redis:redis --link easy-mock-mongo:mongo -p 7500:7001 -v /Users/admin/Documents/public:/thor/public --name thor thor:latest
