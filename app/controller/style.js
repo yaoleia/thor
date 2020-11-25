@@ -3,7 +3,7 @@ const Controller = require('egg').Controller;
 
 class StyleController extends Controller {
   async index() {
-    const result = await this.ctx.service.style.index(this.ctx.params);
+    const result = await this.ctx.service.style.index(this.ctx.query);
     this.ctx.body = result;
   }
 

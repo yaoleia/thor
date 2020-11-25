@@ -3,7 +3,7 @@ const Controller = require('egg').Controller;
 
 class DeviceController extends Controller {
   async index() {
-    const result = await this.ctx.service.device.index(this.ctx.params);
+    const result = await this.ctx.service.device.index(this.ctx.query);
     this.ctx.body = result;
   }
 

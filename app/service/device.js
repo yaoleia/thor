@@ -1,7 +1,11 @@
 module.exports = app => {
   class DeviceService extends app.Service {
-    async index(params, hasStyle = true) {
-      const devices = await this.ctx.model.Device.find(params, { _id: 0 }, { lean: true })
+    async index(query, hasStyle = true) {
+      let { limit = 0, offset = 0, ...params } = query
+      offset = Number(offset)
+      limit = Number(limit)
+      const count = await this.ctx.model.Device.count(params)
+      const devices = await this.ctx.model.Device.find(params, { _id: 0 }, { lean: true }).skip(offset).limit(limit)
       if (hasStyle) {
         const ps = devices.map(async device => {
           device.style = await this.getDeviceStyle(device.uid)
@@ -9,7 +13,7 @@ module.exports = app => {
         await Promise.all(ps)
       }
       const result = {}
-      result.meta = { total: devices.length }
+      result.meta = { total: count, limit, offset }
       result.data = devices
       return result
     }
