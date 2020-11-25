@@ -32,6 +32,19 @@ class Defect2wsService extends Service {
       service.modelApi.defect(image_url, device),
       service.file.upload()
     ])
+    if (!image) {
+      this.ctx.status = 400
+      const errDate = {
+        device: baseDevice,
+        style,
+        code: this.ctx.status,
+        msg: "图片获取失败，请检查图片地址！",
+        body
+      }
+      this.app.io.of('/').to(device.uid).emit('res', errDate)
+      logger.error(errDate)
+      return errDate
+    }
     if (this.ctx.status === 504) {
       const errDate = {
         device: baseDevice,
@@ -50,7 +63,7 @@ class Defect2wsService extends Service {
       device: baseDevice,
       style,
       image_url,
-      thumbnail_url: _.get(image, 'url') || null,
+      thumbnail_url: image.url,
       defect_items,
       size_items,
       defect_alarm: !!_.get(defect_items, 'length'),

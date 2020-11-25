@@ -23,45 +23,49 @@ class FileService extends Service {
   async uploadUrl({ file_url, image_url, type, quality, md5 } = this.ctx.request.body) {
     file_url = file_url || image_url
     const uploaded = []
-    if (file_url) {
-      file_url = file_url.toLowerCase()
-      const { uploadDir, baseUrl } = this.getUploadDir(type)
-      const extname = path.extname(file_url)
-      const now = moment().format('YYYYMMDDHHmmss')
-      let fileName = now + Math.floor(Math.random() * 1000) + extname
-      let sharpFilter, hash
-      if (typeof quality === "number" && imageTypes.indexOf(extname) !== -1) {
-        fileName = fileName.replace(extname, '.jpg')
-        sharpFilter = sharp().jpeg({ quality })
-      }
-      if (!fs.existsSync(uploadDir)) mkdirp.sync(uploadDir)
-      const local_path = path.join(uploadDir, fileName)
-      if (file_url.startsWith('http')) {
-        const params = [request(file_url), fs.createWriteStream(local_path)]
-        sharpFilter && params.splice(1, 0, sharpFilter)
-        await pump(...params)
-        md5 && await pump(fs.createReadStream(local_path), hash = crypto.createHash('md5'))
-        uploaded.push({
-          name: 'file_url',
-          url: new URL(path.join(baseUrl, fileName), this.ctx.request.origin).href,
-          local_path,
-          md5: hash && hash.digest('hex')
-        })
-      } else {
-        const exists = fs.existsSync(file_url)
-        if (exists) {
-          const params = [fs.createReadStream(file_url), fs.createWriteStream(local_path)]
+    try {
+      if (file_url) {
+        file_url = file_url.toLowerCase()
+        const { uploadDir, baseUrl } = this.getUploadDir(type)
+        const extname = path.extname(file_url)
+        const now = moment().format('YYYYMMDDHHmmss')
+        let fileName = now + Math.floor(Math.random() * 1000) + extname
+        let sharpFilter, hash
+        if (typeof quality === "number" && imageTypes.indexOf(extname) !== -1) {
+          fileName = fileName.replace(extname, '.jpg')
+          sharpFilter = sharp().jpeg({ quality })
+        }
+        if (!fs.existsSync(uploadDir)) mkdirp.sync(uploadDir)
+        const local_path = path.join(uploadDir, fileName)
+        if (file_url.startsWith('http')) {
+          const params = [request(file_url), fs.createWriteStream(local_path)]
           sharpFilter && params.splice(1, 0, sharpFilter)
           await pump(...params)
           md5 && await pump(fs.createReadStream(local_path), hash = crypto.createHash('md5'))
           uploaded.push({
-            fieldname: 'file_url',
+            name: 'file_url',
             url: new URL(path.join(baseUrl, fileName), this.ctx.request.origin).href,
             local_path,
             md5: hash && hash.digest('hex')
           })
+        } else {
+          const exists = fs.existsSync(file_url)
+          if (exists) {
+            const params = [fs.createReadStream(file_url), fs.createWriteStream(local_path)]
+            sharpFilter && params.splice(1, 0, sharpFilter)
+            await pump(...params)
+            md5 && await pump(fs.createReadStream(local_path), hash = crypto.createHash('md5'))
+            uploaded.push({
+              fieldname: 'file_url',
+              url: new URL(path.join(baseUrl, fileName), this.ctx.request.origin).href,
+              local_path,
+              md5: hash && hash.digest('hex')
+            })
+          }
         }
       }
+    } catch (error) {
+      this.ctx.logger.error(error)
     }
     return uploaded
   }
