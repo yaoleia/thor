@@ -5,7 +5,7 @@ module.exports = app => {
       offset = Number(offset)
       limit = Number(limit)
       const count = await this.ctx.model.Style.countDocuments(params)
-      const styles = await this.ctx.model.Style.find(params, { _id: 0 }, { lean: true }).skip(offset).limit(limit)
+      const styles = await this.ctx.model.Style.find(params, { _id: 0 }, { lean: true }).skip(offset).limit(limit).sort([['time', -1]])
       const result = {}
       result.meta = { total: count, limit, offset }
       result.data = styles

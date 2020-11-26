@@ -10,10 +10,10 @@ module.exports = app => {
       if (start_date || end_date) {
         params.time = {}
         start_date && (params.time["$gte"] = start_date)
-        end_date && (params.time["$lte"] = end_date)
+        end_date && (params.time["$lt"] = end_date)
       }
       const count = await this.ctx.model.Device.countDocuments(params)
-      const devices = await this.ctx.model.Device.find(params, { _id: 0 }, { lean: true }).skip(offset).limit(limit)
+      const devices = await this.ctx.model.Device.find(params, { _id: 0 }, { lean: true }).skip(offset).limit(limit).sort([['time', -1]])
       if (hasStyle) {
         const ps = devices.map(async device => {
           device.style = await this.getDeviceStyle(device.uid)
