@@ -1,6 +1,7 @@
 module.exports = ({ mongoose }) => {
   const StyleSchema = new mongoose.Schema({
     uid: { type: Number, unique: true },
+    time: { type: Date, default: Date.now },
     name: { type: String },
     size_model: { type: String },
     size_md5: { type: String },

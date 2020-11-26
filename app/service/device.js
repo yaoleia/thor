@@ -1,10 +1,10 @@
 module.exports = app => {
   class DeviceService extends app.Service {
-    async index(query, hasStyle = true) {
+    async index(query = {}, hasStyle = true) {
       let { limit = 0, offset = 0, ...params } = query
       offset = Number(offset)
       limit = Number(limit)
-      const count = await this.ctx.model.Device.count(params)
+      const count = await this.ctx.model.Device.countDocuments(params)
       const devices = await this.ctx.model.Device.find(params, { _id: 0 }, { lean: true }).skip(offset).limit(limit)
       if (hasStyle) {
         const ps = devices.map(async device => {

@@ -1,10 +1,10 @@
 module.exports = app => {
   class RecordService extends app.Service {
-    async index(query) {
+    async index(query = {}) {
       let { limit = 0, offset = 0, ...params } = query
       offset = Number(offset)
       limit = Number(limit)
-      const count = await this.ctx.model.Record.count(params)
+      const count = await this.ctx.model.Record.countDocuments(params)
       const records = await this.ctx.model.Record.find(params, { _id: 0 }, { lean: true }).skip(offset).limit(limit)
       const result = {}
       result.meta = { total: count, limit, offset }

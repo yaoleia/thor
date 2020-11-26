@@ -1,10 +1,10 @@
 module.exports = app => {
   class StyleService extends app.Service {
-    async index(query) {
+    async index(query = {}) {
       let { limit = 0, offset = 0, ...params } = query
       offset = Number(offset)
       limit = Number(limit)
-      const count = await this.ctx.model.Style.count(params)
+      const count = await this.ctx.model.Style.countDocuments(params)
       const styles = await this.ctx.model.Style.find(params, { _id: 0 }, { lean: true }).skip(offset).limit(limit)
       const result = {}
       result.meta = { total: count, limit, offset }
