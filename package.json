@@ -21,6 +21,7 @@
     "lodash": "^4.17.20",
     "mkdirp": "^1.0.4",
     "moment": "^2.29.1",
+    "mongoose-lean-getters": "^0.1.2",
     "mz-modules": "^2.1.0",
     "request": "^2.88.2",
     "sharp": "^0.26.2",

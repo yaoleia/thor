@@ -12,8 +12,10 @@ module.exports = app => {
         start_date && (params.time["$gte"] = start_date)
         end_date && (params.time["$lt"] = end_date)
       }
-      const count = await this.ctx.model.Device.countDocuments(params)
-      const devices = await this.ctx.model.Device.find(params, { _id: 0 }, { lean: true }).skip(offset).limit(limit).sort([['time', -1]])
+      const [count, devices] = await Promise.all([
+        this.ctx.model.Device.countDocuments(params),
+        this.ctx.model.Device.find(params, { _id: 0 }).skip(offset).limit(limit).sort([['time', -1]]).lean({ getters: true })
+      ])
       if (hasStyle) {
         const ps = devices.map(async device => {
           device.style = await this.getDeviceStyle(device.uid)
@@ -28,7 +30,7 @@ module.exports = app => {
 
     async show({ id }) {
       if (!id) { return }
-      const devices = await this.ctx.model.Device.find({ uid: id }, { _id: 0 }, { lean: true })
+      const devices = await this.ctx.model.Device.find({ uid: id }, { _id: 0 }).lean({ getters: true })
       const device = devices[0] || null
       if (device) {
         device.style = await this.getDeviceStyle(id)
@@ -37,9 +39,8 @@ module.exports = app => {
     }
 
     async update({ id }, { uid, ...body }) {
-      const result = await this.ctx.model.Device.findOneAndUpdate({ uid: id }, { $set: body }, { new: true })
-      if (!result) return
-      const device = result.toObject()
+      const device = await this.ctx.model.Device.findOneAndUpdate({ uid: id }, { $set: body }, { new: true }).lean({ getters: true })
+      if (!device) return
       delete device._id
       await this.app.redis.hset("devices", id, JSON.stringify(device))
       return device
@@ -59,8 +60,7 @@ module.exports = app => {
       const uids = params.id.split(',')
       const result = await this.ctx.model.Device.remove({ "uid": { $in: uids } })
       const ps = uids.map(async uid => {
-        await this.app.redis.hdel("devices", uid)
-        await this.app.redis.del(`style#${uid}`)
+        await Promise.all([this.app.redis.hdel("devices", uid), this.app.redis.del(`style#${uid}`)])
       })
       await Promise.all(ps)
       return result

@@ -1,7 +1,9 @@
+const { getDate } = require('../extend/helper')
+const mongooseLeanGetters = require('mongoose-lean-getters')
 module.exports = ({ mongoose }) => {
   const RecordSchema = new mongoose.Schema({
     uid: { type: String, unique: true },
-    time: { type: Date, default: Date.now },
+    time: { type: Date, default: Date.now, get: getDate },
     device: {
       uid: { type: String },
       name: { type: String },
@@ -16,7 +18,6 @@ module.exports = ({ mongoose }) => {
       size_md5: { type: String },
       defect_model: { type: String },
       defect_md5: { type: String },
-      defect_items: { type: String },
       size_standard: { type: Array }
     },
     image_url: { type: String },
@@ -28,6 +29,7 @@ module.exports = ({ mongoose }) => {
   }, {
     versionKey: false
   })
-
+  RecordSchema.plugin(mongooseLeanGetters)
+  RecordSchema.set('toObject', { getters: true })
   return mongoose.model('Record', RecordSchema);
 }

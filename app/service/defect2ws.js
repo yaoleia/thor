@@ -27,7 +27,6 @@ class Defect2wsService extends Service {
     }
 
     const { style, ...baseDevice } = device
-    const time = helper.getDate()
     const [modelData, [image]] = await Promise.all([
       service.modelApi.defect(image_url, device),
       service.file.upload()
@@ -59,7 +58,7 @@ class Defect2wsService extends Service {
     // TODO 后处理，尺寸比较判断OK/NG
     const defectData = {
       uid,
-      time,
+      time: helper.getDate(),
       device: baseDevice,
       style,
       image_url,
