@@ -3,14 +3,14 @@ module.exports = ({ mongoose }) => {
     uid: { type: String, unique: true },
     time: { type: Date, default: Date.now },
     device: {
-      uid: { type: Number },
+      uid: { type: String },
       name: { type: String },
       camera_server: { type: String },
       model_server: { type: String },
       ip: { type: String }
     },
     style: {
-      uid: { type: Number },
+      uid: { type: String },
       name: { type: String },
       size_model: { type: String },
       size_md5: { type: String },
