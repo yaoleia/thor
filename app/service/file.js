@@ -49,7 +49,18 @@ class FileService extends Service {
             md5: hash && hash.digest('hex')
           })
         } else {
-          const exists = fs.existsSync(file_url)
+          file_url = decodeURI(file_url)
+          let exists = fs.existsSync(file_url)
+          if (!exists) {
+            // windows路径处理
+            const pathArr = file_url.split('\\')
+            const index = pathArr.indexOf('public')
+            if (index !== -1) {
+              pathArr.splice(0, index, '/thor')
+              file_url = path.join(...pathArr)
+            }
+            exists = fs.existsSync(file_url)
+          }
           if (exists) {
             const params = [fs.createReadStream(file_url), fs.createWriteStream(local_path)]
             sharpFilter && params.splice(1, 0, sharpFilter)
