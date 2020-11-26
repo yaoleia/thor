@@ -1,9 +1,17 @@
 module.exports = app => {
   class DeviceService extends app.Service {
     async index(query = {}, hasStyle = true) {
-      let { limit = 0, offset = 0, ...params } = query
+      let { start_date, end_date, limit = 0, offset = 0, ...params } = query
       offset = Number(offset)
       limit = Number(limit)
+      const { getDateIfTime } = this.ctx.helper
+      start_date = getDateIfTime(start_date)
+      end_date = getDateIfTime(end_date)
+      if (start_date || end_date) {
+        params.time = {}
+        start_date && (params.time["$gte"] = start_date)
+        end_date && (params.time["$lte"] = end_date)
+      }
       const count = await this.ctx.model.Device.countDocuments(params)
       const devices = await this.ctx.model.Device.find(params, { _id: 0 }, { lean: true }).skip(offset).limit(limit)
       if (hasStyle) {
