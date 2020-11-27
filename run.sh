@@ -17,7 +17,7 @@ if [ "$?" != "0" ]; then
 fi
 
 echo "docker image inspect redis..."
-docker image inspect redis
+docker image inspect redis &>/dev/null
 if [ "$?" != "0" ]; then
     echo "docker pull redis..."
     docker pull redis
@@ -28,7 +28,7 @@ if [ "$?" != "0" ]; then
 fi
 
 echo "docker image inspect mongo..."
-docker image inspect mongo
+docker image inspect mongo &>/dev/null
 if [ "$?" != "0" ]; then
     echo "docker pull mongo..."
     docker pull mongo
