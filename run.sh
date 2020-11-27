@@ -17,7 +17,7 @@ if [ "$?" != "0" ]; then
 fi
 
 echo "docker image inspect redis..."
-docker image inspect redis &>/dev/null
+docker image inspect redis:latest &>/dev/null
 if [ "$?" != "0" ]; then
     echo "docker pull redis..."
     docker pull redis
@@ -28,7 +28,7 @@ if [ "$?" != "0" ]; then
 fi
 
 echo "docker image inspect mongo..."
-docker image inspect mongo &>/dev/null
+docker image inspect mongo:latest &>/dev/null
 if [ "$?" != "0" ]; then
     echo "docker pull mongo..."
     docker pull mongo
@@ -64,7 +64,7 @@ fi
 
 echo "docker start to run..."
 echo "run mongo..."
-docker run -it -d -v $mongoDir:/data/db -p 27017:27017 --name thor-mongo mongo
+docker run -it -d -v $mongoDir:/data/db -p 27017:27017 --restart always --name thor-mongo mongo
 if [ "$?" != "0" ]; then
     docker container rm thor-mongo
     echo "docker run mongo failed!"
@@ -72,7 +72,7 @@ if [ "$?" != "0" ]; then
 fi
 
 echo "run redis..."
-docker run -it -v $redisDir:/data --name thor-redis -p 6379:6379 -d redis redis-server --appendonly yes
+docker run -it -d -v $redisDir:/data -p 6379:6379 --restart always --name thor-redis redis
 if [ "$?" != "0" ]; then
     docker container rm thor-redis
     echo "docker run redis failed!"
@@ -81,7 +81,7 @@ fi
 
 echo "run thor..."
 sleep 20s
-docker run -it -d --link thor-redis:redis --link thor-mongo:mongo -p 7500:7001 -v $publicDir:/thor/public --env HOST_PUBLIC=$publicDir --name my-thor thor
+docker run -it -d --link thor-redis:redis --link thor-mongo:mongo -p 7500:7001 -v $publicDir:/thor/public --env HOST_PUBLIC=$publicDir --restart always --name my-thor thor
 if [ "$?" != "0" ]; then
     docker container rm my-thor
     echo "docker run thor failed!"
