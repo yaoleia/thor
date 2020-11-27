@@ -2,14 +2,18 @@
 
 module.exports = () => {
   return async function auth(ctx, next) {
-    if (ctx.session.username) {
-      await next();
-    } else {
-      if (ctx.url.startsWith('/api/account') || ctx.url.startsWith('/api/push') || ctx.url === '/') {
+    if (ctx.url.startsWith('/api/account') || ctx.url.startsWith('/api/push') || ctx.url === '/') {
+      await next()
+      return
+    }
+    const { username } = ctx.session
+    if (username) {
+      const user = await ctx.service.user.show({ id: username })
+      if (user) {
         await next()
-      } else {
-        ctx.status = 401;
+        return
       }
     }
-  };
+    ctx.status = 401;
+  }
 };

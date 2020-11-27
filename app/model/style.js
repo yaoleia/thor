@@ -16,5 +16,5 @@ module.exports = ({ mongoose }) => {
   })
   StyleSchema.plugin(mongooseLeanGetters)
   StyleSchema.set('toObject', { getters: true })
-  return mongoose.model('Style', StyleSchema);
+  return mongoose.model('Style', StyleSchema)
 }
