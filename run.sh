@@ -16,18 +16,26 @@ if [ "$?" != "0" ]; then
     echo "docker load thor failed!"
 fi
 
-echo "docker pull redis..."
-docker pull redis
+echo "docker image inspect redis..."
+docker image inspect redis
 if [ "$?" != "0" ]; then
-    echo "docker pull redis failed!"
-    exit -1
+    echo "docker pull redis..."
+    docker pull redis
+    if [ "$?" != "0" ]; then
+        echo "docker pull redis failed!"
+        exit -1
+    fi
 fi
 
-echo "docker pull mongo..."
-docker pull mongo
+echo "docker image inspect mongo..."
+docker image inspect mongo
 if [ "$?" != "0" ]; then
-    echo "docker pull mongo failed!"
-    exit -1
+    echo "docker pull mongo..."
+    docker pull mongo
+    if [ "$?" != "0" ]; then
+        echo "docker pull mongo failed!"
+        exit -1
+    fi
 fi
 
 docker container stop thor-redis thor-mongo my-thor
