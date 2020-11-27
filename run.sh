@@ -72,7 +72,7 @@ if [ "$?" != "0" ]; then
 fi
 
 echo "run thor..."
-docker run -it -d --link thor-redis:redis --link thor-mongo:mongo -p 7500:7001 -v $publicDir:/thor/public --name my-thor thor
+docker run -it -d --link thor-redis:redis --link thor-mongo:mongo -p 7500:7001 -v $publicDir:/thor/public --env HOST_PUBLIC=$publicDir --name my-thor thor
 if [ "$?" != "0" ]; then
     docker container rm my-thor
     echo "docker run thor failed!"
