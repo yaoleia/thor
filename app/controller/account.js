@@ -37,6 +37,19 @@ class AccountController extends Controller {
     delete ctx.session.username
     ctx.body = 'logout success'
   }
+
+  async show() {
+    const { username } = this.ctx.session
+    const user = await this.ctx.service.user.show({ id: username })
+    delete user.password
+    this.ctx.body = user
+  }
+
+  async update() {
+    const { username } = this.ctx.session
+    const result = await this.ctx.service.user.update({ id: username }, this.ctx.request.body)
+    this.ctx.body = result
+  }
 }
 
 module.exports = AccountController;

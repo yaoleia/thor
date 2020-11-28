@@ -27,13 +27,6 @@ class UserController extends Controller {
     const result = await this.ctx.service.user.destroy(this.ctx.params)
     this.ctx.body = result
   }
-
-  async currentUser() {
-    const { username } = this.ctx.session
-    const user = await this.ctx.service.user.show({ id: username })
-    delete user.password
-    this.ctx.body = user
-  }
 }
 
 module.exports = UserController;
