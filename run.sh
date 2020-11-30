@@ -49,7 +49,9 @@ dataDir=/$(cd ./data; pwd)
 
 mongoDir=$dataDir/mongo_data
 redisDir=$dataDir/redis_data
-publicDir=$dataDir/public
+export publicDir=$dataDir/public
+# export network="host"
+export network="bridge"
 
 echo "mkdir..."
 if [ ! -d $mongoDir ]; then
@@ -64,7 +66,13 @@ fi
 
 echo "docker start to run..."
 echo "run mongo..."
-docker run -it -d -v $mongoDir:/data/db -p 27017:27017 --restart always --name thor-mongo mongo
+
+if [ $network == "host" ]; then
+    docker run -it -d -v $mongoDir:/data/db --network=host --restart always --name thor-mongo mongo
+else
+    docker run -it -d -v $mongoDir:/data/db -p 27017:27017 --restart always --name thor-mongo mongo
+fi
+
 if [ "$?" != "0" ]; then
     docker container rm thor-mongo
     echo "docker run mongo failed!"
@@ -72,7 +80,13 @@ if [ "$?" != "0" ]; then
 fi
 
 echo "run redis..."
-docker run -it -d -v $redisDir:/data -p 6379:6379 --restart always --name thor-redis redis
+
+if [ $network == "host" ]; then
+    docker run -it -d -v $redisDir:/data --network=host --restart always --name thor-redis redis
+else
+    docker run -it -d -v $redisDir:/data -p 6379:6379 --restart always --name thor-redis redis
+fi
+
 if [ "$?" != "0" ]; then
     docker container rm thor-redis
     echo "docker run redis failed!"
@@ -80,15 +94,20 @@ if [ "$?" != "0" ]; then
 fi
 
 echo "run thor..."
-sleep 20s
-docker run -it -d --link thor-redis:redis --link thor-mongo:mongo -p 7500:7001 -v $publicDir:/thor/public --env HOST_PUBLIC=$publicDir --restart always --name my-thor thor
+
+if [ $network == "host" ]; then
+    docker run -it -d -v $publicDir:/thor/public --env HOST_PUBLIC=$publicDir --env NETWORK=$network --network=host --restart always --name my-thor thor
+else
+    docker run -it -d --link thor-redis:redis --link thor-mongo:mongo -p 7500:7001 -v $publicDir:/thor/public --env HOST_PUBLIC=$publicDir --restart always --name my-thor thor
+fi
+
 if [ "$?" != "0" ]; then
     docker container rm my-thor
     echo "docker run thor failed!"
     exit -1
 fi
 
-echo "port: 7500, thor run success!"
+echo "Thor run success!"
 
 end=`date +%s` 
 dif=$[ end - start ]
