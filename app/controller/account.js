@@ -12,7 +12,7 @@ class AccountController extends Controller {
         ctx.body = {
           status: 'ok',
           type,
-          currentAuthority: 'admin',
+          currentAuthority: user.auth,
         }
         return;
       }

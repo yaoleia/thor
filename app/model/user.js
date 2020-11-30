@@ -9,7 +9,8 @@ module.exports = ({ mongoose }) => {
     nickname: { type: String, default: '' },
     title: { type: String, default: '' },
     email: { type: String, default: '' },
-    phone: { type: String, default: '' }
+    phone: { type: String, default: '' },
+    auth: [String]
   }, {
     versionKey: false
   })
