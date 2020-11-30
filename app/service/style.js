@@ -27,9 +27,8 @@ module.exports = app => {
       return styles[0]
     }
     async update({ id }, { uid, ...body }) {
-      const result = await this.ctx.model.Style.findOneAndUpdate({ uid: id }, { $set: body }, { new: true })
-      if (!result) return
-      const style = result.toObject()
+      const style = await this.ctx.model.Style.findOneAndUpdate({ uid: id }, { $set: body }, { new: true }).lean({ getters: true })
+      if (!style) return
       delete style._id
       await this.app.redis.hset("styles", id, JSON.stringify(style))
       return style
@@ -40,6 +39,7 @@ module.exports = app => {
       const result = await this.ctx.model.Style.create(Object.assign(request, { uid }))
       const style = result.toObject()
       delete style._id
+      delete style.id
       await this.app.redis.hset("styles", uid, JSON.stringify(style))
       return style
     }

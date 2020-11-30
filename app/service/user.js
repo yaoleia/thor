@@ -37,11 +37,9 @@ module.exports = app => {
           }
         }
       }
-      const result = await this.ctx.model.User.findOneAndUpdate({ username: id }, { $set: body }, { new: true });
-      if (!result) return
-      const user = result.toObject()
+      const user = await this.ctx.model.User.findOneAndUpdate({ username: id }, { $set: body }, { new: true }).lean({ getters: true })
+      if (!user) return
       delete user._id
-      delete user.id
       delete user.password
       return user
     }

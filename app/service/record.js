@@ -27,9 +27,8 @@ module.exports = app => {
       return records[0];
     }
     async update({ id }, { uid, ...body }) {
-      const result = await this.ctx.model.Record.findOneAndUpdate({ uid: id }, { $set: body }, { new: true });
-      if (!result) return
-      const record = result.toObject()
+      const record = await this.ctx.model.Record.findOneAndUpdate({ uid: id }, { $set: body }, { new: true }).lean({ getters: true })
+      if (!record) return
       delete record._id
       return record
     }
@@ -41,6 +40,7 @@ module.exports = app => {
       const result = await this.ctx.model.Record.create(request)
       const record = result.toObject()
       delete record._id
+      delete record.id
       return record
     }
     async destroy({ id }) {

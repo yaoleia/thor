@@ -52,6 +52,7 @@ module.exports = app => {
       const result = await this.ctx.model.Device.create(Object.assign(request, { uid }))
       const device = result.toObject()
       delete device._id
+      delete device.id
       await this.app.redis.hset("devices", uid, JSON.stringify(device))
       return device
     }
