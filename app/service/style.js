@@ -30,7 +30,7 @@ module.exports = app => {
       const style = await this.ctx.model.Style.findOneAndUpdate({ uid: id }, { $set: body }, { new: true }).lean({ getters: true })
       if (!style) return
       delete style._id
-      await this.app.redis.hset("styles", id, JSON.stringify(style))
+      await this.app.redis.get('cache').hset("styles", id, JSON.stringify(style))
       return style
     }
     async create(request) {
@@ -40,14 +40,14 @@ module.exports = app => {
       const style = result.toObject()
       delete style._id
       delete style.id
-      await this.app.redis.hset("styles", uid, JSON.stringify(style))
+      await this.app.redis.get('cache').hset("styles", uid, JSON.stringify(style))
       return style
     }
     async destroy(params) {
       const uids = params.id.split(',')
       const result = await this.ctx.model.Style.remove({ "uid": { $in: uids } })
       const ps = uids.map(async uid => {
-        await this.app.redis.hdel("styles", uid)
+        await this.app.redis.get('cache').hdel("styles", uid)
       })
       await Promise.all(ps)
       return result

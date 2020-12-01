@@ -24,8 +24,13 @@ module.exports = appInfo => {
   }
 
   config.redis = {
-    client: {
-      host: isHost ? '127.0.0.1' : THOR_REDIS || 'redis'
+    clients: {
+      cache: {
+        host: isHost ? '127.0.0.1' : THOR_REDIS || 'redis'
+      },
+      mq: {
+        host: isHost ? '127.0.0.1' : THOR_REDIS || 'redis'
+      }
     }
   }
 

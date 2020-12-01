@@ -35,13 +35,25 @@ module.exports = appInfo => {
   }
 
   config.redis = {
-    client: {
-      port: 6379,
-      host: '127.0.0.1',
-      password: '',
-      db: 0,
-    },
-    agent: true
+    agent: true,
+    clients: {
+      cache: {
+        port: 6379,
+        host: '127.0.0.1',
+        password: '',
+        db: 0,
+      },
+      mq: {
+        port: 6379,
+        host: '127.0.0.1',
+        password: '',
+        db: 0,
+      }
+    }
+  }
+
+  config.sessionRedis = {
+    name: 'cache'
   }
 
   // use for cookie sign key, should change to your own and keep security
