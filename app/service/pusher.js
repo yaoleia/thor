@@ -1,9 +1,35 @@
 const Service = require('egg').Service;
 const _ = require('lodash')
 
-class Defect2wsService extends Service {
-  async index({ device_id, image_url, uid }) {
-    const { service, helper, logger, request: { body } } = this.ctx
+class PusherService extends Service {
+  async pushMq(body) {
+    try {
+      const { device_id, image_url, uid } = body
+      if (!device_id) throw 'no device_id!'
+      if (!image_url) throw 'no image_url!'
+      if (!uid) throw 'no uid!'
+      let queue_length = await this.app.redis.get('mq').lpush(`list#${device_id}`, JSON.stringify(body))
+      const { QUEUE_MAX } = this.config
+      if (queue_length > QUEUE_MAX) {
+        await this.app.redis.get('mq').ltrim(`list#${device_id}`, 0, QUEUE_MAX - 1)
+        queue_length = QUEUE_MAX
+      }
+      this.app.messenger.sendToAgent('wait_msg', device_id)
+      return {
+        queue_length,
+        code: 'success'
+      }
+    } catch (error) {
+      return {
+        code: 'failed',
+        msg: error
+      }
+    }
+  }
+
+  async defect2ws(body) {
+    const { device_id, image_url, uid } = body
+    const { service, helper, logger } = this.ctx
     const device = device_id && await service.device.getFromRedis(device_id)
     if (!device || !device.style) {
       this.ctx.status = 400
@@ -29,7 +55,7 @@ class Defect2wsService extends Service {
     const { style, ...baseDevice } = device
     const [modelData, [image]] = await Promise.all([
       service.modelApi.defect(image_url, device),
-      service.file.upload()
+      service.file.upload(body)
     ])
     if (!image) {
       this.ctx.status = 400
@@ -56,6 +82,7 @@ class Defect2wsService extends Service {
     }
     const { defect_items, size_items } = modelData
     // TODO 后处理，尺寸比较判断OK/NG
+    // TODO 反馈给硬件接口
     const defectData = {
       uid,
       time: helper.getDate(),
@@ -74,4 +101,4 @@ class Defect2wsService extends Service {
   }
 }
 
-module.exports = Defect2wsService;
+module.exports = PusherService;

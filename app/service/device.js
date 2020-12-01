@@ -60,8 +60,14 @@ module.exports = app => {
     async destroy(params) {
       const uids = params.id.split(',')
       const result = await this.ctx.model.Device.remove({ "uid": { $in: uids } })
+      const redis = this.app.redis.get('cache')
       const ps = uids.map(async uid => {
-        await Promise.all([this.app.redis.get('cache').hdel("devices", uid), this.app.redis.get('cache').del(`style#${uid}`)])
+        await Promise.all([
+          redis.hdel("devices", uid),
+          redis.del(`style#${uid}`),
+          redis.ltrim(`list#${uid}`, -1, 0)
+        ])
+        this.app.messenger.sendToAgent('stop_wait', uid)
       })
       await Promise.all(ps)
       return result

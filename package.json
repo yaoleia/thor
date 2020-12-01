@@ -45,7 +45,7 @@
     "start:prod": "egg-scripts start --sticky",
     "start": "egg-scripts start --daemon --title=thor --sticky",
     "stop": "egg-scripts stop --title=thor",
-    "dev": "egg-bin dev --sticky",
+    "dev": "egg-bin dev --sticky --workers=4",
     "debug": "egg-bin debug --sticky",
     "test": "npm run lint -- --fix && npm run test-local",
     "test-local": "egg-bin test",

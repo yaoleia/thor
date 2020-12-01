@@ -43,12 +43,16 @@ class AppBootHook {
       await init(this.app)
     })
 
-    // 测试ipc，进程间通讯
-    // this.app.messenger.on('agent_msg', async data => {
-    // const ctx = await this.app.createAnonymousContext();
-    // await ctx.service.file.upload({ file_url: '/users/admin/Desktop/111.jpg' });
-    // console.log(data)
-    // })
+    this.app.messenger.on('handle_msg', async data => {
+      try {
+        const ctx = await this.app.createAnonymousContext();
+        await ctx.service.pusher.defect2ws(data)
+      } catch (error) {
+        this.app.logger.error(error)
+      } finally {
+        this.app.messenger.sendToAgent(data.uid)
+      }
+    })
   }
 
   async serverDidReady() {

@@ -14,11 +14,12 @@ class BackendService extends Service {
         method: "POST",
         timeout: 10000
       })
+      if (resp.status !== 200) throw resp.data
       return resp.data
     } catch (error) {
       this.ctx.status = 504
       return {
-        msg: 'Gateway Timeout, 请求超时, 请检查设备算法服务地址！',
+        msg: error || 'Gateway Timeout, 请求超时, 请检查设备算法服务地址！',
         model_api: defectApi,
         code: this.ctx.status
       }
