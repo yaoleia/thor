@@ -19,6 +19,7 @@
     "egg-view-nunjucks": "^2.2.0",
     "http-proxy": "^1.18.1",
     "lodash": "^4.17.20",
+    "mime-types": "^2.1.27",
     "mkdirp": "^1.0.4",
     "moment": "^2.29.1",
     "mongoose-lean-getters": "^0.1.2",

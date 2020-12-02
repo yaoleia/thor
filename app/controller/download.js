@@ -1,26 +1,28 @@
-'use strict';
+'use strict'
 
-const path = require('path');
-const fs = require('fs');
-const Controller = require('egg').Controller;
+const path = require('path')
+const fs = require('fs')
+const mime = require('mime-types')
+const Controller = require('egg').Controller
 
 class DownloadController extends Controller {
   async download() {
-    const filePath = path.resolve(__dirname, '../public', 'hello.txt');
-    this.ctx.attachment('hello.txt');
-    this.ctx.set('Content-Type', 'application/octet-stream');
-    this.ctx.body = fs.createReadStream(filePath);
+    const filePath = path.resolve(__dirname, '../public', 'hello.txt')
+    this.ctx.attachment('hello.txt')
+    this.ctx.set('Content-Type', 'application/octet-stream')
+    this.ctx.body = fs.createReadStream(filePath)
   }
 
   async downloadImage() {
-    const url = 'http://cdn2.ettoday.net/images/1200/1200526.jpg';
-    const res = await this.ctx.curl(url, {
-      streaming: true,
-    });
-
-    this.ctx.type = 'jpg';
-    this.ctx.body = res.res;
+    const { path: filePath } = this.ctx.query
+    if (!filePath) return
+    const exist = fs.existsSync(filePath)
+    if (!exist) return
+    const file = fs.readFileSync(filePath)
+    const mimeType = mime.lookup(filePath)
+    this.ctx.set('content-type', mimeType)
+    this.ctx.body = file
   }
 }
 
-module.exports = DownloadController;
+module.exports = DownloadController
