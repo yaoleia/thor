@@ -14,7 +14,7 @@ module.exports = agent => {
 module.exports = agent => {
   const { CONCURRENT = 1 } = agent.config
   const msgMap = {}
-  async function startWaitMsg(key) {
+  function startWaitMsg(key) {
     const listen = { switch: true }
     new Array(CONCURRENT).fill().forEach(async _ => {
       while (listen.switch) {
