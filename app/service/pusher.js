@@ -8,13 +8,13 @@ class PusherService extends Service {
       if (!device_id) throw 'no device_id!'
       if (!image_url) throw 'no image_url!'
       if (!uid) throw 'no uid!'
+      this.app.messenger.sendToAgent('wait_msg', device_id)
       let queue_length = await this.app.redis.get('mq').lpush(`list#${device_id}`, JSON.stringify(body))
       const { QUEUE_MAX } = this.config
       if (queue_length > QUEUE_MAX) {
         await this.app.redis.get('mq').ltrim(`list#${device_id}`, 0, QUEUE_MAX - 1)
         queue_length = QUEUE_MAX
       }
-      this.app.messenger.sendToAgent('wait_msg', device_id)
       return {
         queue_length,
         code: 'success'
