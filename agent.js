@@ -18,22 +18,26 @@ module.exports = agent => {
   function stopWaitMsg(device_id) {
     if (!msgMap[device_id]) return
     msgMap[device_id].switch = false
+    msgMap[device_id].clients.forEach(client => client.quit())
     delete msgMap[device_id]
   }
 
   function startWaitMsg(device_id) {
     const key = `list#${device_id}`
-    const listen = { switch: true }
+    const clients = []
+    const handle = { switch: true, clients }
+    const mqRedis = agent.redis.get('mq')
     let retry = 10
     new Array(CONCURRENT).fill().forEach(async _ => {
-      while (listen.switch) {
+      const redis = mqRedis.duplicate()
+      clients.push(redis)
+      while (handle.switch) {
         try {
-          const redis = agent.redis.get('mq')
-          const resp = await redis.brpop(key, 600)
+          const resp = await redis.brpop(key, 20)
           // 随机给一个worker消费一条队列信息
           if (!resp || !resp[1]) throw 'timeout or data error!'
-          if (!listen.switch) {
-            await redis.lpush(...resp)
+          if (!handle.switch) {
+            await mqRedis.lpush(...resp)
             throw 'closed listen, pass this msg!'
           }
           await new Promise((resolve, reject) => {
@@ -51,7 +55,7 @@ module.exports = agent => {
         }
       }
     })
-    return listen
+    return handle
   }
 
   agent.messenger.on('wait_msg', device_id => {
