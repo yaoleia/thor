@@ -5,7 +5,8 @@
 /**
  * @param {Egg.EggAppInfo} appInfo app info
  */
-const path = require('path');
+const path = require('path')
+const { getNetworkAddress } = require('../lib/address')
 
 module.exports = appInfo => {
   /**
@@ -13,6 +14,8 @@ module.exports = appInfo => {
    * @type {Egg.EggAppConfig}
    **/
   const config = exports = {};
+
+  config.networkAddress = getNetworkAddress()
 
   config.io = {
     namespace: {

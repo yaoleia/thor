@@ -42,7 +42,7 @@ class AppBootHook {
     this.app.messenger.on('init-event', async () => {
       await init(this.app)
     })
-
+    
     this.app.messenger.on('handle_msg', async data => {
       try {
         const ctx = await this.app.createAnonymousContext()
