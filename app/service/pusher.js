@@ -3,8 +3,9 @@ const _ = require('lodash')
 
 class PusherService extends Service {
   async pushMq(body) {
-    const { logger } = this.ctx
+    const { logger, request } = this.ctx
     const { device_id, image_url, uid } = body
+    const { host } = request.header
     try {
       if (!device_id) throw 'no device_id!'
       if (!image_url) throw 'no image_url!'
@@ -12,7 +13,7 @@ class PusherService extends Service {
       const exists = await this.app.redis.get('cache').hexists("devices", device_id)
       if (!exists) throw "设备不存在! (请检查 device_id)"
       this.app.messenger.sendToAgent('wait_msg', device_id)
-      let queue_length = await this.app.redis.get('mq').lpush(`list#${device_id}`, JSON.stringify(body))
+      let queue_length = await this.app.redis.get('mq').lpush(`list#${device_id}`, JSON.stringify({ ...body, host }))
       const { QUEUE_MAX } = this.config
       if (queue_length > QUEUE_MAX) {
         await this.app.redis.get('mq').ltrim(`list#${device_id}`, 0, QUEUE_MAX - 1)
