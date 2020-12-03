@@ -1,8 +1,12 @@
 module.exports = app => {
   class Controller extends app.Controller {
     async index() {
-      const message = this.ctx.args[0];
-      await app.io.of('/').emit('res', `(chat) ${this.ctx.socket.id}: ${message}`)
+      const { args, helper, socket } = this.ctx
+      const message = args[0];
+      await app.io.of('/').emit('res', helper.parseMsg('chat', {
+        socket_id: socket.id,
+        msg: message
+      }))
     }
   }
   return Controller

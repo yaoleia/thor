@@ -32,7 +32,6 @@ module.exports = app => {
         if (len < 5 || len > 20) {
           this.ctx.status = 400
           return {
-            code: this.ctx.status,
             msg: "密码长度在5~20！"
           }
         }
@@ -52,7 +51,6 @@ module.exports = app => {
       if (nameLen < 5 || nameLen > 20) {
         this.ctx.status = 400
         return {
-          code: this.ctx.status,
           msg: "用户名长度在5~20！"
         }
       }
@@ -66,7 +64,6 @@ module.exports = app => {
       } catch (error) {
         !init && (this.ctx.status = 400)
         return {
-          code: this.ctx.status,
           msg: "创建用户失败，用户名已存在！"
         }
       }

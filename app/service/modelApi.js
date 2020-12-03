@@ -20,8 +20,7 @@ class BackendService extends Service {
       this.ctx.status = 504
       return {
         msg: error || 'Gateway Timeout, 请求超时, 请检查设备算法服务地址！',
-        model_api: defectApi,
-        code: this.ctx.status
+        model_api: defectApi
       }
     }
   }
