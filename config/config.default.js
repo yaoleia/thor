@@ -15,7 +15,14 @@ module.exports = appInfo => {
    **/
   const config = exports = {};
 
-  config.networkAddress = getNetworkAddress()
+  const { SERVER_ADDRESS } = process.env
+
+  config.networkAddress = SERVER_ADDRESS || getNetworkAddress()
+
+  config.upload = {
+    prefix: 'public/upload',
+    baseUrl: `${config.networkAddress}/public/upload`
+  }
 
   config.io = {
     namespace: {

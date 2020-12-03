@@ -45,9 +45,7 @@ class AppBootHook {
 
     this.app.messenger.on('handle_msg', async data => {
       try {
-        const ctx = await this.app.createAnonymousContext({
-          headers: { host: data.host }
-        })
+        const ctx = await this.app.createAnonymousContext()
         await ctx.service.pusher.defect2ws(data)
       } catch (error) {
         this.app.logger.error(error)

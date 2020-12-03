@@ -1,17 +1,17 @@
 #!/bin/bash
 # 将该脚本放在一个工程目录(ps: /d/thor)的文件夹(首先确保docker已安装)，然后运行sudo或管理员运行:
-# bash ./run.sh (thor-$version.tar)
+# ps: bash ./run.sh 10.18.144.239
 
 start=`date +%s`
 
-thor_path=$1
+ip=$1
 if [ "$1" == "" ]; then
-    echo "thor container file not found, use (thor.tar) by default!"
-    thor_path="./thor.tar"
+    echo "need local IP address as a parameter!"
+    exit -1
 fi
 
 echo "docker load thor..."
-docker load < $thor_path
+docker load < ./thor.tar
 if [ "$?" != "0" ]; then
     echo "docker load thor failed!"
 fi
@@ -98,7 +98,7 @@ echo "run thor..."
 if [ $network == "host" ]; then
     docker run -it -d -v $publicDir:/thor/public --env HOST_PUBLIC=$publicDir --env NETWORK=$network --network=host --restart always --name my-thor thor
 else
-    docker run -it -d --link thor-redis:redis --link thor-mongo:mongo -p 7500:7001 -v $publicDir:/thor/public --env HOST_PUBLIC=$publicDir --restart always --name my-thor thor
+    docker run -it -d --link thor-redis:redis --link thor-mongo:mongo -p 7001:7001 -v $publicDir:/thor/public --env HOST_PUBLIC=$publicDir --env SERVER_ADDRESS=http://$ip:7001 --restart always --name my-thor thor
 fi
 
 if [ "$?" != "0" ]; then

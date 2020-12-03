@@ -1,6 +1,7 @@
 const { getDate } = require('../extend/helper')
 const mongooseLeanGetters = require('mongoose-lean-getters')
-module.exports = ({ mongoose }) => {
+module.exports = ({ mongoose, config }) => {
+  const { baseUrl } = config.upload
   const RecordSchema = new mongoose.Schema({
     uid: { type: String, unique: true },
     time: { type: Date, default: Date.now, get: getDate },
@@ -21,7 +22,7 @@ module.exports = ({ mongoose }) => {
       size_standard: { type: Array }
     },
     image_url: { type: String },
-    thumbnail_url: { type: String },
+    thumbnail_url: { type: String, get: v => v && `${baseUrl}/${v}` },
     defect_items: { type: Array },
     size_items: { type: Array },
     defect_alarm: { type: Boolean },

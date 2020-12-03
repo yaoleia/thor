@@ -11,12 +11,14 @@ const imageTypes = [".jpg", ".jpeg", ".png", ".gif", ".bmp"]
 
 class FileService extends Service {
   getUploadDir(type) {
-    const date = type || moment().format('YYYY/MM/DD')
-    const baseUrl = path.join('public/upload', date)
-    const uploadDir = path.resolve(this.app.baseDir, baseUrl)
+    const { baseDir, config } = this.app
+    const { baseUrl, prefix } = config.upload
+    const folder = type || moment().format('YYYY/MM/DD')
+    const uploadDir = path.resolve(baseDir, prefix, folder)
     return {
       uploadDir,
-      baseUrl
+      baseUrl,
+      folder
     }
   }
 
@@ -26,7 +28,7 @@ class FileService extends Service {
     try {
       if (file_url) {
         file_url = file_url.toLowerCase()
-        const { uploadDir, baseUrl } = this.getUploadDir(type)
+        const { uploadDir, baseUrl, folder } = this.getUploadDir(type)
         const extname = path.extname(file_url)
         const now = moment().format('YYYYMMDDHHmmss')
         let fileName = now + Math.floor(Math.random() * 1000) + extname
@@ -44,8 +46,8 @@ class FileService extends Service {
           md5 && await pump(fs.createReadStream(local_path), hash = crypto.createHash('md5'))
           uploaded.push({
             name: 'file_url',
-            url: new URL(path.join(baseUrl, fileName), this.ctx.request.origin).href,
-            local_path,
+            url: `${baseUrl}/${folder}/${fileName}`,
+            save_path: `${folder}/${fileName}`,
             md5: hash && hash.digest('hex')
           })
         } else {
@@ -68,8 +70,8 @@ class FileService extends Service {
             md5 && await pump(fs.createReadStream(local_path), hash = crypto.createHash('md5'))
             uploaded.push({
               fieldname: 'file_url',
-              url: new URL(path.join(baseUrl, fileName), this.ctx.request.origin).href,
-              local_path,
+              url: `${baseUrl}/${folder}/${fileName}`,
+              save_path: `${folder}/${fileName}`,
               md5: hash && hash.digest('hex')
             })
           }
@@ -83,7 +85,7 @@ class FileService extends Service {
 
   async uploadFiles({ type, quality, md5 } = this.ctx.request.body) {
     const uploaded = []
-    const { uploadDir, baseUrl } = this.getUploadDir(type)
+    const { uploadDir, baseUrl, folder } = this.getUploadDir(type)
     const { files = [] } = this.ctx.request;
     try {
       if (!fs.existsSync(uploadDir)) mkdirp.sync(uploadDir)
@@ -102,8 +104,8 @@ class FileService extends Service {
         md5 && await pump(fs.createReadStream(local_path), hash = crypto.createHash('md5'))
         uploaded.push({
           fieldname: file.fieldname,
-          url: new URL(path.join(baseUrl, fileName), this.ctx.request.origin).href,
-          local_path,
+          url: `${baseUrl}/${folder}/${fileName}`,
+          save_path: `${folder}/${fileName}`,
           md5: hash && hash.digest('hex')
         })
       }
