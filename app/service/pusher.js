@@ -3,11 +3,14 @@ const _ = require('lodash')
 
 class PusherService extends Service {
   async pushMq(body) {
+    const { logger } = this.ctx
+    const { device_id, image_url, uid } = body
     try {
-      const { device_id, image_url, uid } = body
       if (!device_id) throw 'no device_id!'
       if (!image_url) throw 'no image_url!'
       if (!uid) throw 'no uid!'
+      const exists = await this.app.redis.get('cache').hexists("devices", device_id)
+      if (!exists) throw "设备不存在! (请检查 device_id)"
       this.app.messenger.sendToAgent('wait_msg', device_id)
       let queue_length = await this.app.redis.get('mq').lpush(`list#${device_id}`, JSON.stringify(body))
       const { QUEUE_MAX } = this.config
@@ -17,13 +20,17 @@ class PusherService extends Service {
       }
       return {
         queue_length,
-        status: 'success'
+        status: 'success',
+        ...body
       }
     } catch (error) {
-      return {
+      const errorData = {
         status: 'failed',
-        msg: error
+        msg: error,
+        ...body
       }
+      logger.error(errorData)
+      return errorData
     }
   }
 
@@ -86,12 +93,13 @@ class PusherService extends Service {
         defect_alarm: !!_.get(defect_items, 'length'),
         size_alarm: false
       }
-      this.app.io.of('/').to(device.uid).emit('res', helper.parseMsg('result', defectData))
+      this.app.io.of('/').to(device.uid).emit('res', helper.parseMsg('product', defectData))
       await service.record.create(defectData)
       return defectData
     } catch (error) {
       this.app.io.of('/').to(device_id).emit('res', helper.parseMsg('error', error))
       logger.error(error)
+      return error
     }
   }
 }
