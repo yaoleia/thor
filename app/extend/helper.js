@@ -34,3 +34,16 @@ exports.getDateIfTime = time => {
 exports.getRandomId = (len = 10) => parseInt((Math.random() * 9 + 1) * Math.pow(10, len - 1), 10)
 
 exports.uuidv4 = uuidv4
+
+exports.urlFilter = url => {
+  if (!url || !url.startsWith('http:')) return url
+  const str = '/public/upload/'
+  const index = url.indexOf(str)
+  if (index === -1) return url
+  return url.replace(url.substring(0, index + str.length), '')
+}
+
+exports.urlJoin = (url, base) => {
+  if (!url || !base || url.startsWith('http:')) return url
+  return `${base}/${url}`
+}

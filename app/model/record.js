@@ -1,4 +1,4 @@
-const { getDate } = require('../extend/helper')
+const { getDate, urlFilter, urlJoin } = require('../extend/helper')
 const mongooseLeanGetters = require('mongoose-lean-getters')
 module.exports = ({ mongoose, config }) => {
   const { baseUrl } = config.upload
@@ -22,7 +22,7 @@ module.exports = ({ mongoose, config }) => {
       size_standard: { type: Array }
     },
     image_url: { type: String },
-    thumbnail_url: { type: String, get: v => v && `${baseUrl}/${v}` },
+    thumbnail_url: { type: String, set: urlFilter, get: v => urlJoin(v, baseUrl) },
     defect_items: { type: Array },
     size_items: { type: Array },
     defect_alarm: { type: Boolean },

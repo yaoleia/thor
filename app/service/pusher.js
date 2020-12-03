@@ -94,7 +94,6 @@ class PusherService extends Service {
         size_alarm: false
       }
       await this.app.io.of('/').to(device.uid).emit('res', helper.parseMsg('product', defectData))
-      defectData.thumbnail_url = image.save_path
       await service.record.create(defectData)
       return defectData
     } catch (error) {
