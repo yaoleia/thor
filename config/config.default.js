@@ -19,9 +19,14 @@ module.exports = appInfo => {
 
   config.networkAddress = SERVER_ADDRESS || getNetworkAddress()
 
+  config.static = {
+    prefix: '/public',
+    baseUrl: `${config.networkAddress}/public`,
+    dir: [path.join(appInfo.baseDir, 'web/dist'), path.join(appInfo.baseDir, 'public')]
+  }
+
   config.upload = {
-    prefix: 'public/upload',
-    baseUrl: `${config.networkAddress}/public/upload`
+    prefix: 'upload'
   }
 
   config.io = {
@@ -99,11 +104,6 @@ module.exports = appInfo => {
     mapping: {
       '.html': 'nunjucks',
     }
-  }
-
-  config.static = {
-    prefix: '/public/',
-    dir: [path.join(appInfo.baseDir, 'web/dist'), path.join(appInfo.baseDir, 'public')]
   }
 
   config.session = {

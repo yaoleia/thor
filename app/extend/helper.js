@@ -35,12 +35,9 @@ exports.getRandomId = (len = 10) => parseInt((Math.random() * 9 + 1) * Math.pow(
 
 exports.uuidv4 = uuidv4
 
-exports.urlFilter = url => {
-  if (!url || !url.startsWith('http:')) return url
-  const str = '/public/upload/'
-  const index = url.indexOf(str)
-  if (index === -1) return url
-  return url.replace(url.substring(0, index + str.length), '')
+exports.urlFilter = (url, base) => {
+  if (!url || !base) return url
+  return url.replace(`${base}/`, '')
 }
 
 exports.urlJoin = (url, base) => {

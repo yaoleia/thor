@@ -24,6 +24,7 @@ class PusherService extends Service {
         ...body
       }
     } catch (error) {
+      this.ctx.status = 400
       const errorData = {
         status: 'failed',
         msg: error,
@@ -86,7 +87,7 @@ class PusherService extends Service {
         time: helper.getDate(),
         device: baseDevice,
         style,
-        image_url,
+        image_url: image.original_url || image_url,
         thumbnail_url: image.url,
         defect_items,
         size_items,
