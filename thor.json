@@ -1,0 +1,1238 @@
+{
+  "version": 6,
+  "entities": [
+    {
+      "entity": {
+        "type": "Project",
+        "id": "26ae1dd6-69b0-4370-8145-6a29f8608eff",
+        "name": "thor"
+      },
+      "children": [
+        {
+          "entity": {
+            "type": "Scenario",
+            "description": "服务端接口测试",
+            "id": "628bc32c-0264-4cfe-9051-469da198f075",
+            "name": "thor project"
+          },
+          "children": [
+            {
+              "entity": {
+                "type": "Request",
+                "method": {
+                  "requestBody": true,
+                  "link": "http://tools.ietf.org/html/rfc7231#section-4.3.3",
+                  "name": "POST"
+                },
+                "body": {
+                  "formBody": {
+                    "overrideContentType": true,
+                    "encoding": "application/x-www-form-urlencoded",
+                    "items": [
+                      {
+                        "enabled": true,
+                        "type": "Text",
+                        "name": "image_url",
+                        "value": "/thor/public/wad/20201204115858939.jpg"
+                      },
+                      {
+                        "enabled": true,
+                        "type": "Text",
+                        "name": "device_id",
+                        "value": "1289062316"
+                      },
+                      {
+                        "enabled": true,
+                        "type": "Text",
+                        "name": "uid",
+                        "value": "${random(\"\")}"
+                      },
+                      {
+                        "type": "Text",
+                        "name": "quality",
+                        "value": "none"
+                      },
+                      {
+                        "type": "Text",
+                        "name": "",
+                        "value": ""
+                      },
+                      {
+                        "type": "Text",
+                        "name": "",
+                        "value": ""
+                      }
+                    ]
+                  },
+                  "bodyType": "Form"
+                },
+                "retryConfiguration": {
+                  "intervalInSeconds": 10,
+                  "retryCount": 1
+                },
+                "uri": {
+                  "query": {
+                    "delimiter": "&",
+                    "items": []
+                  },
+                  "scheme": {
+                    "name": "http",
+                    "version": "V11"
+                  },
+                  "host": "${\"host\"}:${\"port\"}",
+                  "path": "/api/push"
+                },
+                "description": "由thor提供该接口",
+                "id": "fbd30466-e2fe-4f29-83f8-f65305a2974b",
+                "name": "硬件服务pusher接口",
+                "headers": [
+                  {
+                    "enabled": true,
+                    "name": "Content-Type",
+                    "value": "application/x-www-form-urlencoded"
+                  }
+                ]
+              }
+            },
+            {
+              "entity": {
+                "type": "Request",
+                "method": {
+                  "requestBody": true,
+                  "link": "http://tools.ietf.org/html/rfc7231#section-4.3.3",
+                  "name": "POST"
+                },
+                "body": {
+                  "formBody": {
+                    "overrideContentType": true,
+                    "encoding": "application/x-www-form-urlencoded",
+                    "items": [
+                      {
+                        "enabled": true,
+                        "type": "Text",
+                        "name": "username",
+                        "value": "admin"
+                      },
+                      {
+                        "enabled": true,
+                        "type": "Text",
+                        "name": "password",
+                        "value": "123456"
+                      }
+                    ]
+                  },
+                  "bodyType": "Form"
+                },
+                "uri": {
+                  "query": {
+                    "delimiter": "&",
+                    "items": []
+                  },
+                  "scheme": {
+                    "name": "http",
+                    "version": "V11"
+                  },
+                  "host": "${\"host\"}:${\"port\"}",
+                  "path": "/api/account/login"
+                },
+                "id": "0e9cc656-e999-42ce-ad51-9d014cab6834",
+                "name": "用户登录",
+                "headers": [
+                  {
+                    "enabled": true,
+                    "name": "Content-Type",
+                    "value": "application/x-www-form-urlencoded"
+                  }
+                ]
+              }
+            },
+            {
+              "entity": {
+                "type": "Request",
+                "method": {
+                  "requestBody": true,
+                  "link": "http://tools.ietf.org/html/rfc7231#section-4.3.3",
+                  "name": "POST"
+                },
+                "body": {
+                  "formBody": {
+                    "overrideContentType": true,
+                    "encoding": "multipart/form-data",
+                    "items": [
+                      {
+                        "type": "Text",
+                        "name": "file",
+                        "value": ""
+                      },
+                      {
+                        "enabled": true,
+                        "type": "Text",
+                        "name": "md5",
+                        "value": "true"
+                      },
+                      {
+                        "enabled": true,
+                        "type": "Text",
+                        "name": "quality",
+                        "value": "10"
+                      },
+                      {
+                        "type": "Text",
+                        "name": "type",
+                        "value": "model/hahaha"
+                      },
+                      {
+                        "enabled": true,
+                        "type": "Text",
+                        "name": "image_url",
+                        "value": "/Users/admin/Documents/response/thor/public/wad/20201204115858939.jpg"
+                      }
+                    ]
+                  },
+                  "bodyType": "Form"
+                },
+                "uri": {
+                  "query": {
+                    "delimiter": "&",
+                    "items": []
+                  },
+                  "scheme": {
+                    "name": "http",
+                    "version": "V11"
+                  },
+                  "host": "${\"host\"}:${\"port\"}",
+                  "path": "/api/upload"
+                },
+                "id": "e7f3f4bc-e1cc-421b-9899-a013b48b86a5",
+                "name": "文件上传",
+                "headers": [
+                  {
+                    "enabled": true,
+                    "name": "Content-Type",
+                    "value": "multipart/form-data"
+                  }
+                ]
+              }
+            },
+            {
+              "entity": {
+                "type": "Request",
+                "method": {
+                  "link": "http://tools.ietf.org/html/rfc7231#section-4.3.1",
+                  "name": "GET"
+                },
+                "body": {
+                  "formBody": {
+                    "overrideContentType": true,
+                    "encoding": "application/x-www-form-urlencoded",
+                    "items": []
+                  },
+                  "bodyType": "Text"
+                },
+                "uri": {
+                  "query": {
+                    "delimiter": "&",
+                    "items": []
+                  },
+                  "scheme": {
+                    "name": "http",
+                    "version": "V11"
+                  },
+                  "host": "${\"host\"}:${\"port\"}",
+                  "path": "/api/currentUser"
+                },
+                "id": "ea861531-90fd-49d7-b362-b02e6f9f56c1",
+                "name": "获取session个人信息",
+                "headers": []
+              }
+            },
+            {
+              "entity": {
+                "type": "Request",
+                "method": {
+                  "link": "http://tools.ietf.org/html/rfc7231#section-4.3.1",
+                  "name": "GET"
+                },
+                "body": {
+                  "formBody": {
+                    "overrideContentType": true,
+                    "encoding": "application/x-www-form-urlencoded",
+                    "items": []
+                  },
+                  "bodyType": "Text"
+                },
+                "uri": {
+                  "query": {
+                    "delimiter": "&",
+                    "items": [
+                      {
+                        "enabled": true,
+                        "name": "url",
+                        "value": "https://www.baidu.com/img/PCtm_d9c8750bed0b3c7d089fa7d55720d6cf.png"
+                      }
+                    ]
+                  },
+                  "scheme": {
+                    "name": "http",
+                    "version": "V11"
+                  },
+                  "host": "${\"host\"}:${\"port\"}",
+                  "path": "/api/proxyurl"
+                },
+                "id": "eb6f3e28-61b8-4ae6-a4ce-c808c0d06db1",
+                "name": "资源代理中间件",
+                "headers": []
+              }
+            },
+            {
+              "entity": {
+                "type": "Request",
+                "method": {
+                  "link": "http://tools.ietf.org/html/rfc7231#section-4.3.1",
+                  "name": "GET"
+                },
+                "body": {
+                  "formBody": {
+                    "overrideContentType": true,
+                    "encoding": "application/x-www-form-urlencoded",
+                    "items": []
+                  },
+                  "bodyType": "Text"
+                },
+                "uri": {
+                  "query": {
+                    "delimiter": "&",
+                    "items": []
+                  },
+                  "scheme": {
+                    "name": "http",
+                    "version": "V11"
+                  },
+                  "host": "${\"host\"}:${\"port\"}",
+                  "path": "/api/user"
+                },
+                "description": "",
+                "id": "b96827c9-a890-4b1d-9f6c-de2651deb84a",
+                "name": "1.1 获取用户列表",
+                "headers": []
+              }
+            },
+            {
+              "entity": {
+                "type": "Request",
+                "method": {
+                  "requestBody": true,
+                  "link": "http://tools.ietf.org/html/rfc7231#section-4.3.3",
+                  "name": "POST"
+                },
+                "body": {
+                  "formBody": {
+                    "overrideContentType": true,
+                    "encoding": "application/x-www-form-urlencoded",
+                    "items": []
+                  },
+                  "bodyType": "Text",
+                  "textBody": "{\n  \"username\": ${random(\"\")}\n}"
+                },
+                "uri": {
+                  "query": {
+                    "delimiter": "&",
+                    "items": []
+                  },
+                  "scheme": {
+                    "name": "http",
+                    "version": "V11"
+                  },
+                  "host": "${\"host\"}:${\"port\"}",
+                  "path": "/api/user"
+                },
+                "id": "8cf8a99a-656f-497b-8f52-aa1d05aeee4e",
+                "name": "1.2 新建用户admin",
+                "headers": [
+                  {
+                    "enabled": true,
+                    "name": "Content-Type",
+                    "value": "application/json"
+                  }
+                ]
+              }
+            },
+            {
+              "entity": {
+                "type": "Request",
+                "method": {
+                  "link": "http://tools.ietf.org/html/rfc7231#section-4.3.1",
+                  "name": "GET"
+                },
+                "body": {
+                  "formBody": {
+                    "overrideContentType": true,
+                    "encoding": "application/x-www-form-urlencoded",
+                    "items": []
+                  },
+                  "bodyType": "Text"
+                },
+                "uri": {
+                  "query": {
+                    "delimiter": "&",
+                    "items": []
+                  },
+                  "scheme": {
+                    "name": "http",
+                    "version": "V11"
+                  },
+                  "host": "${\"host\"}:${\"port\"}",
+                  "path": "/api/user/admin"
+                },
+                "description": "",
+                "id": "0c08e1ff-442c-4042-aedd-c0909a0a70ff",
+                "name": "1.3 根据username查询用户",
+                "headers": []
+              }
+            },
+            {
+              "entity": {
+                "type": "Request",
+                "method": {
+                  "requestBody": true,
+                  "link": "http://tools.ietf.org/html/rfc7231#section-4.3.4",
+                  "name": "PUT"
+                },
+                "body": {
+                  "formBody": {
+                    "overrideContentType": true,
+                    "encoding": "application/x-www-form-urlencoded",
+                    "items": []
+                  },
+                  "bodyType": "Text",
+                  "textBody": "{\n  \"phone\": \"119\",\n  \"email\": \"hahahadddddha\"\n}"
+                },
+                "uri": {
+                  "query": {
+                    "delimiter": "&",
+                    "items": []
+                  },
+                  "scheme": {
+                    "name": "http",
+                    "version": "V11"
+                  },
+                  "host": "${\"host\"}:${\"port\"}",
+                  "path": "/api/user/33879965"
+                },
+                "id": "f5688ab2-8f0c-4631-a5de-0a03b2650ab2",
+                "name": "1.4 修改用户信息",
+                "headers": [
+                  {
+                    "enabled": true,
+                    "name": "Content-Type",
+                    "value": "application/json"
+                  }
+                ]
+              }
+            },
+            {
+              "entity": {
+                "type": "Request",
+                "method": {
+                  "link": "http://tools.ietf.org/html/rfc7231#section-4.3.5",
+                  "name": "DELETE"
+                },
+                "body": {
+                  "formBody": {
+                    "overrideContentType": true,
+                    "encoding": "application/x-www-form-urlencoded",
+                    "items": []
+                  },
+                  "bodyType": "Text"
+                },
+                "uri": {
+                  "query": {
+                    "delimiter": "&",
+                    "items": []
+                  },
+                  "scheme": {
+                    "name": "http",
+                    "version": "V11"
+                  },
+                  "host": "${\"host\"}:${\"port\"}",
+                  "path": "/api/user/admin"
+                },
+                "id": "8c7a6719-6880-4e9d-8f5f-f62b3bd3fc60",
+                "name": "1.5 删除用户byUsername",
+                "headers": []
+              }
+            },
+            {
+              "entity": {
+                "type": "Request",
+                "method": {
+                  "link": "http://tools.ietf.org/html/rfc7231#section-4.3.1",
+                  "name": "GET"
+                },
+                "body": {
+                  "formBody": {
+                    "overrideContentType": true,
+                    "encoding": "application/x-www-form-urlencoded",
+                    "items": []
+                  },
+                  "bodyType": "Text"
+                },
+                "uri": {
+                  "query": {
+                    "delimiter": "&",
+                    "items": [
+                      {
+                        "name": "uid",
+                        "value": "201696936"
+                      },
+                      {
+                        "name": "offset",
+                        "value": "1"
+                      },
+                      {
+                        "name": "limit",
+                        "value": "1"
+                      },
+                      {
+                        "name": "device.uid",
+                        "value": "947690185"
+                      },
+                      {
+                        "enabled": true,
+                        "name": "start_date",
+                        "value": "1607081661330"
+                      }
+                    ]
+                  },
+                  "scheme": {
+                    "name": "http",
+                    "version": "V11"
+                  },
+                  "host": "${\"host\"}:${\"port\"}",
+                  "path": "/api/record"
+                },
+                "description": "获取记录列表",
+                "id": "2e55c663-09d4-41fc-94c1-83e9dcc009ca",
+                "name": "2.1 获取记录列表（分页）",
+                "headers": []
+              }
+            },
+            {
+              "entity": {
+                "type": "Request",
+                "method": {
+                  "requestBody": true,
+                  "link": "http://tools.ietf.org/html/rfc7231#section-4.3.3",
+                  "name": "POST"
+                },
+                "body": {
+                  "formBody": {
+                    "overrideContentType": true,
+                    "encoding": "application/x-www-form-urlencoded",
+                    "items": [
+                      {
+                        "enabled": true,
+                        "type": "Text",
+                        "name": "uid",
+                        "value": "123123123"
+                      },
+                      {
+                        "enabled": true,
+                        "type": "Text",
+                        "name": "image_url",
+                        "value": "https://www.baidu.com/img/PCtm_d9c8750bed0b3c7d089fa7d55720d6cf.png"
+                      },
+                      {
+                        "enabled": true,
+                        "type": "Text",
+                        "name": "thumbnail_url",
+                        "value": "http://10.18.144.239:7001/public/upload/2020/11/18/20201118143451352.jpg"
+                      },
+                      {
+                        "enabled": true,
+                        "type": "Text",
+                        "name": "device_id",
+                        "value": "12345"
+                      },
+                      {
+                        "enabled": true,
+                        "type": "Text",
+                        "name": "is_defect",
+                        "value": ""
+                      }
+                    ]
+                  },
+                  "bodyType": "Text",
+                  "textBodyEditorHeight": 320,
+                  "textBody": "{\n  \"uid\": ${random(\"\")},\n    \"device\": {\n        \"name\": \"default\",\n        \"camera_server\": \"http://10.10.10.10:1111\",\n        \"model_server\": \"http://10.18.144.239:7777/mock/5fab56600a3d6400244cb595/thor\",\n        \"ip\": \"10.10.10.10\",\n        \"uid\": 947690185\n    },\n    \"style\": {\n        \"size_standard\": [\n            {\n                \"id\": 1,\n                \"label\": \"宽度\",\n                \"standard\": 20,\n                \"tol\": 1\n            },\n            {\n                \"id\": 2,\n                \"label\": \"高度\",\n                \"standard\": 50,\n                \"tol\": 1\n            }\n        ],\n        \"name\": \"type_1\",\n        \"size_model\": \"http://111/model_defect.pth\",\n        \"size_md5\": \"asdljkasd1kjblkasjfb\",\n        \"defect_model\": \"http://111/model_defect.pth\",\n        \"defect_md5\": \"kbkjblkglglgljhlkjhlkh\",\n        \"uid\": 702849476\n    },\n    \"image_url\": \"https://www.baidu.com/img/PCtm_d9c8750bed0b3c7d089fa7d55720d6cf.png\",\n    \"thumbnail_url\": \"http://10.18.144.239:7001/public/upload/2020/11/20/20201120164253709.jpg\",\n    \"defect_items\": [\n        {\n            \"label\": 1,\n            \"points\": [\n                [\n                    10,\n                    20\n                ],\n                [\n                    40,\n                    30\n                ],\n                [\n                    15,\n                    40\n                ]\n            ]\n        },\n        {\n            \"label\": 2,\n            \"points\": [\n                [\n                    40,\n                    20\n                ],\n                [\n                    60,\n                    30\n                ],\n                [\n                    30,\n                    40\n                ]\n            ]\n        },\n        {\n            \"label\": 2,\n            \"points\": [\n                [\n                    10,\n                    20\n                ],\n                [\n                    20,\n                    30\n                ],\n                [\n                    30,\n                    40\n                ]\n            ]\n        },\n        {\n            \"label\": 3,\n            \"points\": [\n                [\n                    10,\n                    20\n                ],\n                [\n                    20,\n                    30\n                ],\n                [\n                    30,\n                    40\n                ]\n            ]\n        }\n    ],\n    \"size_items\": [],\n    \"defect_alarm\": true,\n    \"size_alarm\": false\n}"
+                },
+                "uri": {
+                  "query": {
+                    "delimiter": "&",
+                    "items": []
+                  },
+                  "scheme": {
+                    "name": "http",
+                    "version": "V11"
+                  },
+                  "host": "${\"host\"}:${\"port\"}",
+                  "path": "/api/record"
+                },
+                "id": "637ff526-67d4-4420-8539-d8190349983c",
+                "name": "2.2 提交一条记录",
+                "headers": [
+                  {
+                    "enabled": true,
+                    "name": "Content-Type",
+                    "value": "application/json"
+                  }
+                ]
+              }
+            },
+            {
+              "entity": {
+                "type": "Request",
+                "method": {
+                  "link": "http://tools.ietf.org/html/rfc7231#section-4.3.1",
+                  "name": "GET"
+                },
+                "body": {
+                  "formBody": {
+                    "overrideContentType": true,
+                    "encoding": "application/x-www-form-urlencoded",
+                    "items": []
+                  },
+                  "bodyType": "Text"
+                },
+                "uri": {
+                  "query": {
+                    "delimiter": "&",
+                    "items": [
+                      {
+                        "name": "is_defect",
+                        "value": "true"
+                      }
+                    ]
+                  },
+                  "scheme": {
+                    "name": "http",
+                    "version": "V11"
+                  },
+                  "host": "${\"host\"}:${\"port\"}",
+                  "path": "/api/record/895852219"
+                },
+                "id": "ad3ca51c-c925-420b-b090-a403b13e1066",
+                "name": "2.3 根据uid查询检测记录",
+                "headers": []
+              }
+            },
+            {
+              "entity": {
+                "type": "Request",
+                "method": {
+                  "requestBody": true,
+                  "link": "http://tools.ietf.org/html/rfc7231#section-4.3.4",
+                  "name": "PUT"
+                },
+                "body": {
+                  "formBody": {
+                    "overrideContentType": true,
+                    "encoding": "application/x-www-form-urlencoded",
+                    "items": []
+                  },
+                  "bodyType": "Text",
+                  "textBody": "{\n  \"size_alarm\": true\n}"
+                },
+                "uri": {
+                  "query": {
+                    "delimiter": "&",
+                    "items": []
+                  },
+                  "scheme": {
+                    "name": "http",
+                    "version": "V11"
+                  },
+                  "host": "${\"host\"}:${\"port\"}",
+                  "path": "/api/record/965011106"
+                },
+                "id": "d63195b3-c48c-468c-921c-b7cf09d3510b",
+                "name": "2.4 修改一条记录",
+                "headers": [
+                  {
+                    "enabled": true,
+                    "name": "Content-Type",
+                    "value": "application/json"
+                  }
+                ]
+              }
+            },
+            {
+              "entity": {
+                "type": "Request",
+                "method": {
+                  "link": "http://tools.ietf.org/html/rfc7231#section-4.3.5",
+                  "name": "DELETE"
+                },
+                "body": {
+                  "formBody": {
+                    "overrideContentType": true,
+                    "encoding": "application/x-www-form-urlencoded",
+                    "items": []
+                  },
+                  "bodyType": "Text"
+                },
+                "uri": {
+                  "query": {
+                    "delimiter": "&",
+                    "items": []
+                  },
+                  "scheme": {
+                    "name": "http",
+                    "version": "V11"
+                  },
+                  "host": "${\"host\"}:${\"port\"}",
+                  "path": "/api/record/737151720"
+                },
+                "id": "d0ebea4e-9e89-4df5-944a-4e90e08c1697",
+                "name": "2.5 删除记录（,隔开删除多个）",
+                "headers": []
+              }
+            },
+            {
+              "entity": {
+                "type": "Request",
+                "method": {
+                  "link": "http://tools.ietf.org/html/rfc7231#section-4.3.1",
+                  "name": "GET"
+                },
+                "body": {
+                  "formBody": {
+                    "overrideContentType": true,
+                    "encoding": "application/x-www-form-urlencoded",
+                    "items": []
+                  },
+                  "bodyType": "Text"
+                },
+                "uri": {
+                  "query": {
+                    "delimiter": "&",
+                    "items": [
+                      {
+                        "name": "offset",
+                        "value": "3"
+                      },
+                      {
+                        "name": "limit",
+                        "value": "5"
+                      },
+                      {
+                        "name": "uid",
+                        "value": "6623333770"
+                      }
+                    ]
+                  },
+                  "scheme": {
+                    "name": "http",
+                    "version": "V11"
+                  },
+                  "host": "${\"host\"}:${\"port\"}",
+                  "path": "/api/style"
+                },
+                "id": "585d624b-c8f8-4f38-98e7-ca0e37ff637c",
+                "name": "3.1 获取型号列表（全部）",
+                "headers": []
+              }
+            },
+            {
+              "entity": {
+                "type": "Request",
+                "method": {
+                  "requestBody": true,
+                  "link": "http://tools.ietf.org/html/rfc7231#section-4.3.3",
+                  "name": "POST"
+                },
+                "body": {
+                  "formBody": {
+                    "overrideContentType": true,
+                    "encoding": "application/x-www-form-urlencoded",
+                    "items": []
+                  },
+                  "bodyType": "Text",
+                  "textBody": "{\n    \"name\": \"type_1\",\n    \"size_model\": \"model/hahaha/smartpark.mp4\",\n    \"size_md5\": \"asdljkasd1kjblkasjfb\",\n    \"defect_model\": \"model/hahaha/smartpark.mp4\",\n    \"defect_md5\": \"kbkjblkglglgljhlkjhlkh\",\n    \"size_standard\": [\n      {\"id\": 1, \"label\": \"宽度\", \"standard\": 20, \"tol\": 1 },\n      {\"id\": 2, \"label\": \"高度\", \"standard\": 50, \"tol\": 1 }\n    ]\n  }"
+                },
+                "uri": {
+                  "query": {
+                    "delimiter": "&",
+                    "items": []
+                  },
+                  "scheme": {
+                    "name": "http",
+                    "version": "V11"
+                  },
+                  "host": "${\"host\"}:${\"port\"}",
+                  "path": "/api/style"
+                },
+                "id": "99cf7a46-5ac0-47e3-9307-770c1ef36294",
+                "name": "3.2 创建一个型号",
+                "headers": [
+                  {
+                    "enabled": true,
+                    "name": "Content-Type",
+                    "value": "application/json"
+                  }
+                ]
+              }
+            },
+            {
+              "entity": {
+                "type": "Request",
+                "method": {
+                  "link": "http://tools.ietf.org/html/rfc7231#section-4.3.1",
+                  "name": "GET"
+                },
+                "body": {
+                  "formBody": {
+                    "overrideContentType": true,
+                    "encoding": "application/x-www-form-urlencoded",
+                    "items": []
+                  },
+                  "bodyType": "Text"
+                },
+                "uri": {
+                  "query": {
+                    "delimiter": "&",
+                    "items": [
+                      {
+                        "name": "size_md5",
+                        "value": "asdljkasd1kjblkasjfb"
+                      }
+                    ]
+                  },
+                  "scheme": {
+                    "name": "http",
+                    "version": "V11"
+                  },
+                  "host": "${\"host\"}:${\"port\"}",
+                  "path": "/api/style/2853482820"
+                },
+                "id": "186426dd-580e-4b6b-93ea-0c99cab2ee35",
+                "name": "3.3 根据uid查询型号",
+                "headers": []
+              }
+            },
+            {
+              "entity": {
+                "type": "Request",
+                "method": {
+                  "requestBody": true,
+                  "link": "http://tools.ietf.org/html/rfc7231#section-4.3.4",
+                  "name": "PUT"
+                },
+                "body": {
+                  "formBody": {
+                    "overrideContentType": true,
+                    "encoding": "application/x-www-form-urlencoded",
+                    "items": []
+                  },
+                  "bodyType": "Text",
+                  "textBodyEditorHeight": 150,
+                  "textBody": "{\n  \"size_md5\": \"w\"\n}"
+                },
+                "uri": {
+                  "query": {
+                    "delimiter": "&",
+                    "items": []
+                  },
+                  "scheme": {
+                    "name": "http",
+                    "version": "V11"
+                  },
+                  "host": "${\"host\"}:${\"port\"}",
+                  "path": "/api/style/5408214067"
+                },
+                "id": "7b578426-47c8-4eb6-aff2-db2f96e0cfcd",
+                "name": "3.4 修改型号信息",
+                "headers": [
+                  {
+                    "enabled": true,
+                    "name": "Content-Type",
+                    "value": "application/json"
+                  }
+                ]
+              }
+            },
+            {
+              "entity": {
+                "type": "Request",
+                "method": {
+                  "link": "http://tools.ietf.org/html/rfc7231#section-4.3.5",
+                  "name": "DELETE"
+                },
+                "body": {
+                  "formBody": {
+                    "overrideContentType": true,
+                    "encoding": "application/x-www-form-urlencoded",
+                    "items": []
+                  },
+                  "bodyType": "Text"
+                },
+                "uri": {
+                  "query": {
+                    "delimiter": "&",
+                    "items": []
+                  },
+                  "scheme": {
+                    "name": "http",
+                    "version": "V11"
+                  },
+                  "host": "${\"host\"}:${\"port\"}",
+                  "path": "/api/style/404280917"
+                },
+                "id": "a70aa6f3-01c5-4be6-843d-7e49f9e3e6e4",
+                "name": "3.5 删除型号（,隔开删除多个）",
+                "headers": []
+              }
+            },
+            {
+              "entity": {
+                "type": "Request",
+                "method": {
+                  "link": "http://tools.ietf.org/html/rfc7231#section-4.3.1",
+                  "name": "GET"
+                },
+                "body": {
+                  "formBody": {
+                    "overrideContentType": true,
+                    "encoding": "application/x-www-form-urlencoded",
+                    "items": []
+                  },
+                  "bodyType": "Text"
+                },
+                "uri": {
+                  "query": {
+                    "delimiter": "&",
+                    "items": [
+                      {
+                        "name": "limit",
+                        "value": "10"
+                      },
+                      {
+                        "name": "offset",
+                        "value": "2"
+                      },
+                      {
+                        "name": "uid",
+                        "value": "4517006886"
+                      },
+                      {
+                        "name": "start_date",
+                        "value": "2020-11-26 11:44"
+                      },
+                      {
+                        "name": "end_date",
+                        "value": "dasd"
+                      }
+                    ]
+                  },
+                  "scheme": {
+                    "name": "http",
+                    "version": "V11"
+                  },
+                  "host": "${\"host\"}:${\"port\"}",
+                  "path": "/api/device"
+                },
+                "id": "5bbfb5e6-37a5-4319-b16a-bd085528f157",
+                "name": "4.1 设备列表查询（全部）",
+                "headers": []
+              }
+            },
+            {
+              "entity": {
+                "type": "Request",
+                "method": {
+                  "requestBody": true,
+                  "link": "http://tools.ietf.org/html/rfc7231#section-4.3.3",
+                  "name": "POST"
+                },
+                "body": {
+                  "formBody": {
+                    "overrideContentType": true,
+                    "encoding": "application/x-www-form-urlencoded",
+                    "items": []
+                  },
+                  "bodyType": "Text",
+                  "textBody": "{\n  \"name\": \"default\",\n  \"camera_server\": \"http://10.10.10.10:1111\",\n  \"model_server\": \"http://10.18.144.239:7777/mock/5fab56600a3d6400244cb595/thor\",\n  \"ip\": \"10.10.10.10\"\n}"
+                },
+                "uri": {
+                  "query": {
+                    "delimiter": "&",
+                    "items": [
+                      {
+                        "enabled": true,
+                        "name": "",
+                        "value": ""
+                      }
+                    ]
+                  },
+                  "scheme": {
+                    "name": "http",
+                    "version": "V11"
+                  },
+                  "host": "${\"host\"}:${\"port\"}",
+                  "path": "/api/device"
+                },
+                "id": "57a9c40e-e25a-4818-95e1-58f42117f886",
+                "name": "4.2 新建一个设备",
+                "headers": [
+                  {
+                    "enabled": true,
+                    "name": "Content-Type",
+                    "value": "application/json"
+                  }
+                ]
+              }
+            },
+            {
+              "entity": {
+                "type": "Request",
+                "method": {
+                  "link": "http://tools.ietf.org/html/rfc7231#section-4.3.1",
+                  "name": "GET"
+                },
+                "body": {
+                  "formBody": {
+                    "overrideContentType": true,
+                    "encoding": "application/x-www-form-urlencoded",
+                    "items": []
+                  },
+                  "bodyType": "Text"
+                },
+                "uri": {
+                  "query": {
+                    "delimiter": "&",
+                    "items": []
+                  },
+                  "scheme": {
+                    "name": "http",
+                    "version": "V11"
+                  },
+                  "host": "${\"host\"}:${\"port\"}",
+                  "path": "/api/device/1959381517"
+                },
+                "id": "86ce0104-460b-43c0-9443-31c977055ca5",
+                "name": "4.3 根据uid查询设备",
+                "headers": []
+              }
+            },
+            {
+              "entity": {
+                "type": "Request",
+                "method": {
+                  "requestBody": true,
+                  "link": "http://tools.ietf.org/html/rfc7231#section-4.3.4",
+                  "name": "PUT"
+                },
+                "body": {
+                  "formBody": {
+                    "overrideContentType": true,
+                    "encoding": "application/x-www-form-urlencoded",
+                    "items": []
+                  },
+                  "bodyType": "Text",
+                  "textBody": "{\n  \"model_server\": \"http://10.18.144.239:7777/mock/5fab56600a3d6400244cb595/thor\"\n}"
+                },
+                "uri": {
+                  "query": {
+                    "delimiter": "&",
+                    "items": []
+                  },
+                  "scheme": {
+                    "name": "http",
+                    "version": "V11"
+                  },
+                  "host": "${\"host\"}:${\"port\"}",
+                  "path": "/api/device/5848819999"
+                },
+                "id": "f18847ed-133e-48d5-b598-fb44f88688d3",
+                "name": "4.4 修改设备信息",
+                "headers": [
+                  {
+                    "enabled": true,
+                    "name": "Content-Type",
+                    "value": "application/json"
+                  }
+                ]
+              }
+            },
+            {
+              "entity": {
+                "type": "Request",
+                "method": {
+                  "link": "http://tools.ietf.org/html/rfc7231#section-4.3.5",
+                  "name": "DELETE"
+                },
+                "body": {
+                  "formBody": {
+                    "overrideContentType": true,
+                    "encoding": "application/x-www-form-urlencoded",
+                    "items": []
+                  },
+                  "bodyType": "Text"
+                },
+                "uri": {
+                  "query": {
+                    "delimiter": "&",
+                    "items": []
+                  },
+                  "scheme": {
+                    "name": "http",
+                    "version": "V11"
+                  },
+                  "host": "${\"host\"}:${\"port\"}",
+                  "path": "/api/device/2362175643"
+                },
+                "id": "d7a5dab7-a0be-4e31-b1a3-367188d5fb5b",
+                "name": "4.5 删除设备（,隔开）",
+                "headers": []
+              }
+            },
+            {
+              "entity": {
+                "type": "Request",
+                "method": {
+                  "requestBody": true,
+                  "link": "http://tools.ietf.org/html/rfc7231#section-4.3.3",
+                  "name": "POST"
+                },
+                "body": {
+                  "formBody": {
+                    "overrideContentType": true,
+                    "encoding": "application/x-www-form-urlencoded",
+                    "items": []
+                  },
+                  "bodyType": "Text",
+                  "textBody": "{\n  \"device_id\": 1289062316,\n  \"style_id\": 2675561239 \n}"
+                },
+                "uri": {
+                  "query": {
+                    "delimiter": "&",
+                    "items": []
+                  },
+                  "scheme": {
+                    "name": "http",
+                    "version": "V11"
+                  },
+                  "host": "${\"host\"}:${\"port\"}",
+                  "path": "/api/device/style"
+                },
+                "id": "4895f803-fb53-421a-a9a8-8a000a36ef37",
+                "name": "4.6 设置设备当前的款式",
+                "headers": [
+                  {
+                    "enabled": true,
+                    "name": "Content-Type",
+                    "value": "application/json"
+                  }
+                ]
+              }
+            },
+            {
+              "entity": {
+                "type": "Request",
+                "method": {
+                  "link": "http://tools.ietf.org/html/rfc7231#section-4.3.1",
+                  "name": "GET"
+                },
+                "body": {
+                  "formBody": {
+                    "overrideContentType": true,
+                    "encoding": "application/x-www-form-urlencoded",
+                    "items": []
+                  },
+                  "bodyType": "Text"
+                },
+                "uri": {
+                  "query": {
+                    "delimiter": "&",
+                    "items": []
+                  },
+                  "scheme": {
+                    "name": "http",
+                    "version": "V11"
+                  },
+                  "host": "${\"host\"}:${\"port\"}",
+                  "path": "/api/account/logout"
+                },
+                "id": "7d4051ec-6fb0-4c97-9b8a-003caca5d528",
+                "name": "退出登录",
+                "headers": []
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "environments": [
+    {
+      "id": "0977ab21-9161-47d9-ac52-00d65a669a47",
+      "name": "dev-server",
+      "variables": {
+        "a316b497-c8b5-4388-b0cb-9c90e8a2b16c": {
+          "createdAt": "2020-11-17T16:19:01.349+08:00",
+          "name": "host",
+          "value": "10.18.144.239",
+          "enabled": true,
+          "private": false
+        },
+        "c180a9f7-b665-40ba-9c1f-ae62bc531692": {
+          "createdAt": "2020-11-17T16:22:49.675+08:00",
+          "name": "port",
+          "value": "7001",
+          "enabled": true,
+          "private": false
+        }
+      }
+    },
+    {
+      "id": "afc2e21f-04ac-4ae8-b759-541dc89036ab",
+      "name": "docker-server",
+      "variables": {
+        "a88ebb0e-7fe0-4788-9ef7-357446898678": {
+          "createdAt": "2020-11-17T16:19:01.349+08:00",
+          "name": "host",
+          "value": "10.18.98.184",
+          "enabled": true,
+          "private": false
+        },
+        "0e417f14-57bf-4e79-a8a0-88800abe7c12": {
+          "createdAt": "2020-11-17T16:22:49.675+08:00",
+          "name": "port",
+          "value": "7001",
+          "enabled": true,
+          "private": false
+        }
+      }
+    },
+    {
+      "id": "fac74930-57da-4181-8778-5ee1a89f38da",
+      "name": "dev-local",
+      "variables": {
+        "7add1b8f-9d92-4f19-9a1b-37c107484288": {
+          "createdAt": "2020-11-17T16:19:01.349+08:00",
+          "name": "host",
+          "value": "127.0.0.1",
+          "enabled": true,
+          "private": false
+        },
+        "1043f530-53f7-4599-8587-5a8098933d8f": {
+          "createdAt": "2020-11-17T16:22:49.675+08:00",
+          "name": "port",
+          "value": "7001",
+          "enabled": true,
+          "private": false
+        }
+      }
+    }
+  ]
+}
