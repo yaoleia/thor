@@ -1,10 +1,10 @@
-const { getDate, urlFilter, urlJoin } = require('../extend/helper')
+const { urlFilter, urlJoin } = require('../extend/helper')
 const mongooseLeanGetters = require('mongoose-lean-getters')
 module.exports = ({ mongoose, config }) => {
   const { baseUrl } = config.static
   const StyleSchema = new mongoose.Schema({
     uid: { type: String, unique: true },
-    time: { type: Date, default: Date.now, get: getDate },
+    time: { type: Date, default: Date.now, get: v => v && v.valueOf() },
     name: { type: String },
     sample_image: { type: String, set: v => urlFilter(v, baseUrl), get: v => urlJoin(v, baseUrl) },
     size_model: { type: String, set: v => urlFilter(v, baseUrl), get: v => urlJoin(v, baseUrl) },

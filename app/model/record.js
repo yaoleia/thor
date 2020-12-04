@@ -1,10 +1,10 @@
-const { getDate, urlFilter, urlJoin } = require('../extend/helper')
+const { urlFilter, urlJoin } = require('../extend/helper')
 const mongooseLeanGetters = require('mongoose-lean-getters')
 module.exports = ({ mongoose, config }) => {
   const { baseUrl } = config.static
   const RecordSchema = new mongoose.Schema({
     uid: { type: String, unique: true },
-    time: { type: Date, default: Date.now, get: getDate },
+    time: { type: Date, default: Date.now, get: v => v && v.valueOf() },
     device: {
       uid: { type: String },
       name: { type: String },

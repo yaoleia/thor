@@ -1,9 +1,8 @@
-const { getDate } = require('../extend/helper')
 const mongooseLeanGetters = require('mongoose-lean-getters')
 module.exports = ({ mongoose }) => {
   const DeviceSchema = new mongoose.Schema({
     uid: { type: String, unique: true },
-    time: { type: Date, default: Date.now, get: getDate },
+    time: { type: Date, default: Date.now, get: v => v && v.valueOf() },
     name: { type: String },
     camera_server: { type: String },
     model_server: { type: String },

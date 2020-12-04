@@ -1,10 +1,10 @@
-const { getDate, urlFilter, urlJoin } = require('../extend/helper')
+const { urlFilter, urlJoin } = require('../extend/helper')
 const mongooseLeanGetters = require('mongoose-lean-getters')
 module.exports = ({ mongoose, config }) => {
   const { baseUrl } = config.static
   const UserSchema = new mongoose.Schema({
     username: { type: String, unique: true },
-    time: { type: Date, default: Date.now, get: getDate },
+    time: { type: Date, default: Date.now, get: v => v && v.valueOf() },
     password: { type: String, default: '123456' },
     avatar: { type: String, default: '', set: v => urlFilter(v, baseUrl), get: v => urlJoin(v, baseUrl) },
     nickname: { type: String, default: '' },

@@ -84,7 +84,7 @@ class PusherService extends Service {
       // TODO 反馈给硬件接口
       const defectData = {
         uid,
-        time: helper.getDate(),
+        time: new Date().getTime(),
         device: baseDevice,
         style,
         image_url: image.original_url || image_url,

@@ -7,7 +7,7 @@ exports.getDate = getDate
 
 exports.parseMsg = (action, payload = {}, metadata = {}) => {
   const meta = Object.assign({}, {
-    time: getDate(),
+    time: payload.time || new Date().getTime(),
   }, metadata)
   return {
     meta,
@@ -26,7 +26,7 @@ exports.getDateIfTime = time => {
   } else {
     time = undefined
   }
-  return time && getDate(time)
+  return time
 }
 
 exports.getRandomId = (len = 10) => parseInt((Math.random() * 9 + 1) * Math.pow(10, len - 1), 10)
