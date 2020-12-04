@@ -1,11 +1,9 @@
 const moment = require('moment')
 const { v4: uuidv4 } = require('uuid')
 
-const getDate = (time = new Date().getTime()) => moment(new Date(time)).utcOffset(8).format('YYYY-MM-DD HH:mm:ss')
+const getDate = (time = new Date().getTime()) => moment(new Date(time)).format('YYYY-MM-DD HH:mm:ss')
 
 exports.getDate = getDate
-
-exports.relativeTime = time => moment(new Date(time)).fromNow();
 
 exports.parseMsg = (action, payload = {}, metadata = {}) => {
   const meta = Object.assign({}, {

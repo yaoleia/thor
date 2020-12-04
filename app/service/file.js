@@ -17,7 +17,8 @@ class FileService extends Service {
       uploadDir: path.join(baseDir, prefix, folder),
       baseUrl,
       folder,
-      prefix
+      prefix,
+      baseDir
     }
   }
 
@@ -27,10 +28,10 @@ class FileService extends Service {
     try {
       if (file_url) {
         file_url = file_url.toLowerCase()
-        const { uploadDir, baseUrl, folder, prefix } = this.getUploadDir(type)
+        const { uploadDir, baseUrl, folder, prefix, baseDir } = this.getUploadDir(type)
         const extname = path.extname(file_url)
         const now = moment().format('YYYYMMDDHHmmss')
-        let fileName = now + Math.floor(Math.random() * 1000) + extname
+        let fileName = now + this.ctx.helper.getRandomId(3) + extname
         let sharpFilter, hash
         if (typeof quality === "number" && imageTypes.indexOf(extname) !== -1) {
           fileName = fileName.replace(extname, '.jpg')
@@ -52,11 +53,11 @@ class FileService extends Service {
           file_url = decodeURI(file_url)
           let exists = fs.existsSync(file_url)
           if (!exists) {
-            // windows路径处理
-            const pathArr = file_url.split('\\')
-            const index = pathArr.indexOf('public')
+            // windows/linux路径处理
+            const pathArr = file_url.indexOf('\\') !== -1 ? file_url.split('\\') : file_url.split('/')
+            const index = pathArr.indexOf(prefix.replace('/', ''))
             if (index !== -1) {
-              pathArr.splice(0, index, '/thor')
+              pathArr.splice(0, index, baseDir)
               file_url = path.join(...pathArr)
             }
             exists = fs.existsSync(file_url)
