@@ -1,7 +1,7 @@
-const moment = require('moment')
+const moment = require('moment-timezone')
 const { v4: uuidv4 } = require('uuid')
 
-const getDate = (time = new Date().getTime()) => moment(new Date(time)).format('YYYY-MM-DD HH:mm:ss')
+const getDate = (time = new Date().getTime(), format = 'YYYY-MM-DD HH:mm:ss') => moment(new Date(time)).tz('Asia/Shanghai').format(format)
 
 exports.getDate = getDate
 

@@ -1,6 +1,5 @@
 const Service = require('egg').Service
 const path = require('path')
-const moment = require('moment')
 const mkdirp = require('mkdirp')
 const fs = require('fs')
 const request = require('request')
@@ -12,7 +11,7 @@ const imageTypes = [".jpg", ".jpeg", ".png", ".gif", ".bmp"]
 class FileService extends Service {
   getUploadDir(type) {
     const { baseDir, config: { static: { baseUrl, prefix }, upload: { prefix: uPrefix } } } = this.app
-    const folder = path.join(uPrefix, type || moment().format('YYYY/MM/DD'))
+    const folder = path.join(uPrefix, type || this.ctx.helper.getDate('YYYY/MM/DD'))
     return {
       uploadDir: path.join(baseDir, prefix, folder),
       baseUrl,
@@ -30,7 +29,7 @@ class FileService extends Service {
         file_url = file_url.toLowerCase()
         const { uploadDir, baseUrl, folder, prefix, baseDir } = this.getUploadDir(type)
         const extname = path.extname(file_url)
-        const now = moment().format('YYYYMMDDHHmmss')
+        const now = this.ctx.helper.getDate('YYYYMMDDHHmmss')
         let fileName = now + this.ctx.helper.getRandomId(3) + extname
         let sharpFilter, hash
         if (typeof quality === "number" && imageTypes.indexOf(extname) !== -1) {
