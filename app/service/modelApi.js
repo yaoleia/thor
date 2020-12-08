@@ -12,7 +12,7 @@ class BackendService extends Service {
         },
         dataType: 'json',
         method: "POST",
-        timeout: 10000
+        timeout: 20000
       })
       if (resp.status !== 200) throw resp.data
       return resp.data
