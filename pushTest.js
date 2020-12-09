@@ -11,7 +11,7 @@ async function push(index) {
         },
         formData: {
             image_url: `/thor/public/wad/${index}_20201208132339_jpg.jpg`,
-            device_id: '4554023635',
+            device_id: '5525088371',
             uid: getRandomId(),
             quality: 50
         }

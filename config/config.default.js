@@ -46,7 +46,11 @@ module.exports = appInfo => {
 
   config.mongoose = {
     url: 'mongodb://localhost/thor',
-    options: {}
+    options: {
+      useUnifiedTopology: true,
+      useNewUrlParser: true,
+      useCreateIndex: true
+    }
   }
 
   config.redis = {
