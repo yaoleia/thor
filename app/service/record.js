@@ -14,7 +14,7 @@ module.exports = app => {
       }
       const [count, records] = await Promise.all([
         this.ctx.model.Record.countDocuments(params),
-        this.ctx.model.Record.find(params, { _id: 0, defect_items: 0, size_items: 0 }).skip(offset).limit(limit).sort([['time', -1]]).lean({ getters: true })
+        this.ctx.model.Record.find(params, { _id: 0, defect_items: 0, size_items: 0 }).skip(offset).limit(limit).sort({ time: -1 }).lean({ getters: true })
       ])
       const result = {}
       result.meta = { total: count, limit, offset }

@@ -16,6 +16,7 @@ module.exports = ({ mongoose, config }) => {
   }, {
     versionKey: false
   })
+  StyleSchema.index({ time: -1 })
   StyleSchema.plugin(mongooseLeanGetters)
   StyleSchema.set('toObject', { getters: true })
   return mongoose.model('Style', StyleSchema)

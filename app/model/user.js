@@ -15,6 +15,7 @@ module.exports = ({ mongoose, config }) => {
   }, {
     versionKey: false
   })
+  UserSchema.index({ time: -1 })
   UserSchema.plugin(mongooseLeanGetters)
   UserSchema.set('toObject', { getters: true })
   return mongoose.model('User', UserSchema)

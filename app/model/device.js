@@ -10,6 +10,7 @@ module.exports = ({ mongoose }) => {
   }, {
     versionKey: false
   })
+  DeviceSchema.index({ time: -1 })
   DeviceSchema.plugin(mongooseLeanGetters)
   DeviceSchema.set('toObject', { getters: true })
   return mongoose.model('Device', DeviceSchema);

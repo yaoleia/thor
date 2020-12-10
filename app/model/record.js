@@ -30,6 +30,7 @@ module.exports = ({ mongoose, config }) => {
   }, {
     versionKey: false
   })
+  RecordSchema.index({ time: -1 })
   RecordSchema.plugin(mongooseLeanGetters)
   RecordSchema.set('toObject', { getters: true })
   return mongoose.model('Record', RecordSchema);
