@@ -1,7 +1,7 @@
 module.exports = app => {
   class RecordService extends app.Service {
-    async index(req = {}) {
-      let { start_date, end_date, limit = 0, offset = 0, ...params } = req
+    async index(query = {}) {
+      let { start_date, end_date, limit = 0, offset = 0, ...params } = query
       offset = Number(offset)
       limit = Number(limit)
       const { getDateIfTime } = this.ctx.helper
@@ -16,11 +16,10 @@ module.exports = app => {
         if (params[p] === 'true') params[p] = true
         if (params[p] === 'false') params[p] = false
       })
-      const query = this.ctx.model.Record.find()
-      query.hint({ time: -1 })
-      query.setQuery(params)
+      const countQuery = this.ctx.model.Record.find()
+      if (JSON.stringify(params) === "{}") countQuery.hint({ time: 1 })
       const [count, records] = await Promise.all([
-        query.countDocuments(),
+        countQuery.countDocuments(params),
         this.ctx.model.Record.find(params, { _id: 0, defect_items: 0, size_items: 0 }).skip(offset).limit(limit).sort({ time: -1 }).lean({ getters: true })
       ])
       const result = {}

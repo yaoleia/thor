@@ -25,12 +25,14 @@ module.exports = ({ mongoose, config }) => {
     thumbnail_url: { type: String, set: v => urlFilter(v, baseUrl), get: v => urlJoin(v, baseUrl) },
     defect_items: { type: Array },
     size_items: { type: Array },
-    defect_alarm: { type: Boolean },
-    size_alarm: { type: Boolean }
+    defect_alarm: { type: Boolean, index: true },
+    size_alarm: { type: Boolean, index: true }
   }, {
     versionKey: false
   })
   RecordSchema.index({ time: -1 })
+  RecordSchema.index({ size_alarm: 1, defect_alarm: 1 })
+  RecordSchema.index({ time: -1, size_alarm: 1, defect_alarm: 1 })
   RecordSchema.plugin(mongooseLeanGetters)
   RecordSchema.set('toObject', { getters: true })
   return mongoose.model('Record', RecordSchema);
