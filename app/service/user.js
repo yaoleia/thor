@@ -24,7 +24,9 @@ module.exports = app => {
     async show({ id }) {
       if (!id) { return };
       const users = await this.ctx.model.User.find({ username: id }, { _id: 0 }).lean({ getters: true })
-      return users[0];
+      if (users[0]) return users[0]
+      this.ctx.status = 400
+      return `${id} 未找到用户信息`
     }
     async update({ id }, { username, ...body }) {
       if (body.password) {

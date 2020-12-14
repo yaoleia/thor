@@ -24,7 +24,9 @@ module.exports = app => {
     async show({ id }) {
       if (!id) { return }
       const styles = await this.ctx.model.Style.find({ uid: id }, { _id: 0 }).lean({ getters: true })
-      return styles[0]
+      if (styles[0]) return styles[0]
+      this.ctx.status = 400
+      return `${id} 未找到型号信息`
     }
     async update({ id }, { uid, ...body }) {
       const style = await this.ctx.model.Style.findOneAndUpdate({ uid: id }, { $set: body }, { new: true }).lean({ getters: true })

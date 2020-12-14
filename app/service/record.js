@@ -30,7 +30,9 @@ module.exports = app => {
     async show({ id }) {
       if (!id) { return };
       const records = await this.ctx.model.Record.find({ uid: id }, { _id: 0 }).lean({ getters: true })
-      return records[0];
+      if (records[0]) return records[0];
+      this.ctx.status = 400
+      return `${id} 未找到生产记录信息`
     }
     async update({ id }, { uid, ...body }) {
       const record = await this.ctx.model.Record.findOneAndUpdate({ uid: id }, { $set: body }, { new: true }).lean({ getters: true })

@@ -31,11 +31,13 @@ module.exports = app => {
     async show({ id }) {
       if (!id) { return }
       const devices = await this.ctx.model.Device.find({ uid: id }, { _id: 0 }).lean({ getters: true })
-      const device = devices[0] || null
+      const device = devices[0]
       if (device) {
         device.style = await this.getDeviceStyle(id)
+        return device
       }
-      return device
+      this.ctx.status = 400
+      return `${id} 未找到设备信息`
     }
 
     async update({ id }, { uid, ...body }) {
