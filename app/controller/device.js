@@ -28,8 +28,8 @@ class DeviceController extends Controller {
     this.ctx.body = result
   }
 
-  async setDeviceStyle() {
-    const result = await this.ctx.service.device.setDeviceStyle(this.ctx.request.body)
+  async setDevicePattern() {
+    const result = await this.ctx.service.device.setDevicePattern(this.ctx.request.body)
     this.ctx.body = result
   }
 }

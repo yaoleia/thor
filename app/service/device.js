@@ -1,6 +1,6 @@
 module.exports = app => {
   class DeviceService extends app.Service {
-    async index(query = {}, hasStyle = true) {
+    async index(query = {}, hasPattern = true) {
       let { start_date, end_date, limit = 0, offset = 0, ...params } = query
       offset = Number(offset)
       limit = Number(limit)
@@ -16,9 +16,9 @@ module.exports = app => {
         this.ctx.model.Device.countDocuments(params),
         this.ctx.model.Device.find(params, { _id: 0 }).skip(offset).limit(limit).sort([['time', -1]]).lean({ getters: true })
       ])
-      if (hasStyle) {
+      if (hasPattern) {
         const ps = devices.map(async device => {
-          device.style = await this.getDeviceStyle(device.uid)
+          device.pattern = await this.getDevicePattern(device.uid)
         })
         await Promise.all(ps)
       }
@@ -33,7 +33,7 @@ module.exports = app => {
       const devices = await this.ctx.model.Device.find({ uid: id }, { _id: 0 }).lean({ getters: true })
       const device = devices[0]
       if (device) {
-        device.style = await this.getDeviceStyle(id)
+        device.pattern = await this.getDevicePattern(id)
         return device
       }
       this.ctx.status = 400
@@ -66,7 +66,7 @@ module.exports = app => {
       const ps = uids.map(async uid => {
         await Promise.all([
           redis.hdel("devices", uid),
-          redis.del(`style#${uid}`),
+          redis.del(`pattern#${uid}`),
           redis.ltrim(`list#${uid}`, -1, 0)
         ])
         this.app.messenger.sendToAgent('stop_wait', uid)
@@ -79,33 +79,33 @@ module.exports = app => {
       const resp = await this.app.redis.get('cache').hget("devices", uid)
       if (!resp) return
       const device = JSON.parse(resp)
-      device.style = await this.getDeviceStyle(device.uid)
+      device.pattern = await this.getDevicePattern(device.uid)
       return device
     }
 
-    async getDeviceStyle(uid) {
-      const style_id = await this.app.redis.get('cache').get(`style#${uid}`)
-      if (style_id) {
-        const styleStr = await this.app.redis.get('cache').hget("styles", style_id)
-        if (styleStr) {
-          return JSON.parse(styleStr)
+    async getDevicePattern(uid) {
+      const pattern_id = await this.app.redis.get('cache').get(`pattern#${uid}`)
+      if (pattern_id) {
+        const patternStr = await this.app.redis.get('cache').hget("patterns", pattern_id)
+        if (patternStr) {
+          return JSON.parse(patternStr)
         } else {
-          await this.app.redis.get('cache').del(`style#${uid}`)
+          await this.app.redis.get('cache').del(`pattern#${uid}`)
         }
       }
     }
 
-    async setDeviceStyle({ device_id, style_id }) {
-      if (!device_id || !style_id) return
-      const [deviceStr, styleStr] = await Promise.all([
+    async setDevicePattern({ device_id, pattern_id }) {
+      if (!device_id || !pattern_id) return
+      const [deviceStr, patternStr] = await Promise.all([
         this.app.redis.get('cache').hget("devices", device_id),
-        this.app.redis.get('cache').hget("styles", style_id)
+        this.app.redis.get('cache').hget("patterns", pattern_id)
       ])
-      if (!deviceStr || !styleStr) return
-      await this.app.redis.get('cache').set(`style#${device_id}`, style_id)
+      if (!deviceStr || !patternStr) return
+      await this.app.redis.get('cache').set(`pattern#${device_id}`, pattern_id)
       return {
         device: JSON.parse(deviceStr),
-        style: JSON.parse(styleStr)
+        pattern: JSON.parse(patternStr)
       }
     }
 

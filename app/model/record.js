@@ -1,9 +1,9 @@
-const { urlFilter, urlJoin } = require('../extend/helper')
+const { urlFilter, urlJoin, uuidv4 } = require('../extend/helper')
 const mongooseLeanGetters = require('mongoose-lean-getters')
 module.exports = ({ mongoose, config }) => {
   const { baseUrl } = config.static
   const RecordSchema = new mongoose.Schema({
-    uid: { type: String, unique: true },
+    uid: { type: String, default: uuidv4, unique: true },
     time: { type: Date, default: Date.now, get: v => v && v.valueOf() },
     device: {
       uid: { type: String },
@@ -12,7 +12,7 @@ module.exports = ({ mongoose, config }) => {
       model_server: { type: String },
       ip: { type: String }
     },
-    style: {
+    pattern: {
       uid: { type: String },
       name: { type: String },
       size_model: { type: String, set: v => urlFilter(v, baseUrl), get: v => urlJoin(v, baseUrl) },

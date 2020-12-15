@@ -2,7 +2,7 @@ const { urlFilter, urlJoin } = require('../extend/helper')
 const mongooseLeanGetters = require('mongoose-lean-getters')
 module.exports = ({ mongoose, config }) => {
   const { baseUrl } = config.static
-  const StyleSchema = new mongoose.Schema({
+  const PatternSchema = new mongoose.Schema({
     uid: { type: String, unique: true },
     time: { type: Date, default: Date.now, get: v => v && v.valueOf() },
     name: { type: String },
@@ -16,8 +16,8 @@ module.exports = ({ mongoose, config }) => {
   }, {
     versionKey: false
   })
-  StyleSchema.index({ time: -1 })
-  StyleSchema.plugin(mongooseLeanGetters)
-  StyleSchema.set('toObject', { getters: true })
-  return mongoose.model('Style', StyleSchema)
+  PatternSchema.index({ time: -1 })
+  PatternSchema.plugin(mongooseLeanGetters)
+  PatternSchema.set('toObject', { getters: true })
+  return mongoose.model('Pattern', PatternSchema)
 }

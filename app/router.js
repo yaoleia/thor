@@ -7,9 +7,9 @@ module.exports = app => {
   const { router, controller, io } = app;
   router.resources('user', '/api/user', controller.user)
   router.resources('device', '/api/device', controller.device)
-  router.resources('style', '/api/style', controller.style)
+  router.resources('pattern', '/api/pattern', controller.pattern)
   router.resources('record', '/api/record', controller.record)
-  router.post('/api/device/style', controller.device.setDeviceStyle)
+  router.post('/api/device/pattern', controller.device.setDevicePattern)
   router.post('/api/push', controller.pusher.index)
   router.post('/api/account/login', controller.account.postLogin)
   router.get('/api/account/logout', controller.account.logout)

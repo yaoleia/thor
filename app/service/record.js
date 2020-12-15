@@ -42,9 +42,6 @@ module.exports = app => {
     }
     async create(request) {
       if (!request) { return };
-      if (!request.uid) {
-        request.uid = this.ctx.helper.uuidv4()
-      }
       const result = await this.ctx.model.Record.create(request)
       const record = result.toObject()
       delete record._id

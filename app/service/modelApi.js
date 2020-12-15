@@ -8,7 +8,7 @@ class BackendService extends Service {
       const resp = await this.ctx.curl(defectApi, {
         data: {
           image_url,
-          style: device.style
+          pattern: device.pattern
         },
         dataType: 'json',
         method: "POST",

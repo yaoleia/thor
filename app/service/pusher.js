@@ -40,9 +40,9 @@ class PusherService extends Service {
     const { service, helper, logger } = this.ctx
     try {
       const device = device_id && await service.device.getFromRedis(device_id)
-      if (!device || !device.style) {
+      if (!device || !device.pattern) {
         this.ctx.status = 400
-        if (device && !device.style) {
+        if (device && !device.pattern) {
           throw {
             msg: "请选择该设备要检测的产品类型!",
             device
@@ -58,7 +58,7 @@ class PusherService extends Service {
         body.quality = 60
       }
 
-      const { style, ...baseDevice } = device
+      const { pattern, ...baseDevice } = device
       const [modelData, [image]] = await Promise.all([
         service.modelApi.defect(image_url, device),
         service.file.upload(body)
@@ -67,7 +67,7 @@ class PusherService extends Service {
         this.ctx.status = 400
         throw {
           device: baseDevice,
-          style,
+          pattern,
           msg: "图片获取失败，请检查图片地址！",
           body
         }
@@ -75,7 +75,7 @@ class PusherService extends Service {
       if (this.ctx.status === 504) {
         throw {
           device: baseDevice,
-          style,
+          pattern,
           ...modelData
         }
       }
@@ -86,7 +86,7 @@ class PusherService extends Service {
         uid,
         time: new Date().getTime(),
         device: baseDevice,
-        style,
+        pattern,
         image_url: image.original_url || image_url,
         thumbnail_url: image.url,
         defect_items,

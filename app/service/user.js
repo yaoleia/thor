@@ -47,7 +47,7 @@ module.exports = app => {
     async create(request, init) {
       if (!request) { return };
       if (!request.username) {
-        request.username = this.ctx.helper.uuidv4()
+        request.username = this.ctx.helper.getRandomId()
       }
       const nameLen = request.username.length
       if (nameLen < 5 || nameLen > 20) {
