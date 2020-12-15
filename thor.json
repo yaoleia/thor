@@ -33,13 +33,13 @@
                         "enabled": true,
                         "type": "Text",
                         "name": "image_url",
-                        "value": "/thor/public/wad/20201204115858939.jpg"
+                        "value": "/thor/public/wad/1_20201208132339_jpg.jpg"
                       },
                       {
                         "enabled": true,
                         "type": "Text",
                         "name": "device_id",
-                        "value": "1289062316"
+                        "value": "6297384591"
                       },
                       {
                         "enabled": true,
@@ -50,7 +50,7 @@
                       {
                         "type": "Text",
                         "name": "quality",
-                        "value": "none"
+                        "value": "50"
                       },
                       {
                         "type": "Text",
@@ -177,15 +177,16 @@
                         "value": "10"
                       },
                       {
+                        "enabled": true,
                         "type": "Text",
                         "name": "type",
-                        "value": "model/hahaha"
+                        "value": "pattern/hahaha"
                       },
                       {
                         "enabled": true,
                         "type": "Text",
                         "name": "image_url",
-                        "value": "/Users/admin/Documents/response/thor/public/wad/20201204115858939.jpg"
+                        "value": "/thor/public/wad/1_20201208132339_jpg.jpg"
                       }
                     ]
                   },
@@ -242,7 +243,7 @@
                   "path": "/api/currentUser"
                 },
                 "id": "ea861531-90fd-49d7-b362-b02e6f9f56c1",
-                "name": "获取session个人信息",
+                "name": "获取当前用户个人信息",
                 "headers": []
               }
             },
@@ -483,24 +484,32 @@
                     "items": [
                       {
                         "name": "uid",
-                        "value": "201696936"
+                        "value": "1253986434"
                       },
                       {
                         "name": "offset",
-                        "value": "1"
-                      },
-                      {
-                        "name": "limit",
-                        "value": "1"
-                      },
-                      {
-                        "name": "device.uid",
-                        "value": "947690185"
+                        "value": "30260"
                       },
                       {
                         "enabled": true,
+                        "name": "limit",
+                        "value": "2"
+                      },
+                      {
+                        "name": "device.uid",
+                        "value": "8436561534"
+                      },
+                      {
                         "name": "start_date",
-                        "value": "1607081661330"
+                        "value": "1607570834000"
+                      },
+                      {
+                        "name": "size_alarm",
+                        "value": "false"
+                      },
+                      {
+                        "name": "",
+                        "value": ""
                       }
                     ]
                   },
@@ -564,7 +573,7 @@
                   },
                   "bodyType": "Text",
                   "textBodyEditorHeight": 320,
-                  "textBody": "{\n  \"uid\": ${random(\"\")},\n    \"device\": {\n        \"name\": \"default\",\n        \"camera_server\": \"http://10.10.10.10:1111\",\n        \"model_server\": \"http://10.18.144.239:7777/mock/5fab56600a3d6400244cb595/thor\",\n        \"ip\": \"10.10.10.10\",\n        \"uid\": 947690185\n    },\n    \"style\": {\n        \"size_standard\": [\n            {\n                \"id\": 1,\n                \"label\": \"宽度\",\n                \"standard\": 20,\n                \"tol\": 1\n            },\n            {\n                \"id\": 2,\n                \"label\": \"高度\",\n                \"standard\": 50,\n                \"tol\": 1\n            }\n        ],\n        \"name\": \"type_1\",\n        \"size_model\": \"http://111/model_defect.pth\",\n        \"size_md5\": \"asdljkasd1kjblkasjfb\",\n        \"defect_model\": \"http://111/model_defect.pth\",\n        \"defect_md5\": \"kbkjblkglglgljhlkjhlkh\",\n        \"uid\": 702849476\n    },\n    \"image_url\": \"https://www.baidu.com/img/PCtm_d9c8750bed0b3c7d089fa7d55720d6cf.png\",\n    \"thumbnail_url\": \"http://10.18.144.239:7001/public/upload/2020/11/20/20201120164253709.jpg\",\n    \"defect_items\": [\n        {\n            \"label\": 1,\n            \"points\": [\n                [\n                    10,\n                    20\n                ],\n                [\n                    40,\n                    30\n                ],\n                [\n                    15,\n                    40\n                ]\n            ]\n        },\n        {\n            \"label\": 2,\n            \"points\": [\n                [\n                    40,\n                    20\n                ],\n                [\n                    60,\n                    30\n                ],\n                [\n                    30,\n                    40\n                ]\n            ]\n        },\n        {\n            \"label\": 2,\n            \"points\": [\n                [\n                    10,\n                    20\n                ],\n                [\n                    20,\n                    30\n                ],\n                [\n                    30,\n                    40\n                ]\n            ]\n        },\n        {\n            \"label\": 3,\n            \"points\": [\n                [\n                    10,\n                    20\n                ],\n                [\n                    20,\n                    30\n                ],\n                [\n                    30,\n                    40\n                ]\n            ]\n        }\n    ],\n    \"size_items\": [],\n    \"defect_alarm\": true,\n    \"size_alarm\": false\n}"
+                  "textBody": "{\n    \"device\": {\n        \"name\": \"default\",\n        \"camera_server\": \"http://10.10.10.10:1111\",\n        \"model_server\": \"http://10.18.144.239:7777/mock/5fab56600a3d6400244cb595/thor\",\n        \"ip\": \"10.10.10.10\",\n        \"uid\": 947690185\n    },\n    \"pattern\": {\n        \"size_standard\": [\n            {\n                \"id\": 1,\n                \"label\": \"宽度\",\n                \"standard\": 20,\n                \"tol\": 1\n            },\n            {\n                \"id\": 2,\n                \"label\": \"高度\",\n                \"standard\": 50,\n                \"tol\": 1\n            }\n        ],\n        \"name\": \"type_1\",\n        \"size_model\": \"http://111/model_defect.pth\",\n        \"size_md5\": \"asdljkasd1kjblkasjfb\",\n        \"defect_model\": \"http://111/model_defect.pth\",\n        \"defect_md5\": \"kbkjblkglglgljhlkjhlkh\",\n        \"uid\": 702849476\n    },\n    \"image_url\": \"https://www.baidu.com/img/PCtm_d9c8750bed0b3c7d089fa7d55720d6cf.png\",\n    \"thumbnail_url\": \"http://10.18.144.239:7001/public/upload/2020/11/20/20201120164253709.jpg\",\n    \"defect_items\": [\n        {\n            \"label\": 1,\n            \"points\": [\n                [\n                    10,\n                    20\n                ],\n                [\n                    40,\n                    30\n                ],\n                [\n                    15,\n                    40\n                ]\n            ]\n        },\n        {\n            \"label\": 2,\n            \"points\": [\n                [\n                    40,\n                    20\n                ],\n                [\n                    60,\n                    30\n                ],\n                [\n                    30,\n                    40\n                ]\n            ]\n        },\n        {\n            \"label\": 2,\n            \"points\": [\n                [\n                    10,\n                    20\n                ],\n                [\n                    20,\n                    30\n                ],\n                [\n                    30,\n                    40\n                ]\n            ]\n        },\n        {\n            \"label\": 3,\n            \"points\": [\n                [\n                    10,\n                    20\n                ],\n                [\n                    20,\n                    30\n                ],\n                [\n                    30,\n                    40\n                ]\n            ]\n        }\n    ],\n    \"size_items\": [],\n    \"defect_alarm\": true,\n    \"size_alarm\": false\n}"
                 },
                 "uri": {
                   "query": {
@@ -619,7 +628,7 @@
                     "version": "V11"
                   },
                   "host": "${\"host\"}:${\"port\"}",
-                  "path": "/api/record/895852219"
+                  "path": "/api/record/273502054"
                 },
                 "id": "ad3ca51c-c925-420b-b090-a403b13e1066",
                 "name": "2.3 根据uid查询检测记录",
@@ -736,10 +745,10 @@
                     "version": "V11"
                   },
                   "host": "${\"host\"}:${\"port\"}",
-                  "path": "/api/style"
+                  "path": "/api/pattern"
                 },
                 "id": "585d624b-c8f8-4f38-98e7-ca0e37ff637c",
-                "name": "3.1 获取型号列表（全部）",
+                "name": "3.1 获取模板列表（全部）",
                 "headers": []
               }
             },
@@ -761,19 +770,15 @@
                   "textBody": "{\n    \"name\": \"type_1\",\n    \"size_model\": \"model/hahaha/smartpark.mp4\",\n    \"size_md5\": \"asdljkasd1kjblkasjfb\",\n    \"defect_model\": \"model/hahaha/smartpark.mp4\",\n    \"defect_md5\": \"kbkjblkglglgljhlkjhlkh\",\n    \"size_standard\": [\n      {\"id\": 1, \"label\": \"宽度\", \"standard\": 20, \"tol\": 1 },\n      {\"id\": 2, \"label\": \"高度\", \"standard\": 50, \"tol\": 1 }\n    ]\n  }"
                 },
                 "uri": {
-                  "query": {
-                    "delimiter": "&",
-                    "items": []
-                  },
                   "scheme": {
                     "name": "http",
                     "version": "V11"
                   },
                   "host": "${\"host\"}:${\"port\"}",
-                  "path": "/api/style"
+                  "path": "/api/pattern"
                 },
                 "id": "99cf7a46-5ac0-47e3-9307-770c1ef36294",
-                "name": "3.2 创建一个型号",
+                "name": "3.2 创建一个模板",
                 "headers": [
                   {
                     "enabled": true,
@@ -813,10 +818,10 @@
                     "version": "V11"
                   },
                   "host": "${\"host\"}:${\"port\"}",
-                  "path": "/api/style/2853482820"
+                  "path": "/api/pattern/8600791344"
                 },
                 "id": "186426dd-580e-4b6b-93ea-0c99cab2ee35",
-                "name": "3.3 根据uid查询型号",
+                "name": "3.3 根据uid查询模板",
                 "headers": []
               }
             },
@@ -848,10 +853,10 @@
                     "version": "V11"
                   },
                   "host": "${\"host\"}:${\"port\"}",
-                  "path": "/api/style/5408214067"
+                  "path": "/api/pattern/8600791344"
                 },
                 "id": "7b578426-47c8-4eb6-aff2-db2f96e0cfcd",
-                "name": "3.4 修改型号信息",
+                "name": "3.4 修改模板信息",
                 "headers": [
                   {
                     "enabled": true,
@@ -886,10 +891,10 @@
                     "version": "V11"
                   },
                   "host": "${\"host\"}:${\"port\"}",
-                  "path": "/api/style/404280917"
+                  "path": "/api/pattern/7706838155"
                 },
                 "id": "a70aa6f3-01c5-4be6-843d-7e49f9e3e6e4",
-                "name": "3.5 删除型号（,隔开删除多个）",
+                "name": "3.5 删除模板（,隔开删除多个）",
                 "headers": []
               }
             },
@@ -1017,7 +1022,7 @@
                     "version": "V11"
                   },
                   "host": "${\"host\"}:${\"port\"}",
-                  "path": "/api/device/1959381517"
+                  "path": "/api/device/5050059139"
                 },
                 "id": "86ce0104-460b-43c0-9443-31c977055ca5",
                 "name": "4.3 根据uid查询设备",
@@ -1039,7 +1044,7 @@
                     "items": []
                   },
                   "bodyType": "Text",
-                  "textBody": "{\n  \"model_server\": \"http://10.18.144.239:7777/mock/5fab56600a3d6400244cb595/thor\"\n}"
+                  "textBody": "{\n  \"name\": \"wade\",\n  \"model_server\": \"http://0.0.0.0:7777/mock/5fab56600a3d6400244cb595/thor\"\n}"
                 },
                 "uri": {
                   "query": {
@@ -1051,7 +1056,7 @@
                     "version": "V11"
                   },
                   "host": "${\"host\"}:${\"port\"}",
-                  "path": "/api/device/5848819999"
+                  "path": "/api/device/5050059139"
                 },
                 "id": "f18847ed-133e-48d5-b598-fb44f88688d3",
                 "name": "4.4 修改设备信息",
@@ -1111,7 +1116,7 @@
                     "items": []
                   },
                   "bodyType": "Text",
-                  "textBody": "{\n  \"device_id\": 1289062316,\n  \"style_id\": 2675561239 \n}"
+                  "textBody": "{\n  \"device_id\": 6297384591,\n  \"pattern_id\": 2292732331 \n}"
                 },
                 "uri": {
                   "query": {
@@ -1123,7 +1128,7 @@
                     "version": "V11"
                   },
                   "host": "${\"host\"}:${\"port\"}",
-                  "path": "/api/device/style"
+                  "path": "/api/device/pattern"
                 },
                 "id": "4895f803-fb53-421a-a9a8-8a000a36ef37",
                 "name": "4.6 设置设备当前的款式",
@@ -1201,7 +1206,7 @@
         "a88ebb0e-7fe0-4788-9ef7-357446898678": {
           "createdAt": "2020-11-17T16:19:01.349+08:00",
           "name": "host",
-          "value": "10.18.98.184",
+          "value": "10.18.99.178",
           "enabled": true,
           "private": false
         },
