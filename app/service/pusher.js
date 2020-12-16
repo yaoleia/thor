@@ -81,7 +81,6 @@ class PusherService extends Service {
       }
       const { defect_items, size_items } = modelData
       // TODO 后处理，尺寸比较判断OK/NG
-      // TODO 反馈给硬件接口
       const defectData = {
         uid,
         time: new Date().getTime(),
@@ -93,6 +92,25 @@ class PusherService extends Service {
         size_items,
         defect_alarm: !!_.get(defect_items, 'length'),
         size_alarm: false
+      }
+      const { camera_server } = baseDevice
+      if (camera_server) {
+        try {
+          await this.ctx.curl(camera_server, {
+            data: {
+              uid,
+              alarm: defectData.defect_alarm || defectData.size_alarm
+            },
+            dataType: 'json',
+            method: "POST",
+            timeout: 5000
+          })
+        } catch (error) {
+          throw {
+            device: baseDevice,
+            msg: "请检查设备硬件服务！",
+          }
+        }
       }
       await this.app.io.of('/').to(device.uid).emit('res', helper.parseMsg('product', defectData))
       await service.record.create(defectData)

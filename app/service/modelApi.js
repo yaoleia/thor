@@ -1,14 +1,13 @@
 const Service = require('egg').Service;
 
 class BackendService extends Service {
-  async defect(image_url, device) {
-    const model_server = device.model_server || this.app.config.MODEL_SERVER
-    const defectApi = model_server + '/api/defect'
+  async defect(image_url, { model_server, pattern }) {
     try {
-      const resp = await this.ctx.curl(defectApi, {
+      if (!model_server) throw '未配置设备算法服务！'
+      const resp = await this.ctx.curl(model_server, {
         data: {
           image_url,
-          pattern: device.pattern
+          pattern
         },
         dataType: 'json',
         method: "POST",
@@ -19,8 +18,8 @@ class BackendService extends Service {
     } catch (error) {
       this.ctx.status = 504
       return {
-        msg: '请检查设备算法服务！',
-        model_api: defectApi
+        msg: typeof error === 'string' ? error : '请检查设备算法服务！',
+        model_server
       }
     }
   }

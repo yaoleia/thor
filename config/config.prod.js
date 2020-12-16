@@ -6,11 +6,9 @@
 module.exports = appInfo => {
   const config = {};
 
-  const { MODEL_SERVER, NETWORK, THOR_REDIS, THOR_MONGO } = process.env
+  const { NETWORK, THOR_REDIS, THOR_MONGO } = process.env
 
   const isHost = NETWORK === 'host'
-
-  config.MODEL_SERVER = MODEL_SERVER || 'http://10.18.144.239:7777/mock/5fab56600a3d6400244cb595/thor'
 
   config.logger = {
     level: 'NONE',

@@ -149,7 +149,6 @@ module.exports = appInfo => {
   // add your user config here
   const userConfig = {
     MOCK_SERVER: 'https://proapi.azurewebsites.net',
-    MODEL_SERVER: 'http://10.18.144.239:7777/mock/5fab56600a3d6400244cb595/thor',
     CONCURRENT: 4,
     QUEUE_MAX: 100
   }

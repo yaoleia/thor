@@ -18,7 +18,6 @@ module.exports = app => {
   router.get('/api/download', controller.download.download);
   router.get('/api/download-image', controller.download.downloadImage);
   router.post('/api/upload', controller.upload.index);
-  router.all('/api/*', controller.mock.proxy);
   router.get('*', controller.home.index);
 
   io.of('/').route('chat', io.controller.chat.index);
