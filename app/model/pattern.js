@@ -11,7 +11,6 @@ module.exports = ({ mongoose, config }) => {
     size_md5: { type: String },
     defect_model: { type: String, set: v => urlFilter(v, baseUrl), get: v => urlJoin(v, baseUrl) },
     defect_md5: { type: String },
-    defect_items: { type: String },
     size_standard: { type: Array }
   }, {
     versionKey: false

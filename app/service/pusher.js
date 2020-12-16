@@ -44,7 +44,7 @@ class PusherService extends Service {
         this.ctx.status = 400
         if (device && !device.pattern) {
           throw {
-            msg: "请选择该设备要检测的产品类型!",
+            msg: "请选择该设备要检测的模板!",
             device
           }
         }
