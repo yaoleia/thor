@@ -47,7 +47,24 @@ class AccountController extends Controller {
 
   async update() {
     const { username } = this.ctx.session
-    const result = await this.ctx.service.user.update({ id: username }, this.ctx.request.body)
+    const { body } = this.ctx.request
+    const { pre_password, new_password } = body
+    if (pre_password && new_password) {
+      const user = await this.ctx.service.user.show({ id: username })
+      if (user.password !== pre_password) {
+        this.ctx.status = 400
+        this.ctx.body = {
+          msg: '旧密码错误！'
+        }
+        return
+      }
+      body.password = new_password
+    } else {
+      delete body.password
+    }
+    delete body.pre_password
+    delete body.new_password
+    const result = await this.ctx.service.user.update({ id: username }, body)
     this.ctx.body = result
   }
 }

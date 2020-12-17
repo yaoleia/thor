@@ -82,6 +82,7 @@ module.exports = appInfo => {
     mode: 'file',
     fileSize: '1024mb',
     fileExtensions: [
+      '.pth',
       '.pdf',
       '.ckpt',
       '.mov'
