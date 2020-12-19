@@ -5,6 +5,7 @@
  */
 module.exports = app => {
   const { router, controller, io } = app;
+  router.resources('defectType', '/api/defect/type', controller.defectType)
   router.resources('user', '/api/user', controller.user)
   router.resources('device', '/api/device', controller.device)
   router.resources('pattern', '/api/pattern', controller.pattern)
