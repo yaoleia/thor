@@ -33,7 +33,7 @@ module.exports = agent => {
       clients.push(redis)
       while (handle.switch) {
         try {
-          const resp = await redis.brpop(key, 20)
+          const resp = await redis.brpop(key, 5 * 60)
           // 随机给一个worker消费一条队列信息
           if (!resp || !resp[1]) throw 'timeout or data error!'
           if (!handle.switch) {
@@ -43,8 +43,15 @@ module.exports = agent => {
           await new Promise((resolve, reject) => {
             retry = 10
             const msg = JSON.parse(resp[1])
+            const timer = setTimeout(() => {
+              agent.messenger.off(msg.uid)
+              resolve()
+            }, 20000);
+            agent.messenger.once(msg.uid, () => {
+              clearTimeout(timer)
+              resolve()
+            })
             agent.messenger.sendRandom('handle_msg', msg)
-            agent.messenger.once(msg.uid, resolve)
           })
         } catch (error) {
           if (--retry < 0) {
