@@ -916,6 +916,150 @@
                 "uri": {
                   "query": {
                     "delimiter": "&",
+                    "items": []
+                  },
+                  "scheme": {
+                    "name": "http",
+                    "version": "V11"
+                  },
+                  "host": "${\"host\"}:${\"port\"}",
+                  "path": "/api/defect/type"
+                },
+                "id": "f5e52eea-89ab-4246-bc7f-35ed91b3ffe9",
+                "name": "4.1 获取缺陷类型列表",
+                "headers": []
+              }
+            },
+            {
+              "entity": {
+                "type": "Request",
+                "method": {
+                  "requestBody": true,
+                  "link": "http://tools.ietf.org/html/rfc7231#section-4.3.3",
+                  "name": "POST"
+                },
+                "body": {
+                  "formBody": {
+                    "overrideContentType": true,
+                    "encoding": "application/x-www-form-urlencoded",
+                    "items": []
+                  },
+                  "bodyType": "Text",
+                  "textBody": "{\n  \"field\": \"yijiao2\",\n  \"name\": \"溢胶9\",\n  \"color\": \"#888\"\n}"
+                },
+                "uri": {
+                  "query": {
+                    "delimiter": "&",
+                    "items": []
+                  },
+                  "scheme": {
+                    "name": "http",
+                    "version": "V11"
+                  },
+                  "host": "${\"host\"}:${\"port\"}",
+                  "path": "/api/defect/type"
+                },
+                "id": "546c45db-4683-4703-a58f-eb6f6758300f",
+                "name": "4.2 增加一个缺陷类型",
+                "headers": [
+                  {
+                    "enabled": true,
+                    "name": "Content-Type",
+                    "value": "application/json"
+                  }
+                ]
+              }
+            },
+            {
+              "entity": {
+                "type": "Request",
+                "method": {
+                  "requestBody": true,
+                  "link": "http://tools.ietf.org/html/rfc7231#section-4.3.4",
+                  "name": "PUT"
+                },
+                "body": {
+                  "formBody": {
+                    "overrideContentType": true,
+                    "encoding": "application/x-www-form-urlencoded",
+                    "items": []
+                  },
+                  "bodyType": "Text",
+                  "textBody": "{\n\"field\": \"yijiao19\"\n}"
+                },
+                "uri": {
+                  "query": {
+                    "delimiter": "&",
+                    "items": []
+                  },
+                  "scheme": {
+                    "name": "http",
+                    "version": "V11"
+                  },
+                  "host": "${\"host\"}:${\"port\"}",
+                  "path": "/api/defect/type/7483425252"
+                },
+                "id": "c17834fc-b1c3-4a2f-b2c1-6cca41db9b0f",
+                "name": "4.3 修改缺陷类型",
+                "headers": [
+                  {
+                    "enabled": true,
+                    "name": "Content-Type",
+                    "value": "application/json"
+                  }
+                ]
+              }
+            },
+            {
+              "entity": {
+                "type": "Request",
+                "method": {
+                  "link": "http://tools.ietf.org/html/rfc7231#section-4.3.5",
+                  "name": "DELETE"
+                },
+                "body": {
+                  "formBody": {
+                    "overrideContentType": true,
+                    "encoding": "application/x-www-form-urlencoded",
+                    "items": []
+                  },
+                  "bodyType": "Text"
+                },
+                "uri": {
+                  "query": {
+                    "delimiter": "&",
+                    "items": []
+                  },
+                  "scheme": {
+                    "name": "http",
+                    "version": "V11"
+                  },
+                  "host": "${\"host\"}:${\"port\"}",
+                  "path": "/api/defect/type/8776309248"
+                },
+                "id": "26dbe12c-8101-4151-8860-233abd7abadc",
+                "name": "4.4 删除缺陷类型",
+                "headers": []
+              }
+            },
+            {
+              "entity": {
+                "type": "Request",
+                "method": {
+                  "link": "http://tools.ietf.org/html/rfc7231#section-4.3.1",
+                  "name": "GET"
+                },
+                "body": {
+                  "formBody": {
+                    "overrideContentType": true,
+                    "encoding": "application/x-www-form-urlencoded",
+                    "items": []
+                  },
+                  "bodyType": "Text"
+                },
+                "uri": {
+                  "query": {
+                    "delimiter": "&",
                     "items": [
                       {
                         "name": "limit",
@@ -947,7 +1091,7 @@
                   "path": "/api/device"
                 },
                 "id": "5bbfb5e6-37a5-4319-b16a-bd085528f157",
-                "name": "4.1 设备列表查询（全部）",
+                "name": "5.1 设备列表查询（全部）",
                 "headers": []
               }
             },
@@ -987,7 +1131,7 @@
                   "path": "/api/device"
                 },
                 "id": "57a9c40e-e25a-4818-95e1-58f42117f886",
-                "name": "4.2 新建一个设备",
+                "name": "5.2 新建一个设备",
                 "headers": [
                   {
                     "enabled": true,
@@ -1025,7 +1169,7 @@
                   "path": "/api/device/5050059139"
                 },
                 "id": "86ce0104-460b-43c0-9443-31c977055ca5",
-                "name": "4.3 根据uid查询设备",
+                "name": "5.3 根据uid查询设备",
                 "headers": []
               }
             },
@@ -1044,7 +1188,7 @@
                     "items": []
                   },
                   "bodyType": "Text",
-                  "textBody": "{\n  \"name\": \"wade\",\n  \"model_server\": \"http://0.0.0.0:7777/mock/5fab56600a3d6400244cb595/thor\"\n}"
+                  "textBody": "{\n  \"name\": \"wade\",\n  \"model_server\": \"\"\n}"
                 },
                 "uri": {
                   "query": {
@@ -1056,10 +1200,10 @@
                     "version": "V11"
                   },
                   "host": "${\"host\"}:${\"port\"}",
-                  "path": "/api/device/5050059139"
+                  "path": "/api/device/6297384591"
                 },
                 "id": "f18847ed-133e-48d5-b598-fb44f88688d3",
-                "name": "4.4 修改设备信息",
+                "name": "5.4 修改设备信息",
                 "headers": [
                   {
                     "enabled": true,
@@ -1097,7 +1241,7 @@
                   "path": "/api/device/2362175643"
                 },
                 "id": "d7a5dab7-a0be-4e31-b1a3-367188d5fb5b",
-                "name": "4.5 删除设备（,隔开）",
+                "name": "5.5 删除设备（,隔开）",
                 "headers": []
               }
             },
@@ -1131,7 +1275,7 @@
                   "path": "/api/device/pattern"
                 },
                 "id": "4895f803-fb53-421a-a9a8-8a000a36ef37",
-                "name": "4.6 设置设备当前的款式",
+                "name": "5.6 设置设备当前的款式",
                 "headers": [
                   {
                     "enabled": true,
