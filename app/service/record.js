@@ -20,7 +20,7 @@ module.exports = app => {
       if (JSON.stringify(params) === "{}") countQuery.hint({ time: -1 })
       const [count, records] = await Promise.all([
         countQuery.countDocuments(params),
-        this.ctx.model.Record.find(params, { _id: 0, defect_items: 0, size_items: 0 }).skip(offset).limit(limit).sort({ time: -1 }).lean({ getters: true })
+        this.ctx.model.Record.find(params, { _id: 0, defect_items: 0, size_items: 0 }).sort({ time: -1 }).skip(offset).limit(limit).lean({ getters: true })
       ])
       const result = {}
       result.meta = { total: count, limit, offset }
